@@ -31,8 +31,13 @@
 - U5 harvest restart (21 Nov 05:06): Relaunched tools/harvest.ps1 — 37 inventories (was 36), processing remaining ~41 versions.
 - U6: README.md written covering CLI, GUI, protocol summary, harvest, platform notes, building, and driver development notes.
 
-## Outcome
-- U1-U4 complete, U5 harvest RUNNING (38/78 versions inventoried as of this round), U6 README done. Remaining: harvest completion, final restore point, AI Notebook log copy.
+## Outcome (updated 22 Nov 07:50 — project status)
+- **U1-U6 all complete.** Repo: 2 commits (8f378ed baseline, a3e84d2 legacy-layout). Harvest **COMPLETE**: 102/102 catalog versions inventoried, 0 failures — 102 inventory CSVs + 102 installer zips (9.5.3 → 16.5, ~32.6 GB), index holds 104 bundles (102 inventories + 2 flashable: 12.8.1, 16.0). 46 legacy entries (≤ 10.9.7, firmware-in-drivers layout) flagged in notes.
+- Validation: GUI build ✓, CLI-only ✓, 11/11 tests both configs ✓, clippy clean ✓, Linux x86-64 ELF (zigbuild, glibc 2.17) ✓, PE GUI-subsystem no-popup + working terminal CLI output ✓.
+- Tool behavior: bare `ubdmf.exe` opens the GUI; live device poll (2s, driver badge); integrated Log tab console (raylib bridge); CWD-independent paths (UBDMF_FIRMWARE/UBDMF_LOG overrides).
+- Device (UltraStudio 4K Mini): TB controller alive after 16.5 flash (2018 Mac Mini, 40 Gb/s); front panel still blank; not in DV Setup/vrecord — needs DV 16.5 driver on the test Mac. BMD service = fallback.
+- **Remaining backlog**: (1) extract 16.5 plaintext bundle from firmware/installers/flash165_USBPcap3.pcap → third flashable image; (2) install DV 16.5 on the Mac Mini and retest device recognition; (3) user GUI smoke-check (Devices tab with unit connected + Log tab) still pending per session rules.
+- Restore points: Documents\AI Notebook\restore-points\UBDMF-restore-2026-11-22-{pre,post}-msifix.zip.
 
 ## Execution log (22 Nov ~01:37-02:05, "firmwares are missing" — old-MSI layout + full harvest)
 - User: continue, firmwares missing; save current progress.
