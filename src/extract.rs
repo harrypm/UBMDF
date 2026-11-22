@@ -38,13 +38,35 @@ pub fn extract_installer(zip_path: &Path, out_dir: &Path, version: &str) -> Resu
     admin_extract_msi(&msi_path, &target_dir)?;
     log::info!("sandbox extract complete: {}", target_dir.display());
 
-    // Step 3: find the Firmware directory (16.0+ nests it, older versions may not)
-    let firmware_dir = find_firmware_dir(&target_dir)
-        .context("Firmware directory not found in sandbox extract")?;
+    // Step 3+4: find the Firmware directory (newer versions) or fall back to a
+    // full payload inventory (LEGACY layout, DV <= 10.9.7: no separate Firmware
+    // directory exists — the firmware ships inside the drivers).
+    let inventory_path = out_dir.join(format!("dv-{version}-inventory.csv"));
+    let firmware_dir = match find_firmware_dir(&target_dir) {
+        Some(d) => d,
+        None => {
+            log::info!("legacy layout: no Firmware dir — full payload inventory");
+            let (count, total) = inventory_all_payload(&target_dir, &inventory_path, version)
+                .context("legacy payload inventory failed")?;
+            log::info!(
+                "legacy inventory: {count} files, {total} bytes → {}",
+                inventory_path.display()
+            );
+            // No Firmware dir to keep — discard the whole extract (zip is the
+            // authoritative copy) and return.
+            std::fs::remove_dir_all(&extract_dir)
+                .with_context(|| format!("failed to clean {}", extract_dir.display()))?;
+            return Ok(ExtractResult {
+                firmware_dir: PathBuf::new(), // legacy: no Firmware dir
+                inventory_csv: inventory_path,
+                file_count: count,
+                total_bytes: total,
+            });
+        }
+    };
     log::info!("firmware dir: {}", firmware_dir.display());
 
     // Step 4: inventory the data-*.bin files
-    let inventory_path = out_dir.join(format!("dv-{version}-inventory.csv"));
     let (count, total) = inventory_firmware(&firmware_dir, &inventory_path, version)?;
     log::info!("inventory: {count} files, {total} bytes → {}", inventory_path.display());
 
@@ -169,6 +191,50 @@ fn inventory_firmware(firmware_dir: &Path, csv_path: &Path, version: &str) -> Re
     }
     std::fs::write(csv_path, csv)?;
     Ok((entries.len(), total))
+}
+
+fn collect_files(dir: &Path, out: &mut Vec<PathBuf>) {
+    let Ok(entries) = std::fs::read_dir(dir) else {
+        return;
+    };
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path.is_dir() {
+            collect_files(&path, out);
+        } else {
+            out.push(path);
+        }
+    }
+}
+
+/// LEGACY inventories (DV <= 10.9.7): sha256 every file in the sandbox with
+/// its path relative to the sandbox root. The `file` column carries a relative
+/// path (with separators) instead of a bare `data-*.bin` name — that separator
+/// is what index.rs uses to detect and flag legacy entries.
+fn inventory_all_payload(root: &Path, csv_path: &Path, version: &str) -> Result<(usize, u64)> {
+    let mut files: Vec<PathBuf> = Vec::new();
+    collect_files(root, &mut files);
+    files.sort();
+
+    let mut csv = String::from("version,file,bytes,sha256\n");
+    let mut total = 0u64;
+    for f in &files {
+        let data = std::fs::read(f)
+            .with_context(|| format!("failed to read {}", f.display()))?;
+        let mut h = Sha256::new();
+        h.update(&data);
+        let sha = crate::protocol::hex(&h.finalize());
+        let rel = f.strip_prefix(root).unwrap_or(f.as_path());
+        csv.push_str(&format!(
+            "{version},{},{},{}\n",
+            rel.to_string_lossy(),
+            data.len(),
+            sha
+        ));
+        total += data.len() as u64;
+    }
+    std::fs::write(csv_path, csv)?;
+    Ok((files.len(), total))
 }
 
 /// Import a local installer zip (bypasses the download).

@@ -176,10 +176,27 @@ foreach ($dv in $dvVersions) {
     # Find firmware dir
     $fwDir = Get-ChildItem $sandboxDir -Recurse -Directory -Filter 'Firmware' -ErrorAction SilentlyContinue | Select-Object -First 1
     if (-not $fwDir) {
-        Write-Host " NO FIRMWARE DIR"
-        $failed++
-        $report += [pscustomobject]@{ version = $ver; status = 'failed'; reason = 'no Firmware directory in extract' }
+        # LEGACY layout (DV <= 10.9.7, verified by MSI inspection 21 Nov): there is
+        # no separate Firmware directory — the firmware ships inside the drivers
+        # (.sys / .cpl / plugins). Inventory the complete installer payload as the
+        # archival record; the kept zip remains the authoritative copy. The sandbox
+        # is discarded afterwards (the payload would double disk usage for no gain).
+        Write-Host " LEGACY LAYOUT — full payload inventory"
+        $allFiles = @(Get-ChildItem $sandboxDir -Recurse -File | Sort-Object FullName)
+        $csvLines = @('version,file,bytes,sha256')
+        $payloadTotal = 0
+        foreach ($f in $allFiles) {
+            $sha = (Get-FileHash $f.FullName -Algorithm SHA256).Hash.ToLower()
+            $payloadTotal += $f.Length
+            $relPath = $f.FullName.Substring($sandboxDir.Length + 1)
+            $csvLines += "$ver,$relPath,$($f.Length),$sha"
+        }
+        $csvLines | Set-Content $inventoryCsv -Encoding UTF8
         Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue
+        $payloadMB = [math]::Round($payloadTotal / 1MB, 1)
+        Write-Host " OK (legacy: $($allFiles.Count) files, $payloadMB MB payload inventoried)"
+        $succeeded++
+        $report += [pscustomobject]@{ version = $ver; status = 'ok-legacy'; reason = "legacy payload: $($allFiles.Count) files, $payloadMB MB (no Firmware dir; firmware in drivers)" }
         continue
     }
 

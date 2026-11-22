@@ -249,6 +249,13 @@ fn scan_inventories(root: &Path, bundles: &mut Vec<BundleEntry>) -> Result<()> {
         let id = format!("encrypted/dv-{}", dv_version);
         let zip_name = format!("Blackmagic_Desktop_Video_Windows_{}.zip", dv_version);
         let zip = inv_dir.join(&zip_name);
+        // Legacy-layout inventories (DV <= 10.9.7): the file column carries
+        // relative paths ("Blackmagic Design\...\decklink.sys") instead of bare
+        // data-*.bin names. Detected via a path separator in the first data row.
+        let legacy = std::fs::read_to_string(inv_dir.join(&name))
+            .ok()
+            .and_then(|t| t.lines().nth(1).map(|l| l.contains('\\') || l.contains('/')))
+            .unwrap_or(false);
         bundles.push(BundleEntry {
             id,
             device: "(all Desktop Video devices)".to_string(),
@@ -262,7 +269,11 @@ fn scan_inventories(root: &Path, bundles: &mut Vec<BundleEntry>) -> Result<()> {
                 None
             },
             components: Vec::new(),
-            notes: None,
+            notes: if legacy {
+                Some("legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy".to_string())
+            } else {
+                None
+            },
         });
     }
     Ok(())

@@ -34,6 +34,17 @@
 ## Outcome
 - U1-U4 complete, U5 harvest RUNNING (38/78 versions inventoried as of this round), U6 README done. Remaining: harvest completion, final restore point, AI Notebook log copy.
 
+## Execution log (22 Nov ~01:37-02:05, "firmwares are missing" — old-MSI layout + full harvest)
+- User: continue, firmwares missing; save current progress.
+- **Progress saved first**: first-ever git commit 8f378ed (whole project; .gitignore excludes firmware/ ~30GB, target/, runtime state) + restore zip `Documents\AI Notebook\restore-points\UBDMF-restore-2026-11-22-pre-msifix.zip`.
+- Diagnosis (hard data from harvest-report.json): 21 Nov run finished 07:06 with **47/102 failed** — 46 × "no Firmware directory in extract" (versions ≤ 10.9.7 + boundary check) and 1 × download 502 (11.3, zip genuinely missing). 101 zips present → not a download problem.
+- **MSI layout discovery** (tools/inspect-msi.ps1, elevated, log in tools/): DV 9.5.3 admin-extract has **NO Firmware directory at all** — 36 dirs, 49 payload files; layout is `Blackmagic Design\Blackmagic Desktop Video\` with Drivers/DriverUSB (.sys drivers = the firmware), .cpl panels, codecs, plugin folders. The separate `Firmware/` + data-*.bin model only exists from **10.9.10 onward** (10.9.10-10.9.12, 10.10, 10.11.x all inventoried fine). 11.3 = only a download failure; it has a normal Firmware dir.
+- First inspect-msi.ps1 attempt died at parse (my nested backtick-quote `.Replace()` inside `$()` — parse error "Missing ')' in method call"); rewritten without nested quoting, parse-checked via `Parser::ParseFile` before elevating. Its elevated run hung on locked-MSI cleanup (Windows Installer held files) — killed leftover pwsh by CIM CommandLine match, cleaned %TEMP%\ubdmf-inspect-*.
+- **Fixes**: harvest.ps1 — LEGACY fallback: no Firmware dir → sha256 the FULL sandbox payload (relative paths in CSV `file` column), discard sandbox, status `ok-legacy`. extract.rs — same fallback via `inventory_all_payload()` (+ collect_files helper), index unchanged in shape. index.rs — scan_inventories detects legacy CSVs (path separator in first data row) and flags notes "legacy layout (DV <= 10.9.7): firmware ships inside drivers; zip = authoritative copy".
+- Validation: build ✓, 11/11 tests ✓, clippy clean ✓.
+- **Rerun: COMPLETE — succeeded=47, skipped=55, failed=0. Totals: 102 inventory CSVs, 102 zips, index 104 bundles (102 inventories + 2 flashable 12.8.1/16.0), 46 legacy-flagged. Disk 41 GB free.** 11.3 re-downloaded (334 MB) and inventoried normally — confirming the boundary.
+- Legacy per-version reality check from transcript: e.g. 10.6.7 = 125 files, 441 MB payload. Old-version "firmware" = drivers (decklink.sys et al); no data-*.bin to decrypt — matches the protocol-era history (service-port updater + encrypted bins appeared ~10.9.10+).
+
 ## Execution log (21 Nov ~06:38-06:50, live device list + integrated console)
 - User request: GUI must list actually live detected devices (not the hardcoded "UltraStudio 4K Mini") and show an integrated console readout instead of the external CMD popup.
 - **Live devices**:
