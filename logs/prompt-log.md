@@ -1,0 +1,78 @@
+# UBDMF — Universal Blackmagic Devices Flasher: prompt log
+- Project start: 2026-11-20 (plan 13a385f9, approved after user refinements)
+- Continues the validated `bmdflash` engine (C:\Users\Harry\bmdflash) — see
+  `Documents\AI Notebook\2026-11-19 BMD cross-platform flashing tool - prompt log.md`
+  for the full protocol reverse-engineering history.
+
+## Task input (user)
+1. "Make this into a dedicated CLI & GUI tool with an UI listing all the firmware (pre-packed) and devices and there firmware add a dump and an flash option, add a update tap, I want an intergrated log system and terminal readout with status and progress bars for flashing 'UBDMF - Universal Blackmagic Devices Flasher' should be the tool and repo name. Then lets pull the latest 16.5 and also start pulling older versions down to 12.8.x and adding there firmware to the index"
+2. Refinements: GUI must use **Clay like MISRC GUI** (confirmed: MISRC GUI = clay.h + raylib, C/CMake), light as possible, clean **Qt6-style aesthetic, simple dark/light mode**; **index all the BMD Software versions**; use an **auto extractor script/routine** for the harvest instead of per-version manual operations (token efficiency).
+
+## Decisions locked at approval
+- Repo/tool: UBDMF at C:\Users\Harry\UBDMF, Rust single binary, engine ported from bmdflash (byte-verified protocol: 0x31 begin/0x12 session lifecycle, 0x34→0x35 erase-context order, 0x39+0x35 write latch, arm-gated erase completion, ZLP terminator after each component).
+- GUI stack: **clay (Rust bindings) + raylib (rust bindings)** — same library + renderer pair as MISRC GUI. Hand-rolled widget layer; Qt6-style flat theme, dark/light toggle (theme.rs). No egui/eframe.
+- Index: UBDMF/firmware/index.json; entries {device, dv_version, kind: flashable|encrypted-inventory, path, components/inventory, sha256s, notes}; 12.9 flagged known-bad (UltraStudio 4K Mini). Catalog metadata (all non-SDK Desktop Video versions) cached from BMD's public API.
+- Harvest: `ubdmf update harvest [--from|--to|--all] [--no-zips]` — one unattended command: download → Authenticode verify (CN=Blackmagic Design Pty Ltd) → unzip → msiexec /a sandbox extract → firmware sha256 inventory → index entry; harvest-report.json; failures skip-and-report. Default: all ~70 Windows non-SDK releases (9.5.3→16.5). Local zips imported (12.8.1, 15.0, 16.0).
+- Verified facts: BMD catalog API (api/support/us/downloads.json + api/register/us/download/<id>, no registration) lists all versions with stable IDs (confirmed by live fetch this session); MSI admin extract proven on 16.0; dump has no image readback (protocol limitation) — dump = identity/state JSON, honestly.
+
+## Execution log
+- U1: cargo init (binary ubdmf), folders logs/docs/drivers/firmware created; protocol.rs + manifest.rs + tests + docs/protocol.md + drivers/ubdmf-winusb.inf ported from bmdflash (INF internals still say "bmdflyash/bmdflash" — cosmetic cleanup pending). New: logger.rs (file logs/ubdmf.log + ring buffer + terminal, idempotent init), main.rs (CLI: list/info/dump/flash/verify/reset; session-close 0x12 on info/dump/verify; dump → ubdmf-dump-<epoch>.json). Deps: nusb, anyhow, clap(derive), indicatif, log, serde(derive), serde_json, sha2.
+
+## Execution log (continued)
+- U1 (01:44): cargo init, protocol+manifest ported, logger (file+ring+terminal), CLI list/info/dump/flash/verify/reset. Fixed log crate alloc feature. Info-level filtering (nusb debug spam). CLI smoke: list finds UltraStudio 4K Mini. 6/6 tests, clippy clean.
+- U2 (01:50): index.rs (load/save/scan/rebuild), 12.8.1 + 16.0 bundles imported, index rebuild + list + show working. Fixed 3 borrow-checker issues (temporary lifetime, moved value). 8/8 tests.
+- U3 (02:00-02:41): downloader.rs (ureq 2.x, catalog fetch → signed URL → zip download), extract.rs (zip → msiexec /a → sha256 inventory). Wired update check/fetch/import. Fixed ureq 3→2 downgrade (API changes), zip 9.x name() Result, sha2 LowerHex. **16.5 proven end-to-end**: downloaded 568 MB, MSI extracted, but msiexec /a required ELEVATION (exit 1603 non-elevated, success elevated — 60 fw files, 251.9 MB). 11/11 tests.
+- U5 (03:06): harvest.ps1 written (self-elevating, unattended, all ~70 versions). **LAUNCHED** at 03:06 — elevated process running, 16.4 downloading (16.5 skipped). Expected: hours, ~25-35 GB. Report → firmware/installers/harvest-report.json.
+
+## Execution log (continued, 20-21 Nov)
+- U4 (GUI): Multiple iterations fixing raylib-rs API issues. Root cause of ~75 cascading errors: **Rust 2024 edition parses `as i32 <` as generic type args** — all casts parenthesized. Fixed Color struct literal, ureq 2.x API, variable shadowing. Final working GUI: 540×800 portrait, Arimo Bold font (bundled), 4 tabs with working flash workflow (worker thread + mpsc channel + progress bars with % readout). Responsive 3-column firmware list with measured text widths.
+- 16.5 firmware flash: Driver swap to BMD DesktopVideoUpdate, then ran the 16.5 updater (extracted from 16.5 zip). Tool found the device, flashed 0→100%, exit 0. Captures on all 3 hubs.
+- **DEVICE RECOVERY MILESTONE**: After 16.5 flash + power-cycle, the unit's **Thunderbolt controller came alive** — detected on a 2018 Mac Mini's TB bus (40 Gb/s, firmware 68.3, link controller 1.45.0). However: front panel display blank, not recognized by Desktop Video Setup or vrecord. Likely needs DV 16.5 installed on the Mac Mini for the driver to recognize the device. The TB controller being alive means the main boot firmware IS running — this is a separate subsystem from the main FPGA capture firmware.
+- U5 harvest restart (21 Nov 05:06): Relaunched tools/harvest.ps1 — 37 inventories (was 36), processing remaining ~41 versions.
+- U6: README.md written covering CLI, GUI, protocol summary, harvest, platform notes, building, and driver development notes.
+
+## Outcome
+- U1-U4 complete, U5 harvest RUNNING (38/78 versions inventoried as of this round), U6 README done. Remaining: harvest completion, final restore point, AI Notebook log copy.
+
+## Execution log (21 Nov ~06:38-06:50, live device list + integrated console)
+- User request: GUI must list actually live detected devices (not the hardcoded "UltraStudio 4K Mini") and show an integrated console readout instead of the external CMD popup.
+- **Live devices**:
+  - protocol.rs: new `DeviceEntry` struct + `list_bmd_entries()` — structured enumeration (product/serial strings, bus_id, device_address, port_chain, speed, and on Windows the bound driver name). Opens no handles, claims nothing — safe alongside a running flash worker.
+  - gui.rs: poller thread enumerates every 2s, reports only on device-set change via `Ev::Devices`; Devices tab reworked (live list, per-device detail line, WinUSB/BMD driver badge, empty-state hints with Zadig note); status bar shows real `● N devices`.
+  - Bug found by launch-test evidence (zero poller log lines): initial `last_sig = Vec::new()` compares equal to the empty-bus signature, so the first "no devices" state was never reported. Fixed with `Option<Vec<String>>` sentinel (None = never polled). Re-test: `device poll: no service-port devices on the bus` now logs immediately (device not connected to THE-RIPPER — matches CLI `list`).
+- **Integrated console / no CMD popup**:
+  - Cargo.toml: raylib `features = ["log"]` → builder `.log_to_rust()` bridges ALL raylib TraceLog into the `log` facade (target `raylib`), landing in the ring buffer + file + Log tab. Verified: `[raylib] SHADER/RLGL/FONT/...` lines in the log file from a live launch.
+  - logger.rs: stderr sink made non-panicking (`writeln!` result ignored — GUI-subsystem runs can have no console); raylib-target lines tagged `[raylib]` for readability.
+  - main.rs: `#![cfg_attr(all(windows, feature="gui"), windows_subsystem = "windows")]` — GUI builds allocate NO console at all. CLI invocations call `attach_parent_console()`: if stdio was inherited (terminal/pipe/file) it is left untouched; only NULL handles get AttachConsole(parent) + CONOUT$ reopen.
+  - **Pitfall found by hard-data testing**: calling AttachConsole unconditionally when the process inherited pipe handles CLOBBERS them — `ubdmf list` through the harness pipe produced zero output (exit 0). Fixed by checking GetStdHandle non-NULL BEFORE attaching; re-verified `--help`/`list` print correctly through pipes, and the PE subsystem byte is 2 (GUI).
+  - Bundled font now resolved relative to the repo root (firmware_root().parent()) — a TEMP-CWD launch previously fell back to Segoe (`Arimo-Bold.ttf Failed to open`); re-test shows `[C:\Users\Harry\UBDMF\assets/fonts/Arimo-Bold.ttf] File loaded successfully`.
+- Validation: GUI build ✓ (built last), CLI-only ✓, 11/11 tests both configs ✓, clippy clean both ✓, Linux zigbuild fresh (06:48:36Z) ✓, bare-exe launch from TEMP alive with title 'UBDMF' ✓, no console window possible (subsystem 2) ✓. README GUI section updated.
+- **Harvest incident (found at 06:52)**: the 05:06 relaunched harvest (PID 10000) was dead with NO harvest-report.json (script only writes it at the end) and NO new zips since 20 Nov 03:21 — it inventoried exactly one version, then sat "alive" but stalled for ~85 min, then died. Root cause identified from the script source: **none of its Invoke-RestMethod/Invoke-WebRequest calls had -TimeoutSec** — a dead TCP connection hangs the batch forever — and all output went to its (now gone) elevated console, so the stall point was untraceable. Disk 63.9 GB free, no orphaned msiexec.
+- **harvest.ps1 hardened**: Start-Transcript → tools/harvest-transcript.log (Append) for post-mortem visibility; -TimeoutSec 60 catalog / 120 register / 900 download; post-download existence check. Relaunched detached (self-elevated, one UAC) at ~06:55 — transcript confirms resume behavior: `[37/102] SKIP (inventory exists)` → `[38/102] DV 12.0 downloading...`. Note: catalog now lists 102 non-SDK Windows DV versions (not 78) — ~64 remain ≈ 20-35 GB; disk has headroom but is worth monitoring.
+- User smoke-check of the Devices tab with the unit connected + Log tab still pending (per session rules).
+
+## Execution log (21 Nov ~06:30, "exe does not run GUI when launched manually")
+- User report: the rebuilt exe doesn't open the GUI on manual launch. Hard-data diagnosis:
+  - Binary HAD the GUI compiled in (Arimo-Bold/gui panic strings present in the exe bytes, 6.2 MB, built 06:12Z) — not a stale CLI-only overwrite.
+  - Root cause: bare `ubdmf.exe` (no args) → clap requires a subcommand → prints help and exits. Manual/double-click launch = instant console flash, no GUI. The GUI needed the `gui` subcommand.
+  - Secondary bug waiting to bite: all paths were CWD-relative, so a double-clicked exe (CWD=target\release\) would show an empty firmware list and scatter logs.
+- Fixes:
+  - main.rs: no-args launch now opens the GUI directly when the `gui` feature is compiled in (CLI-only builds keep help-printing).
+  - index.rs `firmware_root()`: `UBDMF_FIRMWARE` env → `./firmware` if present → walk up from the exe (covers target/release → repo root, up to 5 levels) → CWD-relative fallback. All index/manifest/log/theme-conf consumers now CWD-independent.
+  - gui.rs: index load + flash-manifest resolution use `index::firmware_root()`; theme conf anchored beside it.
+  - logger.rs: log file anchored beside the resolved firmware root (`UBDMF_LOG` still overrides).
+- Verification (hard data): launched bare exe with CWD=%TEMP% — process alive 5s, MainWindowTitle='UBDMF', raylib 6.0/GFLW full init in stdout, NO stray logs\ in TEMP, repo log shows absolute path `C:\Users\Harry\UBDMF\logs\ubdmf.log`. Validation matrix re-run: GUI build ✓, CLI-only ✓, 11/11 tests both configs ✓, clippy clean both ✓, Linux zigbuild rebuilt (fresh 06:34:38Z) ✓. README updated (bare-run behavior + Paths section). **Pitfall for future rounds: `cargo build --release` and `--no-default-features` write the same target\release\ubdmf.exe — whichever ran last wins; always re-run the GUI build last and verify via the Arimo string check.**
+- User smoke-check of the window contents still pending (per session rules).
+
+## Execution log (21 Nov, clippy/GUI-optional/cross-compile round)
+- **gui.rs brace fix**: the collapsed detail-panel let-chain (gui.rs:373) had a leftover second closing brace from the old nested if-let (error: unexpected closing delimiter at gui.rs:531). Removed; block re-indented. GUI build compiles.
+- **downloader.rs**: test module still used pre-rename serde field names (`downloadId` etc.) in struct literals — updated to `download_id`/`release_id`/`download_title` (E0609/E0560).
+- **src/bin/gui_test.rs deleted**: early raylib smoke-test binary compiled raylib unconditionally and broke `--no-default-features` builds; superseded by the real GUI.
+- **zip crate trimmed** to `default-features = false, features = ["deflate"]` — drops zstd-sys/bzip2 C deps (BMD zips are deflate-only), leaving only `ring` needing a C cross compiler.
+- **Linux cross-compile actually verified for the first time** (the earlier "passing" claim was never built — plain `cargo build --target x86_64-unknown-linux-gnu` fails: no cross gcc, no WSL, no package managers on the box):
+  - zig 0.15.2 unzipped to `C:\Users\Harry\tools\zig-x86_64-windows-0.15.2` (also 0.14.1/0.17.1 downloaded while isolating the failure; 0.15.2 kept on PATH).
+  - Root causes found by direct experiment: (1) zig cannot parse the 4-field rust triple cc-rs injects (`--target=x86_64-unknown-linux-gnu` → "unable to parse target query ... UnknownOperatingSystem" on zig 0.14/0.15/0.17 alike); (2) cc-rs always appends its own --target on top of any -target in CC, so manual `CC='zig cc -target x86_64-linux-gnu.2.17'` can never work.
+  - Solution: `cargo install cargo-zigbuild` (0.24.1) + zig on PATH; `cargo zigbuild --release --no-default-features --target x86_64-unknown-linux-gnu` — its generated wrapper .bat handles the flag translation. **Pitfall**: stale `CC_x86_64_unknown_linux_gnu`/`AR_...`/`CARGO_TARGET_..._LINKER` env vars in the persistent pwsh session silently override zigbuild's wrappers (it only sets missing vars) — clear them first.
+  - Output verified from raw header bytes: ELF magic 7F 45 4C 46, class 02 (64-bit), data 01 (LSB), e_machine 0x003E (x86-64), 3.7 MB, glibc 2.17 default target.
+- **Validation matrix (all hard-verified)**: GUI build ✓, CLI-only build ✓, cargo test 11/11 (both configs) ✓, clippy --all-targets clean (both configs) ✓, Linux ELF ✓. README Building section rewritten with the real procedure.
+- Harvest still running (PID 10000, elevated): 38 dv-* inventory dirs.

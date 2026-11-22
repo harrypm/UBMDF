@@ -1,0 +1,53 @@
+; bmdflash — WinUSB driver binding for the Blackmagic service port
+; (USB VID_1EDB PID_BE13, e.g. UltraStudio 4K Mini service port)
+;
+; NOTE: this INF is not catalog-signed. Windows 11 x64 may refuse it via pnputil.
+; Fallbacks: use Zadig (select the service-port device, target driver WinUSB),
+; or test-signing mode. Blackmagic's own driver can be restored with:
+;   pnputil /add-driver "C:\Program Files\Blackmagic Design\Blackmagic Desktop Video\Drivers\Update\DesktopVideoUpdate.inf" /install
+
+[Version]
+Signature           = "$WINDOWS NT$"
+Class               = USBDevice
+ClassGuid           = {88BAE392-5A5D-49E8-B52B-9E5E8CE6161F}
+Provider            = %ProviderName%
+DriverVer           = 11/19/2026, 26.11.19.1
+CatalogFile         = bmdflash-winusb.cat
+
+[DestinationDirs]
+DefaultDestDir = 13
+
+[Manufacturer]
+%ProviderName% = Standard, NTamd64, NTarm64
+
+[Standard.NTamd64]
+%DeviceName% = USB_Install, USB\VID_1EDB&PID_BE13
+
+[Standard.NTarm64]
+%DeviceName% = USB_Install, USB\VID_1EDB&PID_BE13
+
+[USB_Install]
+Include   = WINUSB.INF
+Needs     = WINUSB.NT
+
+[USB_Install.Services]
+Include    = WINUSB.INF
+AddService = WinUSB, 0x00000002, WinUSB_ServiceInstall
+
+[WinUSB_ServiceInstall]
+DisplayName   = %WinUSB_SvcDesc%
+ServiceType   = 1
+StartType     = 3
+ErrorControl  = 1
+ServiceBinary = %12%\WinUSB.sys
+
+[USB_Install.Wdf]
+KmdfService = WINUSB, WINUSB_Install
+
+[WINUSB_Install]
+KmdfLibraryVersion = 1.11
+
+[Strings]
+ProviderName   = "bmdflash"
+DeviceName     = "Blackmagic Service Port (WinUSB - bmdflash)"
+WinUSB_SvcDesc = "WinUSB Driver"

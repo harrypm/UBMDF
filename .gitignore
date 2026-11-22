@@ -1,0 +1,8 @@
+/target
+# Firmware payload: installers, extracts, inventories (~30+ GB, regenerable
+# via tools/harvest.ps1; the index itself is rebuilt from disk)
+/firmware
+# Runtime state
+/logs/ubdmf.log
+/ubdmf-gui.conf
+/tools/harvest-transcript.log
