@@ -465,7 +465,7 @@ where
             });
             text(ui, ar.s(format!("{} · {}", b.device, b.stats)), BODY, th.text_dim);
             if let Some(n) = &b.notes {
-                wrapped(ui, n, SMALL, if b.kind == Kind::Legacy { th.warn } else { th.text_dim });
+                wrapped(ui, n, SMALL, if b.kind == Kind::Legacy || b.caution { th.warn } else { th.text_dim });
             }
             if !b.source.is_empty() {
                 wrapped(ui, &b.source, SMALL, th.text_dim);
@@ -816,10 +816,17 @@ where
     let th = cx.th;
     let Some(c) = &app.confirm else { return };
     let (title, body, warn, yes): (&'r str, &'r str, &'r str, &'r str) = match c {
-        Confirm::Flash { title, device, .. } => (
+        Confirm::Flash { title, device, caution, .. } => (
             "Flash firmware?",
             ar.s(format!("{title} will be written to the connected {device} over the USB service port.")),
-            "This ERASES and REWRITES the device firmware. Keep the device powered and connected until it finishes.",
+            match caution {
+                Some(note) => ar.s(format!(
+                    "This ERASES and REWRITES the device firmware. Keep the device powered and connected until it finishes.
+
+Caution: {note}"
+                )),
+                None => "This ERASES and REWRITES the device firmware. Keep the device powered and connected until it finishes.",
+            },
             "Flash",
         ),
         Confirm::Reset => (

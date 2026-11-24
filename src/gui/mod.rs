@@ -43,7 +43,7 @@ pub enum Level {
 }
 
 pub enum Confirm {
-    Flash { title: String, device: String, manifest: PathBuf },
+    Flash { title: String, device: String, manifest: PathBuf, caution: Option<String> },
     Reset,
 }
 
@@ -290,6 +290,7 @@ impl App {
                         title: b.title.clone(),
                         device: b.device.clone(),
                         manifest: m.clone(),
+                        caution: if b.caution { b.notes.clone() } else { None },
                     });
                 }
             }
@@ -659,10 +660,14 @@ pub fn run_gui(opts: Opts) -> anyhow::Result<()> {
             spawn_flash(path, tx.clone());
         } else {
             // Name the image from its manifest; fall back to the file path.
-            let title = crate::manifest::Manifest::load(&path)
-                .map(|(m, _)| m.image.name)
-                .unwrap_or_else(|_| path.display().to_string());
-            app.confirm = Some(Confirm::Flash { title, device: "device".into(), manifest: path });
+            let (title, caution) = match crate::manifest::Manifest::load(&path) {
+                Ok((m, _)) => {
+                    let caution = m.image.notes.filter(|n| n.contains("NOT yet flashed"));
+                    (m.image.name, caution)
+                }
+                Err(_) => (path.display().to_string(), None),
+            };
+            app.confirm = Some(Confirm::Flash { title, device: "device".into(), manifest: path, caution });
         }
     }
 

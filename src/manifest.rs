@@ -16,6 +16,10 @@ pub struct Manifest {
 pub struct ImageMeta {
     pub name: String,
     pub source: String,
+    /// Provenance / verification status shown in the index and GUI
+    /// (e.g. "derived from installer, not yet flashed on hardware").
+    #[serde(default)]
+    pub notes: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]

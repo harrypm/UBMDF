@@ -115,3 +115,13 @@
 - Result: 14/14 OK, 0 failed (62–69 images, 179–226 MB per version, ≈ 2.8 GB total; C: 26.5 → 23.8 GB free).
 - index.rs: detects resources.csv → note "updater-embedded layout …" (the separator-based legacy check no longer misfires on `CheckVersionPCI-rcdata/` paths). GUI: Kind::Plaintext → "Plaintext images" badge + Show images button.
 - Verified: index rebuild = 104 bundles (14 updater-embedded, 46 legacy, 2 flashable); clippy clean both configs; tests 13/11; GUI built last; screenshot v6-plaintext (11.4.1 detail) ✓. Not committed yet.
+
+## Execution log (24 Nov 2026, "commit and continue" — device mapping)
+- Committed 021eb1e (updater extraction). 12.1 sandbox left (user didn't answer that question).
+- **Hash hit**: `rc-202` in 11.3/11.4/11.4.1 is byte-identical (sha256) to the verified 4K Mini component_B (12.8.1 + 16.0).
+- **IDCODE match** (new tools/bitstream_info.py): component_A 12.8.1 + 16.0 → IDCODE 03824093, sync@112. 11.3–11.4.1 `rc-200` has the same IDCODE, sync@112 and exact size 9,491,428 → only 153 bytes differ from 12.8.1 component_A (header bytes 4–7 = build stamp, rest scattered words).
+- History: 4K Mini resources first appear in 10.11.4; 10.11.4–11.2 have a different pair (rc-200 2,161,946 B / rc-202 1,375,860 B) → "probable", not bundled (layout unproven). The images are identical within each group.
+- Bundle `firmware/ultrastudio4kmini/dv-11.4.1` built with new tools/make_rcdata_bundle.py (geometry from 12.8.1, refuses if larger than the proven region / mismatched across --also versions / existing dir). `ubdmf verify` → both components sha256 OK.
+- Manifest gets optional `image.notes` → index notes → GUI amber note + caution text in the Flash dialog; CLI flash prints Notes. "NOT yet flashed on hardware" stated everywhere.
+- docs/firmware-map.md: 4K Mini map + IDCODE family table for 11.4.1.
+- Verified: clippy clean both configs, tests 13/11, GUI built last, index 105 bundles (3 flashable), screenshots v7-bundle / v7-dialog ✓. **Not flashed** — needs user decision + unit on WinUSB.

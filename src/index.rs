@@ -223,7 +223,7 @@ fn scan_flashable(root: &Path, bundles: &mut Vec<BundleEntry>) -> Result<()> {
                 notes: if is_known_bad {
                     Some("KNOWN-BAD for UltraStudio 4K Mini: this version bricked multiple units (see forum t=199366)".to_string())
                 } else {
-                    None
+                    manifest.image.notes.clone()
                 },
             });
         }

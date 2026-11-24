@@ -488,6 +488,9 @@ fn cmd_flash(manifest: &Path, yes: bool, dry_run: bool) -> Result<()> {
 
     println!("Image: {}", m.image.name);
     println!("Source: {}", m.image.source);
+    if let Some(n) = &m.image.notes {
+        println!("Notes:  {n}");
+    }
     let total: u64 = specs.iter().map(|s| s.data.len() as u64).sum();
     for (i, s) in specs.iter().enumerate() {
         println!(

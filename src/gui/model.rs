@@ -44,6 +44,9 @@ pub struct Bundle {
     /// Folder of plaintext images (Plaintext kind only).
     pub images_dir: Option<PathBuf>,
     pub notes: Option<String>,
+    /// Flashable image derived from an installer and not yet flashed on
+    /// hardware, or a known-bad version: shown as a warning everywhere.
+    pub caution: bool,
     pub stats: String,
     pub source: String,
 }
@@ -149,6 +152,7 @@ pub fn load_bundles() -> (Vec<Bundle>, Option<String>) {
                 images_dir: (kind == Kind::Plaintext).then(|| {
                     resolve(&format!("installers/dv-{}-extract/Firmware/CheckVersionPCI-rcdata", b.dv_version))
                 }),
+                caution: b.notes.as_deref().is_some_and(|n| n.contains("NOT yet flashed") || n.contains("KNOWN-BAD")),
                 notes: b.notes.clone(),
                 stats,
                 source,
