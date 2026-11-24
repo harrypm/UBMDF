@@ -75,6 +75,27 @@ GitHub Actions (`.github/workflows/build.yml`) builds and tests every push:
 
 Pushing a `v*` tag publishes the three as a GitHub release.
 
+### Bundled firmware
+Release builds (`--features bundled-firmware`) carry every flashable bundle inside the binary: 43 UltraStudio 4K Mini versions over 4 distinct images, 13 MB packed. On first run any bundle missing from the firmware folder is unpacked, sha256-checked and indexed. Bundles already present are left alone.
+
+### Raw firmware data via Git LFS (Linux / macOS / Windows)
+The repo tracks the whole extracted firmware tree. Binaries are in Git LFS, which stores each unique file once: 1.65 GB for 10.3 GB of extracted data. Installer zips (27 GB) are not tracked; they can be re-downloaded from Blackmagic's catalog.
+
+```
+git clone https://github.com/harrypm/UBDMF.git && cd UBDMF   # pointers only, fast
+git lfs pull --include="firmware/*/dv-*/**" --exclude="firmware/installers/**"   # flashable bundles (~30 MB)
+git lfs pull --include="firmware/installers/**"                                  # all raw extracted data (~1.65 GB)
+ubdmf index rebuild
+```
+
+Every extracted file is already in the repo, so Linux and macOS need no msiexec or Windows step:
+
+- `tools/datar.py` unpacks the `data-rNN.bin` containers;
+- `tools/bitstream_info.py` identifies FPGA images;
+- `tools/make_datar_bundles.py` rebuilds the flashable bundles.
+
+All three are pure Python 3.
+
 ### Where UBDMF keeps its data
 UBDMF looks for a `firmware/` folder in this order:
 

@@ -1,7 +1,13 @@
 /target
 # Firmware payload: installers, extracts, inventories (~30+ GB, regenerable
 # via tools/harvest.ps1; the index itself is rebuilt from disk)
-/firmware
+# Firmware: flashable bundles + raw extracted installer data are tracked
+# (binaries via Git LFS, see .gitattributes). Excluded: installer zips
+# (27 GB, re-downloadable from Blackmagic's catalog) and msiexec leftovers.
+/firmware/installers/*.zip
+/firmware/installers/*-full/
+/firmware/installers/**/sandbox/
+/firmware/installers/**/*.msi
 # Runtime state
 /logs/ubdmf.log
 /ubdmf-gui.conf

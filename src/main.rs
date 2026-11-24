@@ -7,6 +7,8 @@
 // from a terminal re-attach the parent console in main() so output still works.
 #![cfg_attr(all(windows, feature = "gui"), windows_subsystem = "windows")]
 
+#[cfg(feature = "bundled-firmware")]
+mod bundled;
 mod downloader;
 mod extract;
 #[cfg(feature = "gui")]
@@ -131,6 +133,10 @@ fn main() {
         }
     }
     logger::init();
+    #[cfg(feature = "bundled-firmware")]
+    if let Err(e) = bundled::install_missing() {
+        log::warn!("bundled firmware not installed: {e:#}");
+    }
     // Bare launch (no arguments) → open the GUI when it is compiled in.
     // Matches desktop expectations when the exe is double-clicked or run bare;
     // CLI-only builds keep the clap help-printing behavior.

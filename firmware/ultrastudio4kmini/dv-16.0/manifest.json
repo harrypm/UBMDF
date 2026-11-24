@@ -1,0 +1,25 @@
+{
+  "image": {
+    "name": "UltraStudio 4K Mini - Desktop Video 16.0",
+    "source": "extracted from C:\\Users\\Harry\\bmdflash\\captures\\flash16_pass2_USBPcap3.pcap by tools/extract-from-capture.ps1",
+    "protocol": "docs/protocol.md"
+  },
+  "components": [
+    {
+      "file": "component_A.bin",
+      "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+      "bytes": 9399532,
+      "region_block_addr": 0,
+      "block_count": 144,
+      "write_addr": 0
+    },
+    {
+      "file": "component_B.bin",
+      "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+      "bytes": 1928120,
+      "region_block_addr": 192,
+      "block_count": 30,
+      "write_addr": 12582912
+    }
+  ]
+}

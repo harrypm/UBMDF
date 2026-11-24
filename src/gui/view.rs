@@ -532,18 +532,23 @@ where
             if let Some(s) = &e.serial {
                 text(ui, ar.s(format!("Serial  {s}")), BODY, th.text_dim);
             }
-            let mut usb = format!("USB  bus {} · address {}", e.bus_id, e.address);
+            // Address / port / speed on one wrapping line; the bus id on its
+            // own line. Windows bus ids are long hub paths with no spaces
+            // ("PCIROOT(0)#PCI(0102)#…"), so the '#' separators become
+            // breakable " › " to keep the text inside the card.
+            let mut usb = format!("USB address {}", e.address);
             if !e.port_chain.is_empty() {
                 let chain: Vec<String> = e.port_chain.iter().map(|p| p.to_string()).collect();
                 usb.push_str(&format!(" · port {}", chain.join(".")));
             }
             if let Some(sp) = &e.speed {
-                usb.push_str(&format!(" · {sp}"));
+                usb.push_str(&format!(" · {sp} speed"));
             }
-            text(ui, ar.s(usb), BODY, th.text_dim);
+            wrapped(ui, ar.s(usb), BODY, th.text_dim);
+            wrapped(ui, ar.s(format!("Bus  {}", e.bus_id.replace('#', " › "))), SMALL, th.text_dim);
             match &e.driver {
                 Some(drv) if drv.to_ascii_lowercase().contains("winusb") => {
-                    text(ui, ar.s(format!("Driver  {drv} — ready to flash")), BODY, th.ok)
+                    wrapped(ui, ar.s(format!("Driver  {drv} — ready to flash")), BODY, th.ok)
                 }
                 Some(drv) => wrapped(ui, ar.s(format!("Driver  {drv} — swap to WinUSB with Zadig to flash")), BODY, th.warn),
                 None if cfg!(windows) => text(ui, "Driver  unknown", BODY, th.text_dim),

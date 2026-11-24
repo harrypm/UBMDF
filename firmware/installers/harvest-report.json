@@ -1,0 +1,520 @@
+{
+  "processed": 102,
+  "skipped": 55,
+  "succeeded": 47,
+  "results": [
+    {
+      "version": "16.5",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "16.4",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "16.3",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "16.2",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "16.1",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "16.0.1",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "16.0",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "15.3.1",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "15.3",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "15.2",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "15.1",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "15.0",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "14.5",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "14.4.1",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "14.4",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "14.3",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "14.2.1",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "14.2",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "14.1",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "14.0.1",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "14.0",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "12.9",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "12.8.1",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "12.8",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "12.7.1",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "12.7",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "12.6",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "12.5.1",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "12.5",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "12.4.2",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "12.4.1",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "12.4",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "12.3.1",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "12.3",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "12.2.2",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "12.2",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "12.1",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "12.0",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "11.7",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "11.6",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "11.5.1",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "11.5",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "11.4.1",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "11.4",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "11.3",
+      "status": "ok",
+      "reason": "1 files, 0 MB"
+    },
+    {
+      "version": "11.2",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "11.1",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "11.0",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "10.11.4",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "10.11.2",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "10.11.1",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "10.11",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "10.10",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "10.9.12",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "10.9.11",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "10.9.10",
+      "status": "skipped",
+      "reason": "inventory exists"
+    },
+    {
+      "version": "10.9.7",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 124 files, 539.6 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.9.5",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 124 files, 539.6 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.9.4",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 124 files, 543.7 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.9.3",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 124 files, 543.7 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.9",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 133 files, 508.8 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.8.6",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 133 files, 509.6 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.8.5",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 133 files, 501 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.8.3",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 129 files, 492.9 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.8.2",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 129 files, 492.9 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.8.1",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 129 files, 492.1 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.8",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 129 files, 465.4 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.7.1",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 125 files, 442.4 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.7",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 125 files, 442.4 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.6.8",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 125 files, 440.9 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.6.7",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 125 files, 441 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.6.6",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 125 files, 440.5 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.6.5",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 125 files, 440.3 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.6.4",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 125 files, 440 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.6.2",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 125 files, 433.6 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.6.1",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 125 files, 433.6 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.6",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 124 files, 425.7 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.5.4",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 124 files, 425.5 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.5.3",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 124 files, 403.7 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.5.2",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 123 files, 378.8 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.5",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 123 files, 377.8 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.4.3",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 123 files, 295.9 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.4.2",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 123 files, 295.7 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.4.1",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 123 files, 282.3 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.4",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 122 files, 268.8 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.3.7",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 103 files, 256.4 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.3.5",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 103 files, 249.7 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.3.4",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 103 files, 249.8 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.3.2",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 165 files, 286.2 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.3.1",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 165 files, 286 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.3",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 165 files, 285.9 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.2.3",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 167 files, 261.9 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.2.2",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 167 files, 261.9 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.2.1",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 167 files, 261.7 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.2",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 167 files, 261.7 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.1.4",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 167 files, 261.7 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.1.2",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 170 files, 264.2 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "10.1.1",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 170 files, 264.2 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "9.8",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 169 files, 256.6 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "9.7.3",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 161 files, 226 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "9.6.4",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 159 files, 204 MB (no Firmware dir; firmware in drivers)"
+    },
+    {
+      "version": "9.5.3",
+      "status": "ok-legacy",
+      "reason": "legacy payload: 165 files, 224.1 MB (no Firmware dir; firmware in drivers)"
+    }
+  ],
+  "total_versions": 102,
+  "failed": 0,
+  "started": "2026-11-22 02:05:21"
+}

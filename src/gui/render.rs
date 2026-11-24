@@ -39,7 +39,7 @@ impl Fonts {
         const BOLD: &[u8] = include_bytes!("../../assets/fonts/Arimo-Bold.ttf");
         let mut glyphs: String = (32u8..127).map(|b| b as char).collect();
         glyphs.extend((0xA0u32..=0xFF).filter_map(char::from_u32));
-        glyphs.push_str("…—–→←↑↓•·×±µ‘’“”");
+        glyphs.push_str("…—–→←↑↓•·×±µ‘’“”‹›");
 
         let mut owned = Vec::new();
         for &(bold, px) in STYLES.iter() {

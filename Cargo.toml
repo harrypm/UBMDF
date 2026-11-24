@@ -6,6 +6,8 @@ edition = "2024"
 [features]
 default = ["gui"]
 gui = ["raylib", "clay-layout"]
+# Embed every flashable bundle (needs the LFS images checked out); release builds enable it.
+bundled-firmware = []
 
 [dependencies]
 anyhow = "1.0.104"
@@ -23,3 +25,5 @@ indicatif = "0.18.6"
 
 [build-dependencies]
 winresource = "0.1"
+sha2 = "0.11.1"
+zip = { version = "9.8.0", default-features = false, features = ["deflate"] }

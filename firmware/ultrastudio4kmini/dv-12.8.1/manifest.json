@@ -1,0 +1,25 @@
+{
+  "image": {
+    "name": "UltraStudio 4K Mini - Desktop Video 12.8.1",
+    "source": "captured from official DesktopVideoUpdateTool.exe 12.8.1 service-port flash, 2026-11-19 (flash_run_USBPcap3.pcap)",
+    "protocol": "docs/protocol.md"
+  },
+  "components": [
+    {
+      "file": "component_A.bin",
+      "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+      "bytes": 9491428,
+      "region_block_addr": 0,
+      "block_count": 145,
+      "write_addr": 0
+    },
+    {
+      "file": "component_B.bin",
+      "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+      "bytes": 1928120,
+      "region_block_addr": 192,
+      "block_count": 30,
+      "write_addr": 12582912
+    }
+  ]
+}

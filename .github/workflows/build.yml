@@ -5,6 +5,8 @@ name: build
 #   Linux    -> UBDMF-x86_64.AppImage  (built on Ubuntu 22.04 for an older glibc baseline)
 #   macOS    -> UBDMF-macos-universal.zip (UBDMF.app, arm64 + x86_64 lipo'd)
 # Every job runs the tests and a CLI smoke test of the built binary.
+# Release builds embed every flashable bundle (feature bundled-firmware); only
+# those images (~30 MB) are fetched from Git LFS, cached between runs.
 # Tag a commit "v*" to also publish the artifacts as a GitHub release.
 
 on:
@@ -22,12 +24,22 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+      - name: List bundled-firmware LFS objects
+        shell: bash
+        run: git lfs ls-files -l -I "firmware/*/dv-*/**" -X "firmware/installers/**" | cut -d' ' -f1 | sort > .lfs-bundle-oids
+      - uses: actions/cache@v4
+        with:
+          path: .git/lfs
+          key: lfs-bundles-${{ hashFiles('.lfs-bundle-oids') }}
+      - name: Fetch bundled-firmware images (Git LFS, ~30 MB)
+        shell: bash
+        run: git lfs pull --include="firmware/*/dv-*/**" --exclude="firmware/installers/**"
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
       - name: Test
-        run: cargo test --release
+        run: cargo test --release --features bundled-firmware
       - name: Build (GUI)
-        run: cargo build --release
+        run: cargo build --release --features bundled-firmware
       - name: Smoke test
         shell: bash
         run: |
@@ -47,6 +59,16 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+      - name: List bundled-firmware LFS objects
+        shell: bash
+        run: git lfs ls-files -l -I "firmware/*/dv-*/**" -X "firmware/installers/**" | cut -d' ' -f1 | sort > .lfs-bundle-oids
+      - uses: actions/cache@v4
+        with:
+          path: .git/lfs
+          key: lfs-bundles-${{ hashFiles('.lfs-bundle-oids') }}
+      - name: Fetch bundled-firmware images (Git LFS, ~30 MB)
+        shell: bash
+        run: git lfs pull --include="firmware/*/dv-*/**" --exclude="firmware/installers/**"
       - name: System libraries (raylib / GLFW)
         run: |
           sudo apt-get update
@@ -57,9 +79,9 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
       - name: Test
-        run: cargo test --release
+        run: cargo test --release --features bundled-firmware
       - name: Build (GUI)
-        run: cargo build --release
+        run: cargo build --release --features bundled-firmware
       - name: Smoke test
         run: |
           ./target/release/ubdmf --version
@@ -95,21 +117,31 @@ jobs:
           path: UBDMF-x86_64.AppImage
 
   macos:
-    runs-on: macos-14
+    runs-on: macos-15
     env:
       MACOSX_DEPLOYMENT_TARGET: "11.0"
     steps:
       - uses: actions/checkout@v4
+      - name: List bundled-firmware LFS objects
+        shell: bash
+        run: git lfs ls-files -l -I "firmware/*/dv-*/**" -X "firmware/installers/**" | cut -d' ' -f1 | sort > .lfs-bundle-oids
+      - uses: actions/cache@v4
+        with:
+          path: .git/lfs
+          key: lfs-bundles-${{ hashFiles('.lfs-bundle-oids') }}
+      - name: Fetch bundled-firmware images (Git LFS, ~30 MB)
+        shell: bash
+        run: git lfs pull --include="firmware/*/dv-*/**" --exclude="firmware/installers/**"
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: aarch64-apple-darwin, x86_64-apple-darwin
       - uses: Swatinem/rust-cache@v2
       - name: Test (native arm64)
-        run: cargo test --release
+        run: cargo test --release --features bundled-firmware
       - name: Build arm64
-        run: cargo build --release --target aarch64-apple-darwin
+        run: cargo build --release --features bundled-firmware --target aarch64-apple-darwin
       - name: Build x86_64
-        run: cargo build --release --target x86_64-apple-darwin
+        run: cargo build --release --features bundled-firmware --target x86_64-apple-darwin
       - name: Universal binary
         run: |
           mkdir -p out

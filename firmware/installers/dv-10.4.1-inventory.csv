@@ -1,0 +1,124 @@
+version,file,bytes,sha256
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Avid Support\OpenIO_Blackmagic.acf,171008,0cf64be4ef6a30ef550b53bf738f4b5ff8437c56d2579cb5675efe6c71b932dc
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Blackmagic LiveKey.exe,86528,3c41e02e887b056ebd524fd4f3b7a9bc9d124b7d8a4034aa963bb1755ebaba23
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Blackmagic LiveKey.visualelementsmanifest.xml,212,ae165332d56d5a4f6dc3a90ee0d1c741e62b185ac6cd60407ce68ad48f354fe9
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\BlackmagicCodec.qtx,741888,b08583e356de1057ec778a073a376ffd3cc33946c19d5f161cdbf6e799e32a40
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\BlackmagicDesktopVideoUtility.exe,3739136,232a59c4f4c33cfda589b07c61c767566116a4ef1584fef16264e730ff4fefa9
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\BlackmagicDesktopVideoUtility.visualelementsmanifest.xml,207,7000e2005d8a038fdf61de164db060ac6e7071fc854d99d1ba8571d661a96ca7
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\BMDCodecLib.dll,534016,f10e8109430382bf660a1c99b37be1c593ffaf3e7a6cc331d9778130750f2255
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\BMDCodecLib64.dll,650752,10519becf5be1d37f30715baa0a2a47e07e662878af28307e10371171c0d6c02
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\BMDCodecMJPG.dll,495616,d5837d5215d609b6c7cbb3e4f6395ee256280e8698998d337e6e08104e6115a9
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\BMDCodecMJPG64.dll,630272,7dfe3bfde07be6f8484fc7f72652cbc831b8c9290019a58f9f5307df1f9e0af7
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\BMDStreamingAPI.dll,233472,2a7a8be4bac7523d4d659f0f75c8b0fa9d849b7ed4112bee28bf183d8bd23acb
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\BMDStreamingServer.exe,995840,fbeefd5b6c26963f191ef83501cf48c70fbc806f7f7458632e5fefb21b23f8ab
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\CheckVersionPCI.exe,58914096,1478901e6ff95180cbc803e583e7b1de4144b54bf688245767b918220c4ddee3
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\CheckVersionPCI64Helper.exe,80384,ac1147d9765de55d42a779f35f34aaa2c2535f365b23032ce957855a78497033
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\DeckInst64.exe,269824,645f0054d1b8c739f6240f718d82cdfd7ee6ac82ad7de5ee98111b1d390ebbd4
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\DeckLink Audio.dll,45568,11db776f9a8626f9939ccea92fb897aadac65c076883d810f311940fdebaaec2
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\DeckLink Audio64.dll,56832,0eb0e34d7e8f1a9555c533cef5101286bf2dc02bbada773ff2fd0d082866eb39
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Decklink.dll,3739136,31591cf9ac2383ea00879c0393ada307e6bdc607fc3dbf6e67db933a1585a4da
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Decklink64.dll,1538560,eb7e4fdacaee672c7ebfc065f1503b77ec63ed0d61381bec43a737711db88e5f
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\DeckLinkAPI.dll,2412032,b1674e9deebfa04d091dd6aaf669e86d74a7c36f71beb3458abd6c131d4ad5c0
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\DeckLinkAPI64.dll,2454528,669f8e702d6905ada66ecaa8667610c931df891ea80188718dac0fcddeae5ddd
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\DeckLinkAvStreamPlugIn32.ax,140288,05ac7363678d9305b6a45588e192bfa8b913df764ea0a3074396c2071321aaae
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\DeckLinkAvStreamPlugIn64.ax,171008,55d2987ae349b917fa1d0273f5f993c9b4138d0c6078009821c3584d321f7f11
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Desktop Video Manual.pdf,20240353,a4e8d38d472c3641df62c32a853badbc4613d3b8a965fd183de9c99c73fdf0a5
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\DesktopVideoHelper.exe,25600,769b58870ed8dd9ba082439e43ed2cacfc3edd5412511cc1e2bcfe119c7ed55c
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\dlpw.exe,81216,395aa59d7add09ca14a83bfa94c75ef5dccb485ef9ee5de3dfc53a989da95aeb
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\dlpw64.exe,94528,36b6c4aa96b1374397b79309d645908a163110328cc8bf53decf165425e9ce16
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\dmobmd.dll,630272,8190bacd145aaac6d28f7b87745ca1ff1512d6ede37f7465897120c3761b5964
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\BlackmagicIO\blackmagicIO.cat,10812,39485e28a1691e119ebd60f0d639b072dd8834d896b7b61841e8917db62345ac
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\BlackmagicIO\blackmagicIO.inf,2735,14fb851f266605e1db98f43ecda23a9a5f1d346e94eb7af39ecc484d9d812523
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\BlackmagicIO\blackmagicIO.sys,182784,62a5fd5d0ba0c71f5962c00028e75fbef1c0259f43ddb251448831381ed5b3b0
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\BlackmagicUsbIO\BlackmagicUsbIO.cat,10500,632c947cb9d5b7d38348bb4b2180d1c4ba41a1c0c6d5f4201fef0a8f92ad85b7
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\BlackmagicUsbIO\BlackmagicUsbIO.inf,2285,15fa5f3bd85bc47a44e96ca1450167de9c61199a16fbd80456476d288bfe9f38
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\BlackmagicUsbIO\BlackmagicUsbIO.sys,179200,63bbcbebaad1bb4ea43ac9edbb6594f7c1fd1a351fbf04a0bf53a4a9886e8b05
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\DeckLink\decklink.cat,13396,52fa2fe8fdc203ca521cfa553bc75de1dc0f940d8b4de18687a004d05cedfa80
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\DeckLink\DeckLink.inf,4789,a186f08452c54dc8ca2c834be74b87d447547a35a71366069f28a80f82cd19f7
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\DeckLink\decklink.sys,2433536,75ad2017bf52eaec2cea4d93631a64bf72a361c22e2a019586c7e98128d9710f
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\DeckLinkAudio\deckaud.cat,10144,0381bcf41e8e44026f547e4ecc65d160eb7d2876d8d61c592bc1ac03c027707b
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\DeckLinkAudio\deckaud.inf,3794,073b3673eea90bbbab172aebe4649480d2085aa54f34519eeb8711e0af32bee6
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\DeckLinkAudio\deckaud.sys,20992,31d1c001e33b92c98f9abb06f724935cf70a658c26d7a205a5b1cbb856647f60
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\DeckLinkAVS\deckavs.cat,10138,f3f3c38f53cc04671d4e40899085f018d288cd1da76846c659fa9ecc8b7ae98a
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\DeckLinkAVS\deckavs.inf,25146,893247f027bc466d75d6b22611ef4bd2647cab43e91beb0d98a2924bfc3ad884
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\DeckLinkAVS\deckavs.sys,55808,4964c736d1199c73ecae53132d297a3a24186ed1ab638e21e197998c86d08dce
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\DeckLinkSerial\deckser.cat,10128,4da3a16ea4bec92e68e9992a7519fd39fb2a3b50471a010d95999705bf598f33
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\DeckLinkSerial\deckser.inf,1346,3cc0e07fc28c0bb30cad802c22d98d147e3740828428088936bdb9968fe20c3f
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\DeckLinkSerial\deckser.sys,26624,3f64876710d40bc62acff62384751d75dc973bb8f0adc16f4991a5d30a0a997e
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\Multibridge\multibridge.cat,10724,803cd1f10a19f498da56a54ae66b945ae73db6571da220f3fa965fcbd366dcc0
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\Multibridge\multibridge.inf,2783,75a77f9491dab04edf0ac5372c003e3f3cf6c90e72eb1bf5bda338f6a4e39bf9
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\Multibridge\multibridge.sys,71680,7a577c7c132936fa6afb12fbe8031431694de21453a825bef1eb2c6fe3078b8d
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\Streaming\BlackmagicStreaming.cat,10316,b59db7595b56477f23c459e828383578881776c666118f63d1c8b8e085638b28
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\Streaming\BlackmagicStreaming.inf,1627,160fdd846dd8ffba31c7f80322cc858db3ac675f549b21e32534b22d8fe0abe6
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Drivers\Streaming\BlackmagicStreaming.sys,15872,300b1e35c932b35add479e08f30a5a2c3063d33a16d501586036c410a03389f7
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\H.264 Pro Recorder Manual.pdf,5135625,6b886d76c033df3411da469dfa6b24d110b82af437e4ad0975c155ab52810b65
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\License.rtf,6639,3564c719c4a4b6662626924e4d61011e45bdba217468858ef651d6cef21df861
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Multibridge Utility.exe,14309376,4fffa1193dbd3136a0356d5d274221a335042d21f562063492b4323ce643867e
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Multibridge Utility.visualelementsmanifest.xml,211,e660c058d550f79c2ebdfea4b980b64e507e4fb5579938e4889a83e453079e68
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Photoshop Support\DeckLink.8bp,57344,c508025e86052aa09b4616e6bbb0f2ea26fb83aad68ca08ec58db05f40cf9d4b
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Photoshop Support\DeckLink64.8bp,65536,deabb02f946fb679779147a22047f2961fb6a17f589110739d59a739b7eb9d59
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\plugins\accessible\qtaccessiblewidgets.dll,119296,18dd0f79b7af3910a9a4c8ba1a86ac4a3f73c690a0881d79eec8bf5f0ade2ff2
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\plugins\imageformats\qgif.dll,23552,92c8fa882dbb34c91dfe536e5319a0ad2378b55269251fd10b312b5a9ceece09
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\plugins\imageformats\qjpeg.dll,241152,e12956126439f2b262460cfce6905bedfc532150572b0f2933d9073ee0cef1e8
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\plugins\imageformats\qtiff.dll,309760,4cb247acf7bf00eadcaaad97e90fe605e0f6707af9e60315885ad3697da02ef9
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\plugins\platforms\qwindows.dll,875520,146c66aac6a0fae7821a4c2df0ae975f7b0ab0390df49e5a3cb10806ecc2cce4
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\5.0\Blackmagic Editing Mode.xml,8434,12e863f1aafce4712deed0200528219c27afcfa50eb46d36fc1f93c5a456fae5
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\5.0\BMDDeviceControl.prm,2067968,e13edbb1190d2bc9d809126a1ebf78197d1c7d855b055009200f2d45051841b7
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\5.0\BMDExport.prm,299520,5a74153e77bc8072b60a5830b2ae684ade9cf67d51817ac8bd6ab6b29faff2f2
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\5.0\BMDPlayer.prm,1119232,c37a8a4e959888bd983ce44f1f09f91a92c0b02a675c3f5a66b64661e1a34c36
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\5.0\BMDRecord.prm,5580800,ce6d2046180157b6b00b7a8b6a18106134f1f2936f2d22f0b3ce1b96e45b8b22
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\5.0\DeckLink Premiere CS5 PC Presets.zip,2368695,06ef08fe8ca518947f43b1db852a28eeaad1153fce52de0408b3386f4d2d972a
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\5.0\Intensity Premiere CS5 PC Presets.zip,1047722,5683235b5965cdff986b16692103c7fff5fdc0d44ceb34dde3acbd27a41e0d82
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\6.0\Blackmagic Editing Mode.xml,5924,d972877501809fd7eb55b9d4a2deb908cd8effa5b83427e9a14edd4a63aadbe4
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\6.0\BMDDeviceControl.prm,2067968,e13edbb1190d2bc9d809126a1ebf78197d1c7d855b055009200f2d45051841b7
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\6.0\BMDExport.prm,299520,5a74153e77bc8072b60a5830b2ae684ade9cf67d51817ac8bd6ab6b29faff2f2
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\6.0\BMDRecord.prm,5580800,ce6d2046180157b6b00b7a8b6a18106134f1f2936f2d22f0b3ce1b96e45b8b22
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\6.0\BMDTransmit.prm,167936,c8830cbe989b57116901dde7d12a5a3ab97993d064bf77e03dd1c80cdba5b014
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\6.0\DeckLink Premiere CS6 PC Presets.zip,1602125,fe43761ddd3cf8754c9e5347cd8ac28c3d1c4df1e8c98c02983280c50c6d12d2
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\6.0\Intensity Premiere CS6 PC Presets.zip,492386,1adbeaeb9e69667c3dcac0dae1c73f7bca9e94f118fa94bc3f6d6d2a1b9e655d
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\7.0\Blackmagic Editing Mode.xml,5924,d972877501809fd7eb55b9d4a2deb908cd8effa5b83427e9a14edd4a63aadbe4
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\7.0\BMDDeviceControl.prm,78848,718222bd149f4b9a2f633654cb530e58cbc0856ca5b0a59261e34b284aea856f
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\7.0\BMDExport.prm,299520,5a74153e77bc8072b60a5830b2ae684ade9cf67d51817ac8bd6ab6b29faff2f2
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\7.0\BMDRecord.prm,5580800,ce6d2046180157b6b00b7a8b6a18106134f1f2936f2d22f0b3ce1b96e45b8b22
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\7.0\BMDTransmit.prm,167936,c8830cbe989b57116901dde7d12a5a3ab97993d064bf77e03dd1c80cdba5b014
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\7.0\DeckLink Premiere CS7 PC Presets.zip,1602125,fe43761ddd3cf8754c9e5347cd8ac28c3d1c4df1e8c98c02983280c50c6d12d2
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Premiere Support\7.0\Intensity Premiere CS7 PC Presets.zip,492386,1adbeaeb9e69667c3dcac0dae1c73f7bca9e94f118fa94bc3f6d6d2a1b9e655d
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\qt.conf,54,4d205f7619be1f4f24a31af060944b6d1a8420695d6e96f01ac0ebd9f5ca2758
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Qt5Core.dll,4566528,5933e4bbf324618d1ea3a5efe6e42bb28c3cf5fe807b12c32ef7909f2a0f762b
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Qt5Gui.dll,4324352,d1d3d9d3f8f0278bb9fbe034056a0b36ca12735a5b4df9266b6b6f012a0b5900
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Qt5Network.dll,668160,d4b895b66481a07d3ba67b38da96084f266d5a635febb16d20c6d7a4aac8e222
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Qt5Widgets.dll,4297728,e65a87119474f45ff6241328e328a116d103be169c9cc7c49fc93ef2fddc95c5
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Readme.rtf,3778,714249e13b2f4781aeda73ccde943560bf13b3e7eef19703e2ee70f886f42238
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Desktop Video\Third Party Licenses.rtf,128032,a828ff55d67127ba7fc27e71b801ee0d63fbd259548716ddd8990791f2d2dc70
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Media Express\DNxHDCodec.dll,2441216,75b86a060f436b4551faaabbb8a3b5ea572545ac2041ffdee2afeec22782b383
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Media Express\libMXF.dll,894464,0bc94bdeb93969098b829d0b070f20b247ed6106ec513ad81a914b604cb4f73c
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Media Express\MediaExpress.exe,11774976,1d654ac18b6ad407eed5be0f18bda7581de46451f9fd41ea91b2cd13c7ab0599
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Media Express\MediaExpress.VisualelEmentsManifest.xml,212,ae165332d56d5a4f6dc3a90ee0d1c741e62b185ac6cd60407ce68ad48f354fe9
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Media Express\platforms\qwindows.dll,875520,146c66aac6a0fae7821a4c2df0ae975f7b0ab0390df49e5a3cb10806ecc2cce4
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Media Express\qt.conf,18,087fb02e816d2111d12ccc14edc8d30815f25cd6f2fed9e658aa1f07313dc794
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Media Express\Qt5Core.dll,4566528,5933e4bbf324618d1ea3a5efe6e42bb28c3cf5fe807b12c32ef7909f2a0f762b
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Media Express\Qt5Gui.dll,4324352,d1d3d9d3f8f0278bb9fbe034056a0b36ca12735a5b4df9266b6b6f012a0b5900
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Media Express\Qt5Network.dll,668160,d4b895b66481a07d3ba67b38da96084f266d5a635febb16d20c6d7a4aac8e222
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Media Express\Qt5Svg.dll,203776,dd800b74666862a747bddbb94d758ec4aaeb1cc570dae2bfcfc6d0e793167461
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Media Express\Qt5Widgets.dll,4297728,e65a87119474f45ff6241328e328a116d103be169c9cc7c49fc93ef2fddc95c5
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Media Express\QtSingleApplication.dll,33792,214eeb31ac3bc5d66f649a1aefc474fe6d7359c8550eda9297d9a09083b831dd
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Blackmagic Media Express\Third Party Licenses.rtf,128032,a828ff55d67127ba7fc27e71b801ee0d63fbd259548716ddd8990791f2d2dc70
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Disk Speed Test\DiskSpeedTest.exe,1440768,b40ebe85c1123be317efe48d885fe923eec29c99cadec666116b9bdfe7cdf765
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Disk Speed Test\QtCore4.dll,2283008,aea867d0c136e33cd91e6e3f0398be1220e6e50bf353d4e59e286ac1e9c188fe
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Disk Speed Test\QtGui4.dll,8166912,5d798bceb021f457ea50185bc35c0e279e4532a476c27761f7dfb425d8ba0e77
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\Blackmagic Design\Disk Speed Test\Third Party Licenses.rtf,331,f39822a35529c10e0f1b7755aeac9964e41e8bf4cc5dd9cb3e30c0a9b326ce9a
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\System\mfc120.dll,4424344,5855b0e1e04f2dbff129c8d9f6954c0bd538e4dc12addf7aa5531ab073e8beee
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\System\mfc120u.dll,4449952,c2d0e285e2333a9c620be04a5747881af0d5615da32226886e659ff31a9761cc
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\System\mfcm120.dll,83104,e8fc673a39a6f912b54cb2612da9d96fbc1c90606eede2e3f1a0cfbfee271d7f
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\System\mfcm120u.dll,83104,90b76725dc52692c8f6ed41eb898719b6c197890a37a4add62807fb357525fef
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\System\msvcp120.dll,455328,87c42ca155473e4e71857d03497c8cbc28fa8ff7f2c8d72e8a1f39b71078f608
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\System\msvcr120.dll,970912,86e39b5995af0e042fcdaa85fe2aefd7c9ddc7ad65e6327bd5e7058bc3ab615f
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\System\vccorlib120.dll,247984,9c9d4e421c55f7ef4e455e75b58a6639428ccd75c76e5717f448afe4c21c52bc
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\System64\mfc120.dll,5608088,556442cbd59faab1bc639f0a8c129f2e4a505e9fbbfcd0f279d53810fa669f8a
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\System64\mfc120u.dll,5634720,38437948c1bab1827963c08de7c82fbfa4fd3020f8b8c1ad02588878db4b29f7
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\System64\mfcm120.dll,91808,88c468e87ed00fc08288e9fb673c6a82aeb37b935c6602b8444f99f0659fcc98
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\System64\mfcm120u.dll,91808,dc62ac8c36075e17b1cf194643ddfee3e897e8d38c8aea6b13a0cfa83bd8b806
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\System64\msvcp120.dll,660128,2abf0aab5a3c5ae9424b64e9d19d9d6d4aebc67814d7e92e4927b9798fef2848
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\System64\msvcr120.dll,963232,ad32240bb1de55c3f5fcac8789f583a17057f9d14914c538c2a7a5ad346b341c
+10.4.1,Blackmagic Design\Blackmagic Desktop Video\System64\vccorlib120.dll,356528,602add77cbd807d02306de1d0179cb71a908eecb11677116fc206a7e714ab6d6
+10.4.1,Desktop Video Installer v10.4.1.msi,61407232,bb3c216cf8b34c833806ba6bf3c36cbaa973d8346af4782a91a31d4bb735a5f8

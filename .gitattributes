@@ -1,0 +1,7 @@
+# Firmware binaries live in Git LFS (content-addressed: identical images
+# across Desktop Video versions are stored once).
+firmware/**/*.bin  filter=lfs diff=lfs merge=lfs -text
+firmware/**/*.pcap filter=lfs diff=lfs merge=lfs -text
+# Workflows and scripts keep LF everywhere
+*.yml text eol=lf
+*.sh  text eol=lf

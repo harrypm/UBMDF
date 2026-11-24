@@ -1,0 +1,1997 @@
+{
+  "version": 1,
+  "bundles": [
+    {
+      "id": "encrypted/dv-10.1.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.1.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.1.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.1.1.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.1.2",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.1.2",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.1.2-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.1.2.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.1.4",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.1.4",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.1.4-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.1.4.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.10",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.10",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.10-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.10.zip",
+      "notes": "updater-embedded layout (DV 10.9.10 - 11.4.1): 63 plaintext firmware images extracted from CheckVersionPCI.exe RCDATA resources (Firmware/CheckVersionPCI-rcdata, see resources.csv)"
+    },
+    {
+      "id": "encrypted/dv-10.11",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.11",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.11-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.11.zip",
+      "notes": "updater-embedded layout (DV 10.9.10 - 11.4.1): 64 plaintext firmware images extracted from CheckVersionPCI.exe RCDATA resources (Firmware/CheckVersionPCI-rcdata, see resources.csv)"
+    },
+    {
+      "id": "encrypted/dv-10.11.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.11.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.11.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.11.1.zip",
+      "notes": "updater-embedded layout (DV 10.9.10 - 11.4.1): 64 plaintext firmware images extracted from CheckVersionPCI.exe RCDATA resources (Firmware/CheckVersionPCI-rcdata, see resources.csv)"
+    },
+    {
+      "id": "encrypted/dv-10.11.2",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.11.2",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.11.2-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.11.2.zip",
+      "notes": "updater-embedded layout (DV 10.9.10 - 11.4.1): 64 plaintext firmware images extracted from CheckVersionPCI.exe RCDATA resources (Firmware/CheckVersionPCI-rcdata, see resources.csv)"
+    },
+    {
+      "id": "encrypted/dv-10.11.4",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.11.4",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.11.4-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.11.4.zip",
+      "notes": "updater-embedded layout (DV 10.9.10 - 11.4.1): 68 plaintext firmware images extracted from CheckVersionPCI.exe RCDATA resources (Firmware/CheckVersionPCI-rcdata, see resources.csv)"
+    },
+    {
+      "id": "encrypted/dv-10.2",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.2",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.2-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.2.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.2.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.2.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.2.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.2.1.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.2.2",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.2.2",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.2.2-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.2.2.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.2.3",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.2.3",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.2.3-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.2.3.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.3",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.3",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.3-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.3.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.3.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.3.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.3.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.3.1.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.3.2",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.3.2",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.3.2-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.3.2.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.3.4",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.3.4",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.3.4-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.3.4.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.3.5",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.3.5",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.3.5-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.3.5.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.3.7",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.3.7",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.3.7-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.3.7.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.4",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.4",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.4-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.4.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.4.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.4.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.4.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.4.1.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.4.2",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.4.2",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.4.2-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.4.2.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.4.3",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.4.3",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.4.3-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.4.3.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.5",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.5",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.5-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.5.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.5.2",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.5.2",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.5.2-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.5.2.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.5.3",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.5.3",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.5.3-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.5.3.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.5.4",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.5.4",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.5.4-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.5.4.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.6",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.6",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.6-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.6.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.6.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.6.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.6.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.6.1.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.6.2",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.6.2",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.6.2-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.6.2.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.6.4",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.6.4",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.6.4-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.6.4.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.6.5",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.6.5",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.6.5-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.6.5.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.6.6",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.6.6",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.6.6-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.6.6.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.6.7",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.6.7",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.6.7-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.6.7.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.6.8",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.6.8",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.6.8-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.6.8.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.7",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.7",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.7-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.7.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.7.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.7.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.7.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.7.1.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.8",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.8",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.8-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.8.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.8.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.8.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.8.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.8.1.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.8.2",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.8.2",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.8.2-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.8.2.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.8.3",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.8.3",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.8.3-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.8.3.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.8.5",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.8.5",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.8.5-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.8.5.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.8.6",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.8.6",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.8.6-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.8.6.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.9",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.9",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.9-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.9.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.9.10",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.9.10",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.9.10-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.9.10.zip",
+      "notes": "updater-embedded layout (DV 10.9.10 - 11.4.1): 62 plaintext firmware images extracted from CheckVersionPCI.exe RCDATA resources (Firmware/CheckVersionPCI-rcdata, see resources.csv)"
+    },
+    {
+      "id": "encrypted/dv-10.9.11",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.9.11",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.9.11-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.9.11.zip",
+      "notes": "updater-embedded layout (DV 10.9.10 - 11.4.1): 62 plaintext firmware images extracted from CheckVersionPCI.exe RCDATA resources (Firmware/CheckVersionPCI-rcdata, see resources.csv)"
+    },
+    {
+      "id": "encrypted/dv-10.9.12",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.9.12",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.9.12-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.9.12.zip",
+      "notes": "updater-embedded layout (DV 10.9.10 - 11.4.1): 62 plaintext firmware images extracted from CheckVersionPCI.exe RCDATA resources (Firmware/CheckVersionPCI-rcdata, see resources.csv)"
+    },
+    {
+      "id": "encrypted/dv-10.9.3",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.9.3",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.9.3-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.9.3.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.9.4",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.9.4",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.9.4-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.9.4.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.9.5",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.9.5",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.9.5-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.9.5.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-10.9.7",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "10.9.7",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-10.9.7-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_10.9.7.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-11.0",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "11.0",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-11.0-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_11.0.zip",
+      "notes": "updater-embedded layout (DV 10.9.10 - 11.4.1): 68 plaintext firmware images extracted from CheckVersionPCI.exe RCDATA resources (Firmware/CheckVersionPCI-rcdata, see resources.csv)"
+    },
+    {
+      "id": "encrypted/dv-11.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "11.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-11.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_11.1.zip",
+      "notes": "updater-embedded layout (DV 10.9.10 - 11.4.1): 69 plaintext firmware images extracted from CheckVersionPCI.exe RCDATA resources (Firmware/CheckVersionPCI-rcdata, see resources.csv)"
+    },
+    {
+      "id": "encrypted/dv-11.2",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "11.2",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-11.2-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_11.2.zip",
+      "notes": "updater-embedded layout (DV 10.9.10 - 11.4.1): 69 plaintext firmware images extracted from CheckVersionPCI.exe RCDATA resources (Firmware/CheckVersionPCI-rcdata, see resources.csv)"
+    },
+    {
+      "id": "encrypted/dv-11.3",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "11.3",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-11.3-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_11.3.zip",
+      "notes": "updater-embedded layout (DV 10.9.10 - 11.4.1): 69 plaintext firmware images extracted from CheckVersionPCI.exe RCDATA resources (Firmware/CheckVersionPCI-rcdata, see resources.csv)"
+    },
+    {
+      "id": "encrypted/dv-11.4",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "11.4",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-11.4-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_11.4.zip",
+      "notes": "updater-embedded layout (DV 10.9.10 - 11.4.1): 69 plaintext firmware images extracted from CheckVersionPCI.exe RCDATA resources (Firmware/CheckVersionPCI-rcdata, see resources.csv)"
+    },
+    {
+      "id": "encrypted/dv-11.4.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "11.4.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-11.4.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_11.4.1.zip",
+      "notes": "updater-embedded layout (DV 10.9.10 - 11.4.1): 69 plaintext firmware images extracted from CheckVersionPCI.exe RCDATA resources (Firmware/CheckVersionPCI-rcdata, see resources.csv)"
+    },
+    {
+      "id": "encrypted/dv-11.5",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "11.5",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-11.5-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_11.5.zip"
+    },
+    {
+      "id": "encrypted/dv-11.5.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "11.5.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-11.5.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_11.5.1.zip"
+    },
+    {
+      "id": "encrypted/dv-11.6",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "11.6",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-11.6-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_11.6.zip"
+    },
+    {
+      "id": "encrypted/dv-11.7",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "11.7",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-11.7-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_11.7.zip"
+    },
+    {
+      "id": "encrypted/dv-12.0",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "12.0",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-12.0-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_12.0.zip"
+    },
+    {
+      "id": "encrypted/dv-12.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "12.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-12.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_12.1.zip"
+    },
+    {
+      "id": "encrypted/dv-12.2",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "12.2",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-12.2-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_12.2.zip"
+    },
+    {
+      "id": "encrypted/dv-12.2.2",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "12.2.2",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-12.2.2-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_12.2.2.zip"
+    },
+    {
+      "id": "encrypted/dv-12.3",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "12.3",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-12.3-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_12.3.zip"
+    },
+    {
+      "id": "encrypted/dv-12.3.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "12.3.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-12.3.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_12.3.1.zip"
+    },
+    {
+      "id": "encrypted/dv-12.4",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "12.4",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-12.4-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_12.4.zip"
+    },
+    {
+      "id": "encrypted/dv-12.4.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "12.4.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-12.4.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_12.4.1.zip"
+    },
+    {
+      "id": "encrypted/dv-12.4.2",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "12.4.2",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-12.4.2-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_12.4.2.zip"
+    },
+    {
+      "id": "encrypted/dv-12.5",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "12.5",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-12.5-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_12.5.zip"
+    },
+    {
+      "id": "encrypted/dv-12.5.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "12.5.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-12.5.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_12.5.1.zip"
+    },
+    {
+      "id": "encrypted/dv-12.6",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "12.6",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-12.6-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_12.6.zip"
+    },
+    {
+      "id": "encrypted/dv-12.7",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "12.7",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-12.7-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_12.7.zip"
+    },
+    {
+      "id": "encrypted/dv-12.7.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "12.7.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-12.7.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_12.7.1.zip"
+    },
+    {
+      "id": "encrypted/dv-12.8",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "12.8",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-12.8-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_12.8.zip"
+    },
+    {
+      "id": "encrypted/dv-12.8.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "12.8.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-12.8.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_12.8.1.zip"
+    },
+    {
+      "id": "encrypted/dv-12.9",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "12.9",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-12.9-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_12.9.zip"
+    },
+    {
+      "id": "encrypted/dv-14.0",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "14.0",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-14.0-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_14.0.zip"
+    },
+    {
+      "id": "encrypted/dv-14.0.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "14.0.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-14.0.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_14.0.1.zip"
+    },
+    {
+      "id": "encrypted/dv-14.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "14.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-14.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_14.1.zip"
+    },
+    {
+      "id": "encrypted/dv-14.2",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "14.2",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-14.2-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_14.2.zip"
+    },
+    {
+      "id": "encrypted/dv-14.2.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "14.2.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-14.2.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_14.2.1.zip"
+    },
+    {
+      "id": "encrypted/dv-14.3",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "14.3",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-14.3-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_14.3.zip"
+    },
+    {
+      "id": "encrypted/dv-14.4",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "14.4",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-14.4-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_14.4.zip"
+    },
+    {
+      "id": "encrypted/dv-14.4.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "14.4.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-14.4.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_14.4.1.zip"
+    },
+    {
+      "id": "encrypted/dv-14.5",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "14.5",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-14.5-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_14.5.zip"
+    },
+    {
+      "id": "encrypted/dv-15.0",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "15.0",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-15.0-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_15.0.zip"
+    },
+    {
+      "id": "encrypted/dv-15.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "15.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-15.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_15.1.zip"
+    },
+    {
+      "id": "encrypted/dv-15.2",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "15.2",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-15.2-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_15.2.zip"
+    },
+    {
+      "id": "encrypted/dv-15.3",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "15.3",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-15.3-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_15.3.zip"
+    },
+    {
+      "id": "encrypted/dv-15.3.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "15.3.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-15.3.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_15.3.1.zip"
+    },
+    {
+      "id": "encrypted/dv-16.0",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "16.0",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-16.0-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_16.0.zip"
+    },
+    {
+      "id": "encrypted/dv-16.0.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "16.0.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-16.0.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_16.0.1.zip"
+    },
+    {
+      "id": "encrypted/dv-16.1",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "16.1",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-16.1-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_16.1.zip"
+    },
+    {
+      "id": "encrypted/dv-16.2",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "16.2",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-16.2-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_16.2.zip"
+    },
+    {
+      "id": "encrypted/dv-16.3",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "16.3",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-16.3-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_16.3.zip"
+    },
+    {
+      "id": "encrypted/dv-16.4",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "16.4",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-16.4-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_16.4.zip"
+    },
+    {
+      "id": "encrypted/dv-16.5",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "16.5",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-16.5-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_16.5.zip"
+    },
+    {
+      "id": "encrypted/dv-9.5.3",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "9.5.3",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-9.5.3-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_9.5.3.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-9.6.4",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "9.6.4",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-9.6.4-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_9.6.4.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-9.7.3",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "9.7.3",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-9.7.3-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_9.7.3.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "encrypted/dv-9.8",
+      "device": "(all Desktop Video devices)",
+      "dv_version": "9.8",
+      "kind": "encrypted-inventory",
+      "inventory": "installers/dv-9.8-inventory.csv",
+      "installer_zip": "installers/Blackmagic_Desktop_Video_Windows_9.8.zip",
+      "notes": "legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy"
+    },
+    {
+      "id": "ultrastudio4kmini/dv-11.4.1",
+      "device": "ultrastudio4kmini",
+      "dv_version": "11.4.1",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-11.4.1/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "1f9b20834c9315ea810cf1ce06c86322cb07ba15a958749ac1a49f7aed1e6e66",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Derived from the DV 11.4.1 installer (CheckVersionPCI.exe RCDATA 200 + 202; byte-identical in 11.3 and 11.4). component_B is byte-identical to the hardware-verified 12.8.1/16.0 component_B; component_A has the same size, FPGA IDCODE (03824093) and 112-byte header layout as the verified 12.8.1 image and differs in 153 bytes (build stamp + CRC words). Geometry from the 12.8.1 capture. NOT yet flashed on hardware."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-11.5",
+      "device": "ultrastudio4kmini",
+      "dv_version": "11.5",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-11.5/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 11.5 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-11.5.1",
+      "device": "ultrastudio4kmini",
+      "dv_version": "11.5.1",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-11.5.1/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 11.5.1 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-11.6",
+      "device": "ultrastudio4kmini",
+      "dv_version": "11.6",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-11.6/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 11.6 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-11.7",
+      "device": "ultrastudio4kmini",
+      "dv_version": "11.7",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-11.7/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 11.7 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-12.0",
+      "device": "ultrastudio4kmini",
+      "dv_version": "12.0",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-12.0/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 12.0 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-12.1",
+      "device": "ultrastudio4kmini",
+      "dv_version": "12.1",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-12.1/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 12.1 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-12.2",
+      "device": "ultrastudio4kmini",
+      "dv_version": "12.2",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-12.2/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 12.2 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-12.2.2",
+      "device": "ultrastudio4kmini",
+      "dv_version": "12.2.2",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-12.2.2/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 12.2.2 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-12.3",
+      "device": "ultrastudio4kmini",
+      "dv_version": "12.3",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-12.3/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 12.3 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-12.3.1",
+      "device": "ultrastudio4kmini",
+      "dv_version": "12.3.1",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-12.3.1/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 12.3.1 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-12.4",
+      "device": "ultrastudio4kmini",
+      "dv_version": "12.4",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-12.4/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 12.4 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-12.4.1",
+      "device": "ultrastudio4kmini",
+      "dv_version": "12.4.1",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-12.4.1/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 12.4.1 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-12.4.2",
+      "device": "ultrastudio4kmini",
+      "dv_version": "12.4.2",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-12.4.2/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 12.4.2 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-12.5",
+      "device": "ultrastudio4kmini",
+      "dv_version": "12.5",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-12.5/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 12.5 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-12.5.1",
+      "device": "ultrastudio4kmini",
+      "dv_version": "12.5.1",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-12.5.1/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 12.5.1 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-12.6",
+      "device": "ultrastudio4kmini",
+      "dv_version": "12.6",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-12.6/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 12.6 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-12.7",
+      "device": "ultrastudio4kmini",
+      "dv_version": "12.7",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-12.7/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 12.7 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-12.7.1",
+      "device": "ultrastudio4kmini",
+      "dv_version": "12.7.1",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-12.7.1/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 12.7.1 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-12.8",
+      "device": "ultrastudio4kmini",
+      "dv_version": "12.8",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-12.8/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 12.8 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-12.8.1",
+      "device": "ultrastudio4kmini",
+      "dv_version": "12.8.1",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-12.8.1/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "6d2d050003929bd9b52a9a648179d53ed628205b9c672210a27dad58fc4f19c5",
+          "bytes": 9491428,
+          "region_block_addr": 0,
+          "block_count": 145,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ]
+    },
+    {
+      "id": "ultrastudio4kmini/dv-12.9",
+      "device": "ultrastudio4kmini",
+      "dv_version": "12.9",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-12.9/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "KNOWN-BAD for UltraStudio 4K Mini: the official 12.9 update bricked multiple units (see forum t=199366). The 12.9 installer's 4K Mini images are byte-identical to DV 14.0-16.5 and the verified 16.0 capture, so the cause was not these image files; prefer a later version anyway. Extracted from the official DV 12.9 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-14.0",
+      "device": "ultrastudio4kmini",
+      "dv_version": "14.0",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-14.0/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 14.0 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-14.0.1",
+      "device": "ultrastudio4kmini",
+      "dv_version": "14.0.1",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-14.0.1/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 14.0.1 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-14.1",
+      "device": "ultrastudio4kmini",
+      "dv_version": "14.1",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-14.1/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 14.1 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-14.2",
+      "device": "ultrastudio4kmini",
+      "dv_version": "14.2",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-14.2/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 14.2 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-14.2.1",
+      "device": "ultrastudio4kmini",
+      "dv_version": "14.2.1",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-14.2.1/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 14.2.1 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-14.3",
+      "device": "ultrastudio4kmini",
+      "dv_version": "14.3",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-14.3/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 14.3 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-14.4",
+      "device": "ultrastudio4kmini",
+      "dv_version": "14.4",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-14.4/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 14.4 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-14.4.1",
+      "device": "ultrastudio4kmini",
+      "dv_version": "14.4.1",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-14.4.1/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 14.4.1 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-14.5",
+      "device": "ultrastudio4kmini",
+      "dv_version": "14.5",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-14.5/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 14.5 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-15.0",
+      "device": "ultrastudio4kmini",
+      "dv_version": "15.0",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-15.0/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 15.0 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-15.1",
+      "device": "ultrastudio4kmini",
+      "dv_version": "15.1",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-15.1/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 15.1 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-15.2",
+      "device": "ultrastudio4kmini",
+      "dv_version": "15.2",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-15.2/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 15.2 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-15.3",
+      "device": "ultrastudio4kmini",
+      "dv_version": "15.3",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-15.3/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 15.3 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-15.3.1",
+      "device": "ultrastudio4kmini",
+      "dv_version": "15.3.1",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-15.3.1/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 15.3.1 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-16.0",
+      "device": "ultrastudio4kmini",
+      "dv_version": "16.0",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-16.0/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ]
+    },
+    {
+      "id": "ultrastudio4kmini/dv-16.0.1",
+      "device": "ultrastudio4kmini",
+      "dv_version": "16.0.1",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-16.0.1/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 16.0.1 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-16.1",
+      "device": "ultrastudio4kmini",
+      "dv_version": "16.1",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-16.1/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 16.1 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-16.2",
+      "device": "ultrastudio4kmini",
+      "dv_version": "16.2",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-16.2/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 16.2 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-16.3",
+      "device": "ultrastudio4kmini",
+      "dv_version": "16.3",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-16.3/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 16.3 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-16.4",
+      "device": "ultrastudio4kmini",
+      "dv_version": "16.4",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-16.4/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 16.4 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    },
+    {
+      "id": "ultrastudio4kmini/dv-16.5",
+      "device": "ultrastudio4kmini",
+      "dv_version": "16.5",
+      "kind": "flashable",
+      "manifest": "ultrastudio4kmini/dv-16.5/manifest.json",
+      "components": [
+        {
+          "file": "component_A.bin",
+          "sha256": "2cd5104b1bf29ba82c0a2cf8df54658699c146a12d45a6aafafbe28250126d76",
+          "bytes": 9399532,
+          "region_block_addr": 0,
+          "block_count": 144,
+          "write_addr": 0
+        },
+        {
+          "file": "component_B.bin",
+          "sha256": "1c8d4f7fad154bc1406a4684112b7531b2a5a11282165c3cf2a694ae55974b05",
+          "bytes": 1928120,
+          "region_block_addr": 192,
+          "block_count": 30,
+          "write_addr": 12582912
+        }
+      ],
+      "notes": "Extracted from the official DV 16.5 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1, dv-16.0."
+    }
+  ]
+}

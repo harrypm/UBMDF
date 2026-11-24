@@ -1,0 +1,351 @@
+[
+  {
+    "version": "10.9.10",
+    "status": "skip-done",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "10.9.11",
+    "status": "ok",
+    "images": 62,
+    "bytes": 188121313,
+    "types": "14 binary, 2 elf, 46 xilinx-bitstream"
+  },
+  {
+    "version": "10.9.12",
+    "status": "ok",
+    "images": 62,
+    "bytes": 188221590,
+    "types": "14 binary, 2 elf, 46 xilinx-bitstream"
+  },
+  {
+    "version": "10.10",
+    "status": "ok",
+    "images": 63,
+    "bytes": 189880976,
+    "types": "14 binary, 2 elf, 47 xilinx-bitstream"
+  },
+  {
+    "version": "10.11",
+    "status": "ok",
+    "images": 64,
+    "bytes": 202500094,
+    "types": "14 binary, 2 elf, 48 xilinx-bitstream"
+  },
+  {
+    "version": "10.11.1",
+    "status": "ok",
+    "images": 64,
+    "bytes": 202500894,
+    "types": "14 binary, 2 elf, 48 xilinx-bitstream"
+  },
+  {
+    "version": "10.11.2",
+    "status": "ok",
+    "images": 64,
+    "bytes": 202495134,
+    "types": "14 binary, 2 elf, 48 xilinx-bitstream"
+  },
+  {
+    "version": "10.11.4",
+    "status": "ok",
+    "images": 68,
+    "bytes": 217168460,
+    "types": "14 binary, 4 elf, 50 xilinx-bitstream"
+  },
+  {
+    "version": "11.0",
+    "status": "ok",
+    "images": 68,
+    "bytes": 217988820,
+    "types": "14 binary, 4 elf, 50 xilinx-bitstream"
+  },
+  {
+    "version": "11.1",
+    "status": "ok",
+    "images": 69,
+    "bytes": 228747626,
+    "types": "14 binary, 4 elf, 51 xilinx-bitstream"
+  },
+  {
+    "version": "11.2",
+    "status": "ok",
+    "images": 69,
+    "bytes": 228780122,
+    "types": "14 binary, 4 elf, 51 xilinx-bitstream"
+  },
+  {
+    "version": "11.3",
+    "status": "ok",
+    "images": 69,
+    "bytes": 236661864,
+    "types": "14 binary, 4 elf, 51 xilinx-bitstream"
+  },
+  {
+    "version": "11.4",
+    "status": "ok",
+    "images": 69,
+    "bytes": 236658792,
+    "types": "14 binary, 4 elf, 51 xilinx-bitstream"
+  },
+  {
+    "version": "11.4.1",
+    "status": "ok",
+    "images": 69,
+    "bytes": 236658792,
+    "types": "14 binary, 4 elf, 51 xilinx-bitstream"
+  },
+  {
+    "version": "11.5",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "11.5.1",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "11.6",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "11.7",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "12.0",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "12.1",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "12.2",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "12.2.2",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "12.3",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "12.3.1",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "12.4",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "12.4.1",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "12.4.2",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "12.5",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "12.5.1",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "12.6",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "12.7",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "12.7.1",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "12.8",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "12.8.1",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "12.9",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "14.0",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "14.0.1",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "14.1",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "14.2",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "14.2.1",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "14.3",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "14.4",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "14.4.1",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "14.5",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "15.0",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "15.1",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "15.2",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "15.3",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "15.3.1",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "16.0",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "16.0.1",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "16.1",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "16.2",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "16.3",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "16.4",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  },
+  {
+    "version": "16.5",
+    "status": "skip-data-r",
+    "images": 0,
+    "bytes": 0
+  }
+]

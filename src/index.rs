@@ -236,7 +236,8 @@ fn scan_flashable(root: &Path, bundles: &mut Vec<BundleEntry>) -> Result<()> {
                 device: device.clone(),
                 dv_version,
                 kind: BundleKind::Flashable,
-                manifest: Some(rel.join("manifest.json").to_string_lossy().to_string()),
+                // Always "/" so an index written on Windows works on Linux/macOS.
+                manifest: Some(rel.join("manifest.json").to_string_lossy().replace('\\', "/")),
                 inventory: None,
                 installer_zip: None,
                 components,
