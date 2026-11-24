@@ -56,7 +56,7 @@ ubdmf gui [--tab firmware|devices|update|log] [--select <dv-version>]
 ## Firmware Index
 `firmware/index.json` tracks two kinds of entries:
 - **flashable**: plaintext capture-derived bundles (manifest + components)
-- **encrypted-inventory**: SHA-256 inventories of encrypted `data-rNN.bin` files from official installers
+- **encrypted-inventory** (historical name): SHA-256 inventories of the installers' `data-rNN.bin` containers. Despite the name these are zlib-compressed, not encrypted — see below
 
 ## Harvest (batch firmware collection)
 ```
@@ -129,7 +129,7 @@ Installer layouts by Desktop Video version:
 
 - **≤ 10.9.7**: the firmware ships inside the drivers (legacy layout).
 - **10.9.10 – 11.4.1**: every device image is a PE `RCDATA` resource inside `CheckVersionPCI.exe` (190–239 MB). The images are **not encrypted**: 46–51 Xilinx bitstreams (`AA995566` sync word), 2–4 ELF images and 14 other binaries per version. The MSI's `Firmware\` folder only holds `data-bdaa.bin`.
-- **11.5 onward**: the images are encrypted `Firmware\data-rNN.bin` files.
+- **11.5 onward**: the images are zlib containers in `Firmware\data-rNN.bin` files (not encrypted; see below).
 
 To extract them:
 ```
@@ -138,8 +138,21 @@ ubdmf index rebuild
 ```
 The images are written to `firmware/installers/dv-<v>-extract/Firmware/CheckVersionPCI-rcdata/`, as `rc-<id>.bin` plus `resources.csv` (size, sha256, entropy, type, header bytes) and `source-exe.txt`. The version's inventory CSV is regenerated, and the index notes and GUI label it "Plaintext images". The resources are unnamed, so which image belongs to which device is not mapped yet.
 
-## Driver development note
-The on-disk `Firmware/data-rNN.bin` files in Desktop Video installers are **encrypted**; the official tool decrypts them in software. UBDMF works with **plaintext** capture-derived bundles. To obtain a plaintext bundle for a new version, run the official updater under USBPcap capture and use `tools/extract-from-capture.ps1`.
+## Installer firmware format (`data-rNN.bin`, DV 11.5+) — not encrypted
+Earlier notes here said these files were encrypted. **They are not.** Each file has:
+
+- a 32-byte prefix;
+- one or more records, each a big-endian header (magic `BD BD 00 01`; 72 bytes for USB service-port devices, 48 bytes for PCIe cards) followed by a **zlib** stream.
+
+The header gives the uncompressed size, the flash write address and the target device ID (USB `1edb:be13` = UltraStudio 4K Mini service port). All 2,151 `data-*` files in DV 11.5 – 16.5 unpack cleanly (61 target devices).
+
+This was verified on 2026-11-24: `data-r90.bin` from 12.8.1 and from 16.0 unpacks to the exact sha256 of the hardware-captured 4K Mini `component_A` / `component_B`.
+
+```
+python -I tools/datar.py <data-rNN.bin>            # list records (size, write addr, device, type)
+python -I tools/make_datar_bundles.py [--dry-run]  # 4K Mini bundle for every DV 11.5+ version
+```
+`make_datar_bundles.py` takes geometry from the record headers and refuses anything that differs from the hardware-proven layout. Images identical to a verified capture are hardlinked, so the 43 bundles take about 33 MB. The index kind keeps its old serialized name, `encrypted-inventory`.
 
 ## License
 Tool code: MIT. Firmware images are Blackmagic Design property — local archival and flashing of images obtained via official installers only.

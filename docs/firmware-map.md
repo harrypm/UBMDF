@@ -32,6 +32,21 @@ Vendor header (first 112 bytes, both versions):
 `01 01 01 13 | <4-byte build stamp> | 00 | FF × 87 | 00 00 00 BB 11 22 00 44 | FF × 8`
 The `000000BB 11220044` part is the standard Xilinx bus-width detection pattern.
 
+## UltraStudio 4K Mini — every version (all builds)
+
+From 11.5 onward the 4K Mini images are in `Firmware/data-r90.bin`, a zlib container whose records target USB `1edb:be13` (see README, *Installer firmware format*). There are four distinct builds across all of Desktop Video:
+
+| DV versions | component_A sha256 | component_B sha256 | Bundles | Status |
+|---|---|---|---|---|
+| 10.11.4 – 11.2 | `199ec0cf…` (2.16 MB) | `aacc0c45…` (1.38 MB) | none | probable; layout unproven |
+| 11.3 – 11.4.1 | `1f9b2083…` | `1c8d4f7f…` | dv-11.4.1 | derived; not yet flashed |
+| 11.5 – 12.8.1 (20 versions) | `6d2d0500…` = verified 12.8.1 capture | `1c8d4f7f…` | dv-11.5 … dv-12.8.1 | **byte-identical to the hardware-verified capture** |
+| 12.9 – 16.5 (22 versions) | `2cd5104b…` = verified 16.0 capture | `1c8d4f7f…` | dv-12.9 … dv-16.5 | **byte-identical to the hardware-verified capture** |
+
+`component_B` (the ARM ELF) has not changed since 11.3.
+
+DV 12.9 is flagged KNOWN-BAD from forum reports of bricked units, but its 4K Mini images are byte-identical to 14.0 – 16.5. So the failures were not caused by the image files; they could have come from the 12.9 updater tool or the update process.
+
 ## FPGA families in DV 11.4.1 (69 resources)
 
 Grouped by `tools/bitstream_info.py`. The IDCODE comes from the type-1 packet write to the IDCODE register after the sync word.

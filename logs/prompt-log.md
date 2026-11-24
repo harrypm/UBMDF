@@ -125,3 +125,13 @@
 - Manifest gets optional `image.notes` → index notes → GUI amber note + caution text in the Flash dialog; CLI flash prints Notes. "NOT yet flashed on hardware" stated everywhere.
 - docs/firmware-map.md: 4K Mini map + IDCODE family table for 11.4.1.
 - Verified: clippy clean both configs, tests 13/11, GUI built last, index 105 bundles (3 flashable), screenshots v7-bundle / v7-dialog ✓. **Not flashed** — needs user decision + unit on WinUSB.
+
+## Execution log (24 Nov 2026, "add more flashable options there is still a lot more left")
+- **Breakthrough: data-rNN.bin are NOT encrypted.** In 12.8.1 data-r101 I found a 15-byte periodic pattern (impossible under real encryption), and a raw scan found a zlib stream at offset 104. Container = 32-byte prefix + records [BD BD 00 01 header (0x48 USB / 0x30 PCIe) + zlib]. Header: uncompressed size @16, unknown checksum @20 (not crc32/adler/mpeg2/sum32 — integrity covered by zlib's Adler-32 + size), write addr @28, comp index @32, USB VID/PID @36/38.
+- Proof: 12.8.1 + 16.0 data-r90.bin → sha256-exact component_A + component_B of the hardware captures (write 0x0 / 0xC00000 = the captured geometry).
+- tools/datar.py (record walker by header length/next field): **2,151/2,151 data files in DV 11.5–16.5 parse, 0 failures, 0 size mismatches, 61 target devices** (USB 1edb:xxxx service ports + PCIe 0000:00xx).
+- 4K Mini (be13) is in data-r90 in all 42 versions; only 2 builds: 11.5–12.8.1 = 12.8.1 capture, 12.9–16.5 = 16.0 capture. **12.9 (KNOWN-BAD) carries the same images as 16.0** → note updated (the warning stays).
+- tools/make_datar_bundles.py: one bundle per version from its installer; geometry from the headers, must match the verified layout; identical images hardlinked (43 bundles = 33 MB). Dry run, then real run: 40 created, 12.8.1/16.0 confirmed identical (independent cross-check of the captures).
+- Verified: `ubdmf verify` 43/43 OK; index 145 bundles (43 flashable; caution: 11.4.1 not-yet-flashed, 12.9 known-bad); clippy clean both; tests 13/11; GUI built last; screenshot v8-many ✓.
+- Docs: README format section (the old "encrypted" claim corrected), docs/firmware-map.md all-builds table.
+- Open: other devices (60 IDs) are now unpackable, but the flash code is hard-wired to PID be13 and the protocol is only proven on the 4K Mini.

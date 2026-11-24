@@ -9,3 +9,4 @@
 /tools/inspect-msi.log
 /dumps
 /tools/updater-extract.log
+__pycache__/
