@@ -20,6 +20,12 @@ pub fn install_missing() -> Result<usize> {
         .collect();
 
     let mut installed = 0;
+    // sha256 -> first file written in this run. Later bundles with the same
+    // image get a hardlink to it, so 43 bundles over 4 distinct images take
+    // ~30 MB instead of ~470 MB. Falls back to a copy where hardlinks are not
+    // supported (FAT/exFAT, cross-volume).
+    let mut written: std::collections::HashMap<String, std::path::PathBuf> = Default::default();
+    let mut linked = 0usize;
     for name in manifests {
         let rel = name.trim_start_matches("bundles/").trim_end_matches("/manifest.json");
         let dir = root.join(rel);
@@ -33,6 +39,14 @@ pub fn install_missing() -> Result<usize> {
         for c in manifest["components"].as_array().context("manifest components")? {
             let file = c["file"].as_str().context("component file")?;
             let sha = c["sha256"].as_str().context("component sha256")?;
+            let dst = dir.join(file);
+            if let Some(src) = written.get(sha) {
+                let _ = std::fs::remove_file(&dst);
+                if std::fs::hard_link(src, &dst).is_ok() {
+                    linked += 1;
+                    continue;
+                }
+            }
             let mut data = Vec::new();
             zip.by_name(&format!("blobs/{sha}"))
                 .with_context(|| format!("{rel}: blob {sha} missing from bundled archive"))?
@@ -41,7 +55,8 @@ pub fn install_missing() -> Result<usize> {
             if got != sha {
                 bail!("{rel}/{file}: bundled image failed sha256 check");
             }
-            std::fs::write(dir.join(file), &data)?;
+            std::fs::write(&dst, &data)?;
+            written.entry(sha.to_string()).or_insert(dst);
         }
         // Manifest last: a bundle only counts as present once complete.
         std::fs::write(dir.join("manifest.json"), text)?;
@@ -49,7 +64,11 @@ pub fn install_missing() -> Result<usize> {
     }
     if installed > 0 {
         crate::index::Index::rebuild()?;
-        log::info!("bundled firmware: installed {installed} flashable bundles into {}", root.display());
+        log::info!(
+            "bundled firmware: installed {installed} flashable bundles into {} ({} images written, {linked} hardlinked)",
+            root.display(),
+            written.len()
+        );
     }
     Ok(installed)
 }

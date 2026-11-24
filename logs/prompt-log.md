@@ -153,3 +153,9 @@
 - Feature `bundled-firmware`: build.rs packs firmware/<device>/dv-*/ manifests + blobs/<sha256> (43 bundles, 4 images, 13.2 MB); refuses LFS pointers. src/bundled.rs installs missing bundles on start-up (sha256-checked, manifest written last) + rebuilds the index. Pitfalls: sha2 0.11 digest has no {:x}; zip 9 file_names() yields Result<Cow>.
 - Tested: exe 21 MB; in-repo run = no-op (145 bundles); sandboxed LOCALAPPDATA first run → "installed 43 flashable bundles", 43/43 verify OK; second run installs nothing (idempotent). (My first second-run harness deadlocked on redirected pipes — fixed with async reads; not an app bug.)
 - CI: each job fetches only the bundle images from LFS (cached .git/lfs keyed on the oid list) and builds/tests with --features bundled-firmware. README: Bundled firmware + Git LFS sections.
+
+- 24 Nov: push 6d4377c (LFS 266 objects, 1.2 GB). CI 45325721040: windows/linux/macos all success; logs: 43 bundles / 4 images embedded on every platform, tests 13/13, smoke 'ubdmf 1.0.0', macOS fat binary x86_64+arm64, .app codesign valid. Tagged v1.0.0 → run 45326244579 success → release https://github.com/harrypm/UBDMF/releases/tag/v1.0.0 (UBDMF-macos-universal.zip 32 MB, ubdmf-windows-x64.exe 21 MB, UBDMF-x86_64.AppImage 16 MB). Downloaded release exe runs (--version 1.0.0) and contains the bundled archive.
+
+## Execution log (24 Nov 2026, "1 & 2": hardlinked first-run install + master default)
+- bundled.rs: the first copy of each image (by sha256) is written, later bundles get a hardlink (copy fallback on FAT/exFAT/cross-volume). Sandbox test: "43 bundles … (4 images written, 82 hardlinked)"; apparent 489 MB, actual on disk 30.4 MB (48 unique files by inode); verify 43/43 OK. clippy clean both configs, tests 13/13.
+- Note: my v1.0.0 release check had already installed a non-linked copy (466 MB) into the real %LOCALAPPDATA%\UBDMF — left for the user to delete (re-created compactly on next run).
