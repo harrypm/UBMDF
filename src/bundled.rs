@@ -76,11 +76,13 @@ pub fn install_missing() -> Result<usize> {
     }
     if installed > 0 || refreshed > 0 {
         crate::index::Index::rebuild()?;
-        log::info!(
-            "bundled firmware: installed {installed} flashable bundles into {} ({} images written, {linked} hardlinked)",
-            root.display(),
-            written.len()
-        );
+        if installed > 0 {
+            log::info!(
+                "bundled firmware: installed {installed} flashable bundles into {} ({} images written, {linked} hardlinked)",
+                root.display(),
+                written.len()
+            );
+        }
     }
     Ok(installed)
 }

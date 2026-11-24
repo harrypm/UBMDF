@@ -23,11 +23,11 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: List bundled-firmware LFS objects
         shell: bash
         run: git lfs ls-files -l -I "firmware/*/dv-*/**" -X "firmware/installers/**" | cut -d' ' -f1 | sort > .lfs-bundle-oids
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: .git/lfs
           key: lfs-bundles-${{ hashFiles('.lfs-bundle-oids') }}
@@ -50,7 +50,7 @@ jobs:
         run: |
           mkdir -p out
           cp target/release/ubmdf.exe out/ubmdf-windows-x64.exe
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ubmdf-windows-x64
           path: out/ubmdf-windows-x64.exe
@@ -58,11 +58,11 @@ jobs:
   linux:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: List bundled-firmware LFS objects
         shell: bash
         run: git lfs ls-files -l -I "firmware/*/dv-*/**" -X "firmware/installers/**" | cut -d' ' -f1 | sort > .lfs-bundle-oids
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: .git/lfs
           key: lfs-bundles-${{ hashFiles('.lfs-bundle-oids') }}
@@ -111,7 +111,7 @@ jobs:
             --output appimage
           file UBMDF-x86_64.AppImage
           ./UBMDF-x86_64.AppImage --appimage-extract-and-run --version
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ubmdf-linux-x86_64-appimage
           path: UBMDF-x86_64.AppImage
@@ -121,11 +121,11 @@ jobs:
     env:
       MACOSX_DEPLOYMENT_TARGET: "11.0"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: List bundled-firmware LFS objects
         shell: bash
         run: git lfs ls-files -l -I "firmware/*/dv-*/**" -X "firmware/installers/**" | cut -d' ' -f1 | sort > .lfs-bundle-oids
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: .git/lfs
           key: lfs-bundles-${{ hashFiles('.lfs-bundle-oids') }}
@@ -185,7 +185,7 @@ jobs:
           codesign --force --deep --sign - "$APP"
           codesign --verify --verbose "$APP"
           ditto -c -k --keepParent "$APP" out/UBMDF-macos-universal.zip
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ubmdf-macos-universal
           path: out/UBMDF-macos-universal.zip
@@ -197,10 +197,10 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           path: dist
           merge-multiple: true
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v3
         with:
           files: dist/*
