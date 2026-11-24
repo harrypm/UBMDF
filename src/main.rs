@@ -14,18 +14,18 @@ mod gui;
 mod index;
 mod logger;
 mod manifest;
+mod ops;
 mod protocol;
 
 use anyhow::{bail, Context, Result};
 use clap::{Parser, Subcommand};
 use indicatif::{ProgressBar, ProgressStyle};
-use serde::Serialize;
 use std::io::Write as _;
 use std::path::{Path, PathBuf};
-use std::time::{SystemTime, UNIX_EPOCH};
 
 use manifest::Manifest;
-use protocol::{BmdDevice, ComponentSpec, FlashEvent};
+use ops::{load_specs, read_device_snapshot};
+use protocol::FlashEvent;
 
 #[derive(Parser)]
 #[command(
@@ -84,6 +84,12 @@ enum Cmd {
         /// Skip confirmation when used with --flash
         #[arg(long)]
         yes: bool,
+        /// Open on this tab: firmware, devices, update or log
+        #[arg(long)]
+        tab: Option<String>,
+        /// Pre-select the firmware entry with this Desktop Video version
+        #[arg(long)]
+        select: Option<String>,
     },
 }
 
@@ -131,7 +137,7 @@ fn main() {
     #[cfg(feature = "gui")]
     if std::env::args().len() == 1 {
         // No console exists in this mode — errors go to the file log only.
-        if let Err(e) = gui::run_gui(None, false) {
+        if let Err(e) = gui::run_gui(gui::Opts::default()) {
             log::error!("ubdmf: {e:#}");
             std::process::exit(1);
         }
@@ -233,11 +239,11 @@ fn run(cli: Cli) -> Result<()> {
             UpdateCmd::Fetch { version } => cmd_update_fetch(&version),
             UpdateCmd::Import { path } => cmd_update_import(&path),
         },
-        Cmd::Gui { flash, yes } => {
+        Cmd::Gui { flash, yes, tab, select } => {
             #[cfg(feature = "gui")]
             {
                 // GUI mode may have no console — errors go to the file log only.
-                if let Err(e) = gui::run_gui(flash, yes) {
+                if let Err(e) = gui::run_gui(gui::Opts { flash, yes, tab, select }) {
                     log::error!("ubdmf: {e:#}");
                     std::process::exit(1);
                 }
@@ -245,7 +251,7 @@ fn run(cli: Cli) -> Result<()> {
             }
             #[cfg(not(feature = "gui"))]
             {
-                let _ = (flash, yes); // silence unused warnings
+                let _ = (flash, yes, tab, select); // silence unused warnings
                 anyhow::bail!("GUI not compiled in. Build with --features gui to enable the raylib GUI. CLI-only build: cargo build --no-default-features")
             }
         }
@@ -417,18 +423,11 @@ fn cmd_index_rebuild() -> Result<()> {
     Ok(())
 }
 
-/// Close a read session cleanly (0x12) so no lingering state remains — an
-/// unterminated session makes the device refuse the next 0x31 (hardware-verified).
-fn close_session(dev: &BmdDevice) {
-    match protocol::reboot(&dev.iface) {
-        Ok(()) => {
-            log::info!("session closed cleanly (0x12)");
-            println!("session closed cleanly (0x12)");
-        }
-        Err(e) => {
-            log::warn!("session close (0x12) failed: {e:#}; run `ubdmf reset` to clear");
-            println!("warning: session close (0x12) failed ({e:#}); run `ubdmf reset` to clear");
-        }
+/// CLI wrapper: close the session (0x12) and print the outcome.
+fn report_close(dev: &protocol::BmdDevice) {
+    match ops::close_session(dev) {
+        Ok(()) => println!("session closed cleanly (0x12)"),
+        Err(e) => println!("warning: {e:#}"),
     }
 }
 
@@ -448,57 +447,6 @@ fn cmd_list() -> Result<()> {
         }
     }
     Ok(())
-}
-
-/// Everything readable from the device in one read-only pass.
-fn read_device_snapshot(dev: &mut BmdDevice) -> Result<DeviceSnapshot> {
-    let (nonce, id_byte) = protocol::read_id(&dev.iface)?;
-    let nonce_hex = protocol::hex(&nonce);
-
-    protocol::begin_session(dev)?;
-    let state = protocol::read_state(&dev.iface)?;
-    let state_hex = protocol::hex(&state);
-
-    // 0x35 stalls outside an active erase session and 0x38 is idle outside one —
-    // both tolerated (documented in protocol.md).
-    let geometry = protocol::read_geometry(&dev.iface).ok();
-    let progress = protocol::read_progress(&dev.iface).ok();
-
-    Ok(DeviceSnapshot {
-        nonce: nonce_hex,
-        id_byte,
-        state: state_hex,
-        geometry: geometry.map(|g| g.fields),
-        progress: progress.map(|p| ProgressSnapshot {
-            region: p.region,
-            expected: p.expected,
-            done: p.done,
-            busy: p.busy,
-        }),
-    })
-}
-
-#[derive(Serialize)]
-struct ProgressSnapshot {
-    region: u32,
-    expected: u32,
-    done: u32,
-    busy: bool,
-}
-
-#[derive(Serialize)]
-struct DeviceSnapshot {
-    nonce: String,
-    id_byte: u8,
-    state: String,
-    geometry: Option<[u32; 4]>,
-    progress: Option<ProgressSnapshot>,
-}
-
-#[derive(Serialize)]
-struct DumpDoc {
-    timestamp_unix: u64,
-    device: DeviceSnapshot,
 }
 
 fn cmd_info() -> Result<()> {
@@ -525,48 +473,14 @@ fn cmd_info() -> Result<()> {
         None => println!("progress (0x38): unavailable"),
     }
 
-    close_session(&dev);
+    report_close(&dev);
     Ok(())
 }
 
 fn cmd_dump(out: Option<PathBuf>) -> Result<()> {
-    let mut dev = protocol::open()?;
-    let snap = read_device_snapshot(&mut dev)?;
-
-    let ts = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .map(|d| d.as_secs())
-        .unwrap_or(0);
-    let doc = DumpDoc {
-        timestamp_unix: ts,
-        device: snap,
-    };
-    let path = out.unwrap_or_else(|| PathBuf::from(format!("ubdmf-dump-{ts}.json")));
-    let json = serde_json::to_string_pretty(&doc)?;
-    std::fs::write(&path, json)
-        .with_context(|| format!("failed to write dump {}", path.display()))?;
-
+    let path = ops::dump_device(out)?;
     println!("device dump written: {}", path.display());
-    log::info!("device dump written: {}", path.display());
-    close_session(&dev);
     Ok(())
-}
-
-fn load_specs(manifest: &Path) -> Result<(Manifest, Vec<ComponentSpec>)> {
-    let (m, base) = Manifest::load(manifest)?;
-    let files = m.verify_files(&base)?;
-    let mut specs = Vec::with_capacity(m.components.len());
-    for (c, p) in m.components.iter().zip(files) {
-        let data =
-            std::fs::read(&p).with_context(|| format!("failed to read {}", p.display()))?;
-        specs.push(ComponentSpec {
-            region_block_addr: c.region_block_addr,
-            block_count: c.block_count,
-            write_addr: c.write_addr,
-            data,
-        });
-    }
-    Ok((m, specs))
 }
 
 fn cmd_flash(manifest: &Path, yes: bool, dry_run: bool) -> Result<()> {
@@ -678,7 +592,7 @@ fn cmd_verify(manifest: &Path) -> Result<()> {
                 println!("Device geometry (0x35): {:?} (block size {})", fields, fields[3]);
             }
             println!("Note: no image readback over the service port; hash + state checks only.");
-            close_session(&dev);
+            report_close(&dev);
         }
         Err(e) => {
             println!("Device not openable ({e:#}); file hashes verified only.");
@@ -705,33 +619,4 @@ fn cmd_reset() -> Result<()> {
         }
     }
     Ok(())
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn dump_doc_serializes() {
-        let doc = DumpDoc {
-            timestamp_unix: 1763600000,
-            device: DeviceSnapshot {
-                nonce: "0c4e541523254d53baf8ee574d1f3bfe".into(),
-                id_byte: 0,
-                state: "01000000ffff".into(),
-                geometry: Some([2, 0, 256, 65536]),
-                progress: Some(ProgressSnapshot {
-                    region: 192,
-                    expected: 30,
-                    done: 222,
-                    busy: false,
-                }),
-            },
-        };
-        let json = serde_json::to_string_pretty(&doc).unwrap();
-        assert!(json.contains("\"nonce\": \"0c4e541523254d53baf8ee574d1f3bfe\""));
-        // round-trip
-        let back: serde_json::Value = serde_json::from_str(&json).unwrap();
-        assert_eq!(back["device"]["id_byte"], 0);
-    }
 }

@@ -93,7 +93,7 @@ impl log::Log for UbdmfLogger {
     }
 }
 
-fn log_path() -> PathBuf {
+pub fn log_path() -> PathBuf {
     if let Ok(p) = std::env::var("UBDMF_LOG") {
         return PathBuf::from(p);
     }

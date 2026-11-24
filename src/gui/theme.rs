@@ -1,0 +1,66 @@
+//! Qt6-style flat palette, dark + light. Colors are Clay colors (0–255 floats).
+use clay_layout::Color;
+
+#[derive(Clone, Copy)]
+pub struct Theme {
+    pub bg: Color,
+    pub surface: Color,
+    pub hover: Color,
+    pub selected: Color,
+    pub border: Color,
+    pub text: Color,
+    pub text_dim: Color,
+    pub accent: Color,
+    pub accent_hover: Color,
+    pub on_accent: Color,
+    pub ok: Color,
+    pub warn: Color,
+    pub err: Color,
+    pub badge_ok_bg: Color,
+    pub badge_dim_bg: Color,
+    pub badge_warn_bg: Color,
+    pub overlay: Color,
+    pub disabled: Color,
+}
+
+pub const DARK: Theme = Theme {
+    bg: Color::u_rgb(30, 31, 34),
+    surface: Color::u_rgb(39, 40, 44),
+    hover: Color::u_rgb(50, 52, 58),
+    selected: Color::u_rgb(38, 62, 102),
+    border: Color::u_rgb(60, 62, 68),
+    text: Color::u_rgb(232, 233, 236),
+    text_dim: Color::u_rgb(160, 163, 172),
+    accent: Color::u_rgb(53, 132, 228),
+    accent_hover: Color::u_rgb(76, 150, 240),
+    on_accent: Color::u_rgb(255, 255, 255),
+    ok: Color::u_rgb(87, 200, 125),
+    warn: Color::u_rgb(236, 178, 64),
+    err: Color::u_rgb(238, 98, 98),
+    badge_ok_bg: Color::u_rgb(30, 74, 48),
+    badge_dim_bg: Color::u_rgb(52, 54, 60),
+    badge_warn_bg: Color::u_rgb(84, 64, 24),
+    overlay: Color::u_rgba(0, 0, 0, 160),
+    disabled: Color::u_rgb(70, 72, 78),
+};
+
+pub const LIGHT: Theme = Theme {
+    bg: Color::u_rgb(243, 244, 246),
+    surface: Color::u_rgb(255, 255, 255),
+    hover: Color::u_rgb(234, 236, 240),
+    selected: Color::u_rgb(214, 228, 250),
+    border: Color::u_rgb(214, 217, 222),
+    text: Color::u_rgb(28, 30, 34),
+    text_dim: Color::u_rgb(102, 106, 116),
+    accent: Color::u_rgb(30, 104, 205),
+    accent_hover: Color::u_rgb(48, 120, 222),
+    on_accent: Color::u_rgb(255, 255, 255),
+    ok: Color::u_rgb(30, 140, 70),
+    warn: Color::u_rgb(176, 112, 0),
+    err: Color::u_rgb(200, 50, 50),
+    badge_ok_bg: Color::u_rgb(218, 242, 226),
+    badge_dim_bg: Color::u_rgb(232, 234, 238),
+    badge_warn_bg: Color::u_rgb(252, 238, 206),
+    overlay: Color::u_rgba(0, 0, 0, 110),
+    disabled: Color::u_rgb(200, 203, 208),
+};

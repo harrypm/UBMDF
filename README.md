@@ -35,17 +35,19 @@ ubdmf gui --flash <manifest> --yes  # auto-flash (for testing)
 
 ## GUI
 ```
-ubdmf gui
+ubdmf gui [--tab firmware|devices|update|log] [--select <dv-version>]
 ```
-- **Portrait layout** (540×800, Android-friendly)
-- **Arimo Bold** font (Helvetica-compatible, bundled for cross-platform)
-- **Dark/Light mode** toggle (Qt6-style flat theme)
-- **Firmware tab**: indexed bundles list, detail panel, Flash button
-- **Devices tab**: **live** device detection — a poller thread enumerates the USB bus every 2s (hotplug-safe); each entry shows product, serial, bus/address, port chain, speed, and the bound driver (**WinUSB = flashable**, otherwise Zadig swap needed)
-- **Update tab**: BMD catalog info
-- **Log tab**: the **integrated console** — raylib init/GL lines, app events, device-poll and flash progress, with mouse-wheel scrolling
-- **Flash progress bar**: erase phase + write phase with % readout
-- Flash runs on a **worker thread** with mpsc event channel
+- **Clay layout + raylib renderer** (same pairing as MISRC GUI) — flex layout, scroll containers, floating dialog; our own raylib-6 renderer (`src/gui/render.rs`)
+- **Resizable portrait window** (600×860 default, 460×560 minimum)
+- **Arimo** Regular/Bold bundled, rasterised per text size (crisp, includes Latin-1 + `… — →` glyphs)
+- **Dark/Light theme** toggle (Qt6-style flat), remembered in `ubdmf-gui.conf`
+- **Firmware tab**: scrollable list of every indexed bundle — flashable first, then newest → oldest (numeric version sort); filter chips (All / Flashable / Inventories); detail card with size/notes/path, **Flash to device** (with confirm dialog; disabled with a reason when no device, several devices, or a non-WinUSB driver), Show manifest/inventory/installer
+- **Devices tab**: **live** detection (USB polled every 2 s, hotplug-safe); product, serial, bus/address/port, speed, bound driver (**WinUSB = flashable**); **Dump info to JSON** (written to `dumps/`) and **Reset session (0x12)** buttons
+- **Update tab**: **Check catalog** (BMD public catalog, marks indexed versions), per-version **Download** (download → extract → inventory → index, with progress; Windows extraction needs admin), **Rebuild index**
+- **Log tab**: the **integrated console** — raylib, app, device-poll and worker lines; follows new lines, scroll up to pause; Copy and Open file
+- **Progress panel**: hash check → erase → write with % and MB readout; closing the window during a flash is deferred until it finishes (Esc never closes the app)
+- All device/network work runs on **worker threads** (mpsc events); the flash path is the CLI's (sha256-verified component load)
+- Idle throttle: 60 fps while interacting or working, 15 fps idle
 - **No console popup**: GUI builds use the Windows GUI subsystem — no CMD window appears when the exe is launched or double-clicked. CLI commands from a terminal still print normally (the parent console is re-attached when needed)
 
 ## Firmware Index
@@ -99,7 +101,7 @@ The GUI is a default cargo feature; build without it for a headless CLI-only bin
 ```
 cargo build --release                              # Windows GUI + CLI (raylib)
 cargo build --release --no-default-features       # CLI-only (no raylib)
-cargo test [--no-default-features]                # 11 tests, both configs
+cargo test [--no-default-features]                # 13 tests (GUI build) / 11 (CLI-only)
 cargo clippy --release --all-targets [--no-default-features]
 ```
 

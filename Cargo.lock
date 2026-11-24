@@ -205,6 +205,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e0921b3876b3a1df8a1c9f912e7f94342458022c2e84288015893d83c4d62a79"
 
 [[package]]
+name = "clay-layout"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9093371d1d7b694c06c4a1707f80432cad37393a4e86cbf9aa9f42373445223e"
+dependencies = [
+ "cc",
+]
+
+[[package]]
 name = "cmake"
 version = "0.1.58"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1125,6 +1134,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "clap",
+ "clay-layout",
  "indicatif",
  "log",
  "nusb",

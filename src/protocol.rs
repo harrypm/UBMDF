@@ -87,6 +87,7 @@ pub fn list_bmd() -> Result<Vec<String>> {
 /// A service-port device found on the bus (enumeration only — nothing is
 /// opened or claimed). Used by the GUI's live device list (polled every 2s).
 #[derive(Debug, Clone)]
+#[cfg_attr(not(feature = "gui"), allow(dead_code))] // GUI device list
 pub struct DeviceEntry {
     /// iProduct string, if cached by the OS.
     pub product: Option<String>,
@@ -108,6 +109,7 @@ pub struct DeviceEntry {
 
 /// Enumerate connected service-port devices with structured details.
 /// No handles are opened and no interfaces claimed — safe to call repeatedly.
+#[cfg_attr(not(feature = "gui"), allow(dead_code))] // GUI device poller
 pub fn list_bmd_entries() -> Result<Vec<DeviceEntry>> {
     let mut out = Vec::new();
     for d in nusb::list_devices().wait()? {
