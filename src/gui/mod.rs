@@ -565,6 +565,15 @@ pub fn run_gui(opts: Opts) -> anyhow::Result<()> {
     rl.set_window_min_size(460, 560);
     rl.set_target_fps(60);
     rl.set_exit_key(None); // Esc must never close the app (mid-flash safety)
+    // Window/taskbar icon — embedded so it works from any launch directory and
+    // on every platform (temporary art: tools/make-icon.ps1 → assets/icon/).
+    match Image::load_image_from_mem(".png", include_bytes!("../../assets/icon/ubdmf.png")) {
+        Ok(mut icon) => {
+            icon.set_format(PixelFormat::PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
+            rl.set_window_icon(&icon);
+        }
+        Err(e) => log::warn!("window icon not loaded: {e}"),
+    }
 
     let fonts = render::Fonts::load(&mut rl, &thread);
     let mut clay = Clay::new((600.0, 860.0).into());

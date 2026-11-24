@@ -104,3 +104,5 @@
 - Harvest still running (PID 10000, elevated): 38 dv-* inventory dirs.
 
 - 24 Nov follow-up: user: 'text scaling needs to be a bit bigger'. STYLES 14/16/19/24 -> 16/18/21/27 (small/body/H2/H1). Rebuilt; screenshots v4-* checked: no overflow in list, detail card, update card, dialog. GUI reopened for user.
+- 24 Nov: user "good commit this" → committed e06a435 (branch gui-clay) + restore point `AI Notebook/restore-points/UBDMF-restore-2026-11-24-gui-clay-e06a435.{zip,md}`; `/dumps` added to .gitignore.
+- 24 Nov: temporary icon (user: "ultrastudio with ebu bars on the screen, 1:1"). No Pillow on the box → `tools/make-icon.ps1` (System.Drawing, 1024² render → 512 PNG + PNG-in-ICO 16–256). Pitfall: PowerShell unrolled the function's byte[] → 125-byte ICO; fixed with `return , $bytes` + List[byte[]]. First render had buttons overlapping the knob → moved. Wired: window icon via `Image::load_image_from_mem(include_bytes!)` (all platforms); exe icon via build.rs + winresource (Windows target only, non-fatal). Verified: ExtractAssociatedIcon of the exe = new art; title bar crop shows the icon; clippy clean both, tests 13/11, GUI built last.
