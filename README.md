@@ -23,6 +23,8 @@ ubmdf dump                          # dump device info to JSON
 ubmdf flash <manifest.json> --yes   # flash a firmware bundle
 ubmdf verify <manifest.json>        # verify bundle hashes + device state
 ubmdf reset                         # send 0x12 to clear lingering sessions
+ubmdf replay-check <cap.pcap> <manifest.json>  # compare UBMDF's flash sequence with an official-updater capture
+ubmdf probe [--session] [--bulk-in]  # read-only vendor IN sweep, looking for a read-back command
 ubmdf index list                    # list all indexed firmware
 ubmdf index show <id>               # show bundle details
 ubmdf index rebuild                 # rescan firmware/ and rebuild index
@@ -141,6 +143,17 @@ The service-port protocol uses vendor control transfers on EP0 plus bulk OUT on 
 
 Full protocol documentation: `docs/protocol.md`
 
+### Flash log
+Every flash logs each wire step and the device's answer (`0x30` state bytes, `0x35` context, every `0x38` poll, bulk byte count + image sha256, ZLP, commit). A finished flash means every transfer was accepted; the device has no known read-back, so the written contents are **not** verified.
+
+### `replay-check`
+`ubmdf replay-check <capture.pcap> <manifest.json> [--device BUS:ADDR]` builds the exact op list `flash` would send for the manifest and aligns it with the Blackmagic service-port traffic in a capture of the official updater. It reads classic pcap from USBPcap (Windows, link type 249) or Linux usbmon (link type 220). For pcapng, convert first with `editcap -F pcap`. Output marks each op `ok`, `+OFF` (only the official tool sent it) or `-UBMDF` (only UBMDF sends it). Bulk streams are compared byte-for-byte with the component images, and the device's `0x38 expected` erase size is reported. Nothing is sent to any device.
+
+To capture a complete official flash: start USBPcap on the root hub the unit is on **before** launching the updater, and stop only after the unit has rebooted.
+
+### `probe`
+`ubmdf probe` sends only vendor control **IN** requests (no data from the host) for bRequest `--from`..`--to` (default 0x00–0xff) to both the device (0xC0) and interface (0xC1) recipients, with `--value`, `--index` and `--length` (default 64). `--session` opens a `0x31` session first and closes it with `0x12`. `--bulk-in` adds one 512-byte read on EP 0x82. Each request is logged before it is sent, so a hang names its request. The sweep stops on disconnect or 3 timeouts in a row. The 0x30 state is compared before and after, and the results are written to `ubmdf-probe-<epoch>.json`.
+
 ## Building
 The GUI is a default cargo feature; build without it for a headless CLI-only binary (smaller, no raylib).
 ```
@@ -194,7 +207,7 @@ This was verified on 2026-11-24: `data-r90.bin` from 12.8.1 and from 16.0 unpack
 python -I tools/datar.py <data-rNN.bin>            # list records (size, write addr, device, type)
 python -I tools/make_datar_bundles.py [--dry-run]  # 4K Mini bundle for every DV 11.5+ version
 ```
-`make_datar_bundles.py` takes geometry from the record headers and refuses anything that differs from the hardware-proven layout. Images identical to a verified capture are hardlinked, so the 43 bundles take about 33 MB. The index kind keeps its old serialized name, `encrypted-inventory`.
+`make_datar_bundles.py` takes geometry from the record headers and refuses anything that differs from the hardware-proven layout. Images identical to an official-tool capture are hardlinked, so the 43 bundles take about 33 MB. The index kind keeps its old serialized name, `encrypted-inventory`.
 
 ## License
 Tool code: MIT. Firmware images are Blackmagic Design property — local archival and flashing of images obtained via official installers only.

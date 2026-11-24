@@ -1,0 +1,1274 @@
+{
+  "timestamp_unix": 1795510207,
+  "session": true,
+  "nonce": "0c4e541523254d53baf8ee574d1f3bfe",
+  "state_before": "00000000ffff",
+  "state_in_session": "01000000ffff",
+  "state_after": "01000000ffff",
+  "entries": [
+    {
+      "bm_request_type": "c0",
+      "request": "11",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "11",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "11",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "11",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "data",
+      "data": "890bb734890bb734"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "12",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "reboot",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "12",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "reboot",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "12",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "reboot",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "12",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "reboot",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "13",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "13",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "13",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "13",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "14",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "14",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "14",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "14",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "15",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "15",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "15",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "15",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "16",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "16",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "16",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "16",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "17",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "17",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "17",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "17",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "18",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "18",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "18",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "18",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "19",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "19",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "19",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "19",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "1a",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "1a",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "1a",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "1a",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "1b",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "1b",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "1b",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "1b",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "1c",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "1c",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "1c",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "1c",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "1d",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "1d",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "1d",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "1d",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "1e",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "1e",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "1e",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "1e",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "1f",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "1f",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "1f",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "1f",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "20",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "20",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "20",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "data",
+      "data": "0101"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "20",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "21",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "21",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "21",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "21",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "22",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "22",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "22",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "22",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "23",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "23",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "23",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "23",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "24",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "24",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "24",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "24",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "25",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "25",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "25",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "25",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "26",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "26",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "26",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "26",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "27",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "27",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "27",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "27",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "28",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "28",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "28",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "28",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "29",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "29",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "29",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "29",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "2a",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "2a",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "2a",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "2a",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "2b",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "2b",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "2b",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "2b",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "2c",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "2c",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "2c",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "2c",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "2d",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "2d",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "2d",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "2d",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "2e",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "2e",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "2e",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "2e",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "2f",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "2f",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "2f",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "2f",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "30",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "state",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "30",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "state",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "30",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "state",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "30",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "state",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "31",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "begin",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "31",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "begin",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "31",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "begin",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "31",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "begin",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "32",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "commit",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "32",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "commit",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "32",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "commit",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "32",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "commit",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "33",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c0",
+      "request": "33",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "33",
+      "value": 0,
+      "index": 0,
+      "length": 2,
+      "known_as": "unknown",
+      "result": "data",
+      "data": "0500"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "33",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "unknown",
+      "result": "stall"
+    }
+  ],
+  "bulk_in_ep82": null
+}

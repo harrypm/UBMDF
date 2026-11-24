@@ -401,6 +401,7 @@ fn spawn_flash(manifest: PathBuf, tx: Sender<Ev>) {
         let mut written: u64 = 0;
         let mut phase_write = false;
         let res = crate::protocol::flash(&mut dev, &specs, |ev| match ev {
+            crate::protocol::FlashEvent::Identity { .. } => {} // logged by protocol::flash
             crate::protocol::FlashEvent::ErasePoll { region, done, expected } => {
                 let frac = if *expected > 0 { *done as f32 / *expected as f32 } else { 0.0 };
                 send(Ev::Progress {
@@ -427,7 +428,10 @@ fn spawn_flash(manifest: PathBuf, tx: Sender<Ev>) {
         send(match res {
             Ok(()) => Ev::JobDone {
                 ok: true,
-                msg: format!("Flash complete: {} — unplug the USB cable, then power-cycle", m.image.name),
+                msg: format!(
+                    "Flash sent: {} — all transfers accepted (contents not verified, no read-back). Unplug the USB cable, then power-cycle",
+                    m.image.name
+                ),
                 reload_index: false,
                 dump: None,
             },

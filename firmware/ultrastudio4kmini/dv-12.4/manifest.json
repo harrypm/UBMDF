@@ -3,7 +3,7 @@
     "name": "UltraStudio 4K Mini - Desktop Video 12.4",
     "source": "official DV 12.4 installer, Firmware/data-r90.bin (unpacked with tools/datar.py)",
     "protocol": "docs/protocol.md",
-    "notes": "Extracted from the official DV 12.4 installer (Firmware/data-r90.bin, zlib container). Byte-identical to the hardware-verified capture bundle dv-12.8.1."
+    "notes": "Extracted from the official DV 12.4 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase region = full captured region (145, 30 blocks)."
   },
   "components": [
     {

@@ -17,7 +17,7 @@ evidence allows.
 
 The images are byte-identical across all versions within a group. Evidence for the 11.3 – 11.4.1 pair:
 
-- **`rc-202`**: byte-identical (sha256) to `component_B.bin` of the hardware-verified 12.8.1 and 16.0 capture bundles.
+- **`rc-202`**: byte-identical (sha256) to `component_B.bin` of the official-tool 12.8.1 and 16.0 capture bundles.
 - **`rc-200`**:
   - Same size as the verified 12.8.1 `component_A.bin` (9,491,428 B).
   - Same Xilinx IDCODE `03824093`.
@@ -40,10 +40,14 @@ From 11.5 onward the 4K Mini images are in `Firmware/data-r90.bin`, a zlib conta
 |---|---|---|---|---|
 | 10.11.4 – 11.2 | `199ec0cf…` (2.16 MB) | `aacc0c45…` (1.38 MB) | none | probable; layout unproven |
 | 11.3 – 11.4.1 | `1f9b2083…` | `1c8d4f7f…` | dv-11.4.1 | derived; not yet flashed |
-| 11.5 – 12.8.1 (20 versions) | `6d2d0500…` = verified 12.8.1 capture | `1c8d4f7f…` | dv-11.5 … dv-12.8.1 | **byte-identical to the hardware-verified capture** |
-| 12.9 – 16.5 (22 versions) | `2cd5104b…` = verified 16.0 capture | `1c8d4f7f…` | dv-12.9 … dv-16.5 | **byte-identical to the hardware-verified capture** |
+| 11.5 – 12.8.1 (20 versions) | `6d2d0500…` = 12.8.1 official-tool capture | `1c8d4f7f…` | dv-11.5 … dv-12.8.1 | **byte-identical to the official-tool capture**; erase 145 blocks |
+| 12.9 – 16.5 (22 versions) | `2cd5104b…` = 16.0 official-tool capture | `1c8d4f7f…` | dv-12.9 … dv-16.5 | **byte-identical to the official-tool capture**; erase 145 blocks (image fills 144) |
 
-`component_B` (the ARM ELF) has not changed since 11.3.
+`component_B` (a MicroBlaze ELF that runs inside the FPGA and drives the front-panel display) has not changed since 11.3.
+
+**What "capture" proves:** the images are byte-identical to what the official updater sent over USB, and the device accepted every transfer. It does not prove the unit boots afterwards: as of 2026-11-24 the test unit has stayed dark (blank front panel, no PCIe device) after the official 16.5 updater and after UBMDF flashes of 12.8.1 and 16.5. The service port has no known read-back command, so the flash contents have never been read back.
+
+**Erase size (12.9 – 16.5):** the official 16.5 updater erases **145** blocks for the 144-block component A (`flash165_USBPcap3.pcap`, 0x38 `expected=145`). Bundles up to v1.0.1 sent 144; they now send 145. The `dv-16.0` capture bundle also said 144. Its source capture (`flash16_pass2_USBPcap3.pcap`, Windows machine only) has not been rechecked; run `ubmdf replay-check` on it to settle which value the 16.0 updater sent.
 
 DV 12.9 is flagged KNOWN-BAD from forum reports of bricked units, but its 4K Mini images are byte-identical to 14.0 – 16.5. So the failures were not caused by the image files; they could have come from the 12.9 updater tool or the update process.
 
@@ -71,6 +75,7 @@ Grouped by `tools/bitstream_info.py`. The IDCODE comes from the type-1 packet wr
 ## Tools
 
 - `tools/bitstream_info.py <file|dir>` (`--csv out.csv`): reports the sync offset, IDCODE and part.
+- `tools/bitstream_packets.py <component_A.bin>`: dumps the configuration packets up to the first frame-data write (quad-SPI setup, WBSTAR/TIMER fallback settings, IDCODE). The 4K Mini images have WBSTAR=0 and TIMER=0, so there is no fallback image.
 - `tools/make_rcdata_bundle.py`: builds a flashable bundle from RCDATA ids using a verified bundle's geometry. It refuses if an image needs more blocks than the proven region, if the resources differ between the `--also` versions, or if the bundle already exists.
 
 ## Open

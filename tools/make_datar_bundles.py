@@ -4,8 +4,9 @@ the official installer's Firmware/data-rNN.bin containers (see tools/datar.py).
 For each version, the container whose records target the given USB device
 (default 1edb:be13 = UltraStudio 4K Mini service port) is unpacked. Geometry
 comes from the record headers (write address -> region block, size -> block
-count) and must agree with the hardware-verified reference bundles' layout.
-If the images are byte-identical to a hardware-verified capture bundle, the
+count) and must agree with the official-tool capture bundles' layout; the erase
+count is always the full captured region (145 blocks for component A).
+If the images are byte-identical to an official-tool capture bundle, the
 manifest says so; otherwise it is marked "NOT yet flashed on hardware".
 
 Identical component files are hardlinked to the verified bundle's copy (NTFS /
@@ -47,7 +48,7 @@ def main():
     ap.add_argument("--vid", default="1edb")
     ap.add_argument("--pid", default="be13")
     ap.add_argument("--reference", nargs="+", default=["dv-12.8.1", "dv-16.0"],
-                    help="hardware-verified capture bundles (geometry + identity check)")
+                    help="official-tool capture bundles (geometry + identity check)")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
     vid, pid = int(a.vid, 16), int(a.pid, 16)
@@ -89,11 +90,15 @@ def main():
             if lo is None:
                 sys.exit(f"{v}: component {r['index']} has no verified layout")
             region = r["write_addr"] // BLOCK
-            blocks = math.ceil(r["size"] / BLOCK)
-            if r["write_addr"] != lo["write"] or region != lo["region"] or blocks > lo["max_blocks"] \
+            needed = math.ceil(r["size"] / BLOCK)
+            if r["write_addr"] != lo["write"] or region != lo["region"] or needed > lo["max_blocks"] \
                     or not r["size_ok"]:
-                sys.exit(f"{v}: component {r['index']} layout {r['write_addr']:#x}/{blocks} blocks "
+                sys.exit(f"{v}: component {r['index']} layout {r['write_addr']:#x}/{needed} blocks "
                          f"differs from the verified layout — refusing")
+            # Erase the whole captured region, not just the blocks this image fills: the
+            # official 16.5 updater erases 145 blocks for the 9,399,532 B (144-block)
+            # component A (flash165_USBPcap3.pcap, 0x38 expected=145).
+            blocks = lo["max_blocks"]
             h = sha(r["data"])
             matches.append(verified.get(h, (None,))[0])
             comps.append((r["data"], h, {
@@ -101,11 +106,11 @@ def main():
                 "region_block_addr": region, "block_count": blocks, "write_addr": r["write_addr"],
                 "source_resource": f"Firmware/{src} record {r['index']} (DV {v} installer)",
             }))
-        refs = sorted({m for m in matches if m})
         all_verified = all(matches)
         if all_verified:
             notes = (f"Extracted from the official DV {v} installer (Firmware/{src}, zlib container). "
-                     f"Byte-identical to the hardware-verified capture bundle {', '.join(refs)}.")
+                     + " ".join(f"{c[2]['file']} = official-tool capture image {m}." for c, m in zip(comps, matches))
+                     + f" Erase region = full captured region ({', '.join(str(c[2]['block_count']) for c in comps)} blocks).")
         else:
             notes = (f"Extracted from the official DV {v} installer (Firmware/{src}, zlib container); "
                      f"geometry from its own record headers, matching the verified layout. "

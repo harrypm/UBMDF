@@ -1,0 +1,29 @@
+{
+  "timestamp_unix": 1795510108,
+  "session": false,
+  "nonce": "0c4e541523254d53baf8ee574d1f3bfe",
+  "state_before": "00000000ffff",
+  "state_in_session": null,
+  "state_after": "00000000ffff",
+  "entries": [
+    {
+      "bm_request_type": "c0",
+      "request": "30",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "state",
+      "result": "stall"
+    },
+    {
+      "bm_request_type": "c1",
+      "request": "30",
+      "value": 0,
+      "index": 0,
+      "length": 8,
+      "known_as": "state",
+      "result": "stall"
+    }
+  ],
+  "bulk_in_ep82": null
+}

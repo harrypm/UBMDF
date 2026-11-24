@@ -17,7 +17,9 @@ mod index;
 mod logger;
 mod manifest;
 mod ops;
+mod probe;
 mod protocol;
+mod replay;
 
 use anyhow::{bail, Context, Result};
 use clap::{Parser, Subcommand};
@@ -68,6 +70,46 @@ enum Cmd {
     },
     /// Send the reboot command (0x12) to clear a lingering session
     Reset,
+    /// Compare UBMDF's flash sequence for a manifest with a USB capture of the
+    /// official updater (USBPcap or Linux usbmon pcap). Nothing is sent to a device.
+    ReplayCheck {
+        /// Capture file (.pcap: USBPcap link type 249 or usbmon 220)
+        capture: PathBuf,
+        /// Bundle manifest whose flash sequence is compared
+        manifest: PathBuf,
+        /// Device in the capture as BUS:ADDR (default: the one with the most protocol ops)
+        #[arg(long, value_parser = parse_bus_addr)]
+        device: Option<(u16, u16)>,
+    },
+    /// Look for a read-back command: send read-only vendor control IN requests
+    /// over a bRequest range (no erase, no write) and log every answer
+    Probe {
+        /// Open a 0x31 session first (closed with 0x12 afterwards, like `info`)
+        #[arg(long)]
+        session: bool,
+        /// First bRequest (hex like 0x00 or decimal)
+        #[arg(long, default_value = "0x00", value_parser = parse_u8)]
+        from: u8,
+        /// Last bRequest
+        #[arg(long, default_value = "0xff", value_parser = parse_u8)]
+        to: u8,
+        /// wValue for every request
+        #[arg(long, default_value = "0", value_parser = parse_u16)]
+        value: u16,
+        /// wIndex for every request
+        #[arg(long, default_value = "0", value_parser = parse_u16)]
+        index: u16,
+        /// wLength values: list and ranges, e.g. 6,16 or 1-64,128 (the device STALLs
+        /// any request whose wLength is not exactly the expected size)
+        #[arg(long, default_value = "1-64,128,256,512,1024,2048,4096", value_parser = parse_lengths)]
+        length: Lengths,
+        /// Also try one 512-byte bulk IN read on EP 0x82
+        #[arg(long)]
+        bulk_in: bool,
+        /// Output JSON (default: ubmdf-probe-<epoch-secs>.json in the cwd)
+        #[arg(long)]
+        out: Option<PathBuf>,
+    },
     /// Firmware index operations
     Index {
         #[command(subcommand)]
@@ -235,6 +277,21 @@ fn run(cli: Cli) -> Result<()> {
         } => cmd_flash(&manifest, yes, dry_run),
         Cmd::Verify { manifest } => cmd_verify(&manifest),
         Cmd::Reset => cmd_reset(),
+        Cmd::ReplayCheck { capture, manifest, device } => {
+            let (_m, specs) = load_specs(&manifest)?;
+            replay::check(&capture, &specs, device).map(|_| ())
+        }
+        Cmd::Probe { session, from, to, value, index, length, bulk_in, out } => probe::run(&probe::ProbeOptions {
+            session,
+            from,
+            to,
+            value,
+            index,
+            lengths: length.0,
+            bulk_in,
+            out,
+        })
+        .map(|_| ()),
         Cmd::Index { cmd } => match cmd {
             IndexCmd::List => cmd_index_list(),
             IndexCmd::Show { id } => cmd_index_show(&id),
@@ -537,12 +594,6 @@ fn cmd_flash(manifest: &Path, yes: bool, dry_run: bool) -> Result<()> {
     }
 
     let mut dev = protocol::open()?;
-    let (nonce, one) = protocol::read_id(&dev.iface)?;
-    println!(
-        "device open: nonce={}, id byte={:#04x}",
-        protocol::hex(&nonce),
-        one
-    );
     log::info!("flash started: {} ({} bytes)", m.image.name, total);
 
     let total_len: u64 = specs.iter().map(|s| s.data.len() as u64).sum();
@@ -561,6 +612,9 @@ fn cmd_flash(manifest: &Path, yes: bool, dry_run: bool) -> Result<()> {
 
     let mut current_component = usize::MAX;
     protocol::flash(&mut dev, &specs, |ev| match ev {
+        FlashEvent::Identity { nonce, id_byte } => {
+            println!("device: nonce={}, id byte={:#04x}", protocol::hex(nonce), id_byte);
+        }
         FlashEvent::ErasePoll {
             region,
             done,
@@ -580,9 +634,10 @@ fn cmd_flash(manifest: &Path, yes: bool, dry_run: bool) -> Result<()> {
     })?;
 
     write_pb.finish_and_clear();
-    log::info!("flash complete: {}", m.image.name);
-    println!("Flash complete.");
-    println!("Please unplug the USB cable from your device.");
+    log::info!("flash sent: {} (all transfers accepted; contents not verified — no read-back)", m.image.name);
+    println!("Flash sent: every transfer was accepted by the device.");
+    println!("The device has no read-back, so the written contents are NOT verified.");
+    println!("Unplug the USB cable, then power-cycle the unit.");
     Ok(())
 }
 
@@ -628,4 +683,49 @@ fn cmd_reset() -> Result<()> {
         }
     }
     Ok(())
+}
+
+fn parse_u16(s: &str) -> std::result::Result<u16, String> {
+    let r = match s.strip_prefix("0x").or_else(|| s.strip_prefix("0X")) {
+        Some(h) => u16::from_str_radix(h, 16),
+        None => s.parse(),
+    };
+    r.map_err(|e| format!("{s}: {e}"))
+}
+
+fn parse_u8(s: &str) -> std::result::Result<u8, String> {
+    let v = parse_u16(s)?;
+    u8::try_from(v).map_err(|_| format!("{s}: must be 0..=255"))
+}
+
+fn parse_bus_addr(s: &str) -> std::result::Result<(u16, u16), String> {
+    let (b, a) = s.split_once(':').ok_or_else(|| format!("{s}: expected BUS:ADDR"))?;
+    Ok((parse_u16(b)?, parse_u16(a)?))
+}
+
+/// wLength list for `probe` (a newtype so clap treats it as ONE value).
+#[derive(Clone, Debug)]
+struct Lengths(Vec<u16>);
+
+/// Parse "1-64,128,4096" into a sorted, de-duplicated list.
+fn parse_lengths(s: &str) -> std::result::Result<Lengths, String> {
+    let mut v = Vec::new();
+    for part in s.split(',').map(str::trim).filter(|p| !p.is_empty()) {
+        match part.split_once('-') {
+            Some((a, b)) => {
+                let (a, b) = (parse_u16(a)?, parse_u16(b)?);
+                if a > b {
+                    return Err(format!("{part}: range start > end"));
+                }
+                v.extend(a..=b);
+            }
+            None => v.push(parse_u16(part)?),
+        }
+    }
+    v.sort_unstable();
+    v.dedup();
+    if v.is_empty() {
+        return Err("no lengths given".into());
+    }
+    Ok(Lengths(v))
 }

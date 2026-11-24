@@ -233,6 +233,8 @@ pub struct ProgressView {
     pub expected: u32,
     pub done: u32,
     pub busy: bool,
+    /// The 3 trailing flag bytes as received (`01 00 01` busy, `00 00 00` done).
+    pub flags: [u8; 3],
 }
 
 pub fn read_progress(iface: &Interface) -> Result<ProgressView> {
@@ -245,6 +247,7 @@ pub fn read_progress(iface: &Interface) -> Result<ProgressView> {
         expected: u32::from_le_bytes([d[4], d[5], d[6], d[7]]),
         done: u32::from_le_bytes([d[8], d[9], d[10], d[11]]),
         busy: !(d[12] == 0 && d[13] == 0 && d[14] == 0),
+        flags: [d[12], d[13], d[14]],
     })
 }
 
@@ -258,18 +261,231 @@ pub struct ComponentSpec {
 
 /// Events emitted during flashing so the CLI can render progress.
 pub enum FlashEvent {
+    /// Device identity read at the start of the session (0x10 nonce, 0x10 id byte).
+    Identity { nonce: Vec<u8>, id_byte: u8 },
     /// Erase-phase poll: (region block address, blocks done, blocks expected)
     ErasePoll { region: u32, done: u32, expected: u32 },
     /// Image bytes written for component `index` (chunk completed).
     WriteChunk { component: usize, bytes: usize },
 }
 
-/// Execute the full flash session exactly as the official tool does.
+/// One step of the flash session as it appears on the wire. `planned_ops` builds
+/// the list, `flash` executes exactly that list, and `replay::check` compares the
+/// same list with a USB capture of the official updater — so what is checked is
+/// what is sent.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum WireOp {
+    /// Vendor control IN (bmRequestType 0xC0 device / 0xC1 interface).
+    CtrlIn { device: bool, request: u8, length: u16 },
+    /// Vendor control OUT to the interface (bmRequestType 0x41).
+    CtrlOut { request: u8, data: Vec<u8> },
+    /// 0x38 progress polls until the component's erase finishes (one or more on the wire).
+    ErasePoll { component: usize },
+    /// The component's image as bulk OUT chunks on EP 0x01.
+    Bulk { component: usize, bytes: usize, sha256: String },
+    /// Zero-length bulk OUT terminator after a component.
+    Zlp { component: usize },
+}
+
+impl WireOp {
+    /// Short human-readable form, used in logs and the replay report.
+    pub fn describe(&self) -> String {
+        match self {
+            WireOp::CtrlIn { device, request, length } => format!(
+                "IN  {:02x}/0x{request:02x} len {length} ({})",
+                if *device { 0xc0 } else { 0xc1 },
+                request_name(*request)
+            ),
+            WireOp::CtrlOut { request, data } => format!(
+                "OUT 41/0x{request:02x} [{}] ({})",
+                hex(data),
+                request_name(*request)
+            ),
+            WireOp::ErasePoll { component } => format!("0x38 erase polls (component {component})"),
+            WireOp::Bulk { component, bytes, sha256 } => {
+                format!("BULK OUT ep01 {bytes} B sha256 {} (component {component})", &sha256[..16.min(sha256.len())])
+            }
+            WireOp::Zlp { component } => format!("BULK OUT ep01 zero-length (component {component})"),
+        }
+    }
+}
+
+/// Name of a known vendor request.
+pub fn request_name(request: u8) -> &'static str {
+    match request {
+        REQ_ID => "id",
+        REQ_STATE => "state",
+        REQ_GEOMETRY => "erase context",
+        REQ_BEGIN => "begin",
+        REQ_ERASE => "erase",
+        REQ_REGION => "region select",
+        REQ_PROGRESS => "progress",
+        REQ_WRITE_ADDR => "write addr",
+        REQ_COMMIT => "commit",
+        REQ_REBOOT => "reboot",
+        _ => "unknown",
+    }
+}
+
+fn op_in(device: bool, request: u8, length: u16) -> WireOp {
+    WireOp::CtrlIn { device, request, length }
+}
+
+fn op_out(request: u8, data: &[u8]) -> WireOp {
+    WireOp::CtrlOut { request, data: data.to_vec() }
+}
+
+/// The complete wire sequence UBMDF sends to flash `components`.
 ///
-/// Sequence (see docs/protocol.md):
-/// begin(0x31, with reset recovery) → state(0x30)×2 → erase(0x34) → context(0x35) →
-/// for each component: region(0x37) → poll(0x38) until idle → write addr(0x39) →
-/// bulk OUT chunks → state/geometry checks → commit(0x32) → state(0x30) → reboot(0x12).
+/// id(0x10 dev 16 B, 0x10 iface 1 B) → state(0x30)×2 → begin(0x31) → state×2 →
+/// erase(0x34) → context(0x35) → per component: region(0x37) → 0x38 polls →
+/// write addr(0x39) → context(0x35, write latch) → bulk OUT → ZLP → state(0x30) +
+/// context(0x35) [non-final] or state×2 [final] → commit(0x32) → state → reboot(0x12).
+pub fn planned_ops(components: &[ComponentSpec]) -> Vec<WireOp> {
+    let mut ops = vec![
+        op_in(true, REQ_ID, 16),
+        op_in(false, REQ_ID, 1),
+        // Official prologue (capture frames 35-37): two state reads BEFORE begin too.
+        op_in(false, REQ_STATE, 6),
+        op_in(false, REQ_STATE, 6),
+        op_out(REQ_BEGIN, &[]),
+        op_in(false, REQ_STATE, 6),
+        op_in(false, REQ_STATE, 6),
+        // The erase command (0x34) goes BEFORE the 0x35 read — 0x35 only responds
+        // during an active erase session and STALLs otherwise (verified on hardware).
+        op_out(REQ_ERASE, &[]),
+        op_in(false, REQ_GEOMETRY, 16),
+    ];
+    for (index, c) in components.iter().enumerate() {
+        let mut region = [0u8; 8];
+        region[0..4].copy_from_slice(&c.region_block_addr.to_le_bytes());
+        region[4..8].copy_from_slice(&c.block_count.to_le_bytes());
+        ops.push(op_out(REQ_REGION, &region));
+        ops.push(WireOp::ErasePoll { component: index });
+        ops.push(op_out(REQ_WRITE_ADDR, &c.write_addr.to_be_bytes()));
+        // Official flow reads 0x35 immediately after arming the write address
+        // (reference-capture frames 777 and 1525) — required to latch write mode;
+        // omitting it makes the second 0x39 stall (hardware-verified).
+        ops.push(op_in(false, REQ_GEOMETRY, 16));
+        ops.push(WireOp::Bulk { component: index, bytes: c.data.len(), sha256: sha256_hex(&c.data) });
+        // Explicit zero-length terminator (reference-capture frames 1359 and 1645).
+        ops.push(WireOp::Zlp { component: index });
+        // Post-write checks, matching the official trace:
+        // non-final component: 0x30 + 0x35; final component: 0x30 twice.
+        ops.push(op_in(false, REQ_STATE, 6));
+        if index + 1 < components.len() {
+            ops.push(op_in(false, REQ_GEOMETRY, 16));
+        } else {
+            ops.push(op_in(false, REQ_STATE, 6));
+        }
+    }
+    ops.push(op_out(REQ_COMMIT, &[]));
+    ops.push(op_in(false, REQ_STATE, 6));
+    ops.push(op_out(REQ_REBOOT, &[]));
+    ops
+}
+
+/// Poll 0x38 until the component's erase is armed and then idle twice in a row.
+fn wait_erase(
+    iface: &Interface,
+    index: usize,
+    c: &ComponentSpec,
+    on_event: &mut impl FnMut(&FlashEvent),
+) -> Result<()> {
+    let erase_start = Instant::now();
+    // Give the device a moment to arm the erase after the 0x37 region select.
+    std::thread::sleep(Duration::from_millis(100));
+    let deadline = Instant::now() + Duration::from_secs(600);
+    let arm_deadline = Instant::now() + Duration::from_secs(15);
+    // Completion requires the erase to be ARMED first (0x38 expected > 0): the
+    // pre-arm idle reply {expected=0, busy=false} is indistinguishable from a
+    // finished erase otherwise (hardware-verified the hard way).
+    let mut idle = 0u32;
+    let mut armed = false;
+    let last = loop {
+        let p = read_progress(iface)?;
+        log::info!(
+            "component {index}: 0x38 progress region={} expected={} done={} flags={}",
+            p.region,
+            p.expected,
+            p.done,
+            hex(&p.flags)
+        );
+        if p.expected > 0 && p.expected != c.block_count {
+            log::warn!(
+                "component {index}: device reports expected={} blocks but {} were requested",
+                p.expected,
+                c.block_count
+            );
+        }
+        on_event(&FlashEvent::ErasePoll { region: p.region, done: p.done, expected: p.expected });
+        if p.expected > 0 {
+            armed = true;
+        }
+        if armed && !p.busy {
+            idle += 1;
+            if idle >= 2 {
+                break p;
+            }
+        } else {
+            idle = 0;
+        }
+        if !armed && Instant::now() > arm_deadline {
+            bail!("erase did not arm (0x38 expected stayed 0 for 15 s)");
+        }
+        if Instant::now() > deadline {
+            bail!("erase poll timed out (region {} blocks {}/{})", p.region, p.done, p.expected);
+        }
+        std::thread::sleep(Duration::from_millis(500));
+    };
+    log::info!(
+        "component {index}: erase done in {:.1} s: region={} expected={} done={} busy={}",
+        erase_start.elapsed().as_secs_f32(),
+        last.region,
+        last.expected,
+        last.done,
+        last.busy
+    );
+    if last.done != last.expected {
+        log::warn!("component {index}: erase ended with done={} != expected={}", last.done, last.expected);
+    }
+    Ok(())
+}
+
+/// Send one component's image as bulk OUT chunks.
+fn write_component(
+    iface: &Interface,
+    index: usize,
+    c: &ComponentSpec,
+    on_event: &mut impl FnMut(&FlashEvent),
+) -> Result<()> {
+    let write_start = Instant::now();
+    let mut sent = 0usize;
+    let mut chunks = 0usize;
+    let mut writer = iface.endpoint::<Bulk, Out>(BULK_OUT_EP)?.writer(CHUNK);
+    for chunk in c.data.chunks(CHUNK) {
+        writer
+            .write_all(chunk)
+            .with_context(|| format!("bulk OUT write failed after {sent} bytes"))?;
+        sent += chunk.len();
+        chunks += 1;
+        if chunks.is_multiple_of(32) {
+            log::info!("component {index}: {sent}/{} bytes queued", c.data.len());
+        }
+        on_event(&FlashEvent::WriteChunk { component: index, bytes: chunk.len() });
+    }
+    writer.flush().context("bulk OUT flush failed")?;
+    drop(writer);
+    log::info!(
+        "component {index}: bulk OUT complete: {sent} bytes in {chunks} chunks ({:.1} s, sha256 {})",
+        write_start.elapsed().as_secs_f32(),
+        sha256_hex(&c.data)
+    );
+    Ok(())
+}
+
+/// Execute the flash session: exactly the `planned_ops` sequence (see docs/protocol.md),
+/// logging every step and every device response.
 pub fn flash(
     dev: &mut BmdDevice,
     components: &[ComponentSpec],
@@ -278,119 +494,133 @@ pub fn flash(
     if components.is_empty() {
         bail!("no components to flash");
     }
-
-    // Official prologue (capture frames 35-37): two state reads BEFORE begin too.
-    let _ = read_state(&dev.iface)?;
-    let _ = read_state(&dev.iface)?;
-    begin_session(dev)?;
-    let iface = &dev.iface;
-    let _ = read_state(iface)?;
-    let _ = read_state(iface)?;
-
-    // Official order (verified against the capture): the erase command (0x34) is
-    // sent BEFORE reading 0x35 — 0x35 only responds during an active erase session
-    // and STALLs otherwise (verified on hardware).
-    ctrl_out(iface, REQ_ERASE, &[])?;
-    let geo = read_geometry(iface)?;
-
-    for (index, c) in components.iter().enumerate() {
-        let mut region = [0u8; 8];
-        region[0..4].copy_from_slice(&c.region_block_addr.to_le_bytes());
-        region[4..8].copy_from_slice(&c.block_count.to_le_bytes());
-        ctrl_out(iface, REQ_REGION, &region)?;
-
-        // Give the device a moment to arm the erase after the 0x37 region select.
-        std::thread::sleep(Duration::from_millis(100));
-        let deadline = Instant::now() + Duration::from_secs(600);
-        let arm_deadline = Instant::now() + Duration::from_secs(15);
-        // Completion requires the erase to be ARMED first (0x38 expected > 0): the
-        // pre-arm idle reply {expected=0, busy=false} is indistinguishable from a
-        // finished erase otherwise (hardware-verified the hard way).
-        let mut idle = 0u32;
-        let mut armed = false;
-        #[allow(unused_assignments)]
-        let mut last: Option<ProgressView> = None;
-        loop {
-            let p = read_progress(iface)?;
-            last = Some(p);
-            on_event(&FlashEvent::ErasePoll {
-                region: p.region,
-                done: p.done,
-                expected: p.expected,
-            });
-            if p.expected > 0 {
-                armed = true;
-            }
-            if armed && !p.busy {
-                idle += 1;
-                if idle >= 2 {
-                    break;
-                }
-            } else {
-                idle = 0;
-            }
-            if !armed && Instant::now() > arm_deadline {
-                bail!("erase did not arm (0x38 expected stayed 0 for 15 s)");
-            }
-            if Instant::now() > deadline {
-                bail!(
-                    "erase poll timed out (region {} blocks {}/{})",
-                    p.region,
-                    p.done,
-                    p.expected
-                );
-            }
-            std::thread::sleep(Duration::from_millis(500));
-        }
-        let last = last.context("no progress poll completed")?;
-        eprintln!(
-            "[diag] erase phase ended: region={} expected={} done={} busy={}",
-            last.region, last.expected, last.done, last.busy
+    let total: usize = components.iter().map(|c| c.data.len()).sum();
+    log::info!("flash: {} component(s), {total} bytes", components.len());
+    for (i, c) in components.iter().enumerate() {
+        log::info!(
+            "flash: component {i}: {} B, region block {} x {} blocks (erase 0x{:08x}-0x{:08x}), write addr 0x{:08x}",
+            c.data.len(),
+            c.region_block_addr,
+            c.block_count,
+            c.region_block_addr as u64 * 0x10000,
+            (c.region_block_addr as u64 + c.block_count as u64) * 0x10000 - 1,
+            c.write_addr
         );
-
-        ctrl_out(iface, REQ_WRITE_ADDR, &c.write_addr.to_be_bytes())?;
-        // Official flow reads 0x35 immediately after arming the write address
-        // (reference-capture frames 777 and 1525) — required to latch write mode;
-        // omitting it makes the second 0x39 stall (hardware-verified).
-        let _ = read_geometry(iface)?;
-
-        let mut writer = iface.endpoint::<Bulk, Out>(BULK_OUT_EP)?.writer(CHUNK);
-        for chunk in c.data.chunks(CHUNK) {
-            writer
-                .write_all(chunk)
-                .context("bulk OUT write failed")?;
-            on_event(&FlashEvent::WriteChunk {
-                component: index,
-                bytes: chunk.len(),
-            });
-        }
-        writer.flush().context("bulk OUT flush failed")?;
-        drop(writer);
-
-        // Explicit zero-length terminator: the official tool submits a genuine
-        // zero-length bulk OUT after each component's final short packet
-        // (reference-capture frames 1359 and 1645). Without it the device does
-        // not finalize the region write and the next 0x39 stalls (verified).
-        let mut ep = iface.endpoint::<Bulk, Out>(BULK_OUT_EP)?;
-        ep.transfer_blocking(Buffer::new(0), Duration::from_secs(10))
-            .into_result()
-            .context("zero-length terminator failed")?;
-
-        // Post-write checks, matching the official trace exactly:
-        // non-final component: 0x30 + 0x35; final component: 0x30 twice.
-        let _ = read_state(iface)?;
-        if index + 1 < components.len() {
-            let _ = read_geometry(iface)?;
-        } else {
-            let _ = read_state(iface)?;
-        }
     }
 
-    let _ = geo; // geometry was read for the session record
-    ctrl_out(iface, REQ_COMMIT, &[])?;
-    let _ = read_state(iface)?;
-    ctrl_out(iface, REQ_REBOOT, &[])?;
+    let ops = planned_ops(components);
+    let mut nonce: Option<Vec<u8>> = None;
+    for (step, op) in ops.iter().enumerate() {
+        let n = step + 1;
+        match op {
+            WireOp::CtrlIn { device, request, length } => {
+                let recipient = if *device { Recipient::Device } else { Recipient::Interface };
+                let d = ctrl_in(&dev.iface, recipient, *request, *length)?;
+                log::info!("[{n}/{}] {} -> {}", ops.len(), op.describe(), hex(&d));
+                if *request == REQ_ID {
+                    if *device {
+                        nonce = Some(d);
+                    } else if let Some(nv) = nonce.take() {
+                        on_event(&FlashEvent::Identity { nonce: nv, id_byte: d.first().copied().unwrap_or(0) });
+                    }
+                }
+            }
+            WireOp::CtrlOut { request, data } => {
+                if *request == REQ_BEGIN {
+                    // Begin with lingering-session recovery (USB reset + retry once).
+                    begin_session(dev)?;
+                } else {
+                    ctrl_out(&dev.iface, *request, data)?;
+                }
+                log::info!("[{n}/{}] {}: OK", ops.len(), op.describe());
+            }
+            WireOp::ErasePoll { component } => {
+                log::info!("[{n}/{}] {}", ops.len(), op.describe());
+                wait_erase(&dev.iface, *component, &components[*component], &mut on_event)?;
+            }
+            WireOp::Bulk { component, .. } => {
+                log::info!("[{n}/{}] {}", ops.len(), op.describe());
+                write_component(&dev.iface, *component, &components[*component], &mut on_event)?;
+            }
+            WireOp::Zlp { component } => {
+                let mut ep = dev.iface.endpoint::<Bulk, Out>(BULK_OUT_EP)?;
+                ep.transfer_blocking(Buffer::new(0), Duration::from_secs(10))
+                    .into_result()
+                    .with_context(|| format!("zero-length terminator failed (component {component})"))?;
+                log::info!("[{n}/{}] {}: OK", ops.len(), op.describe());
+            }
+        }
+    }
+    log::info!(
+        "flash session finished: every transfer was accepted; the device offers no read-back, so the flash contents are NOT verified"
+    );
     Ok(())
+}
+
+/// Outcome of one probe transfer.
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize)]
+#[serde(tag = "result", content = "data", rename_all = "snake_case")]
+pub enum ProbeResult {
+    /// The device answered with these bytes (possibly empty).
+    Data(String),
+    /// The device STALLed the request (not supported in this state).
+    Stall,
+    /// No answer within the timeout.
+    Timeout,
+    /// The device left the bus.
+    Disconnected,
+    /// Any other transfer error.
+    Error(String),
+}
+
+fn probe_result(r: std::result::Result<Vec<u8>, nusb::transfer::TransferError>) -> ProbeResult {
+    use nusb::transfer::TransferError as E;
+    match r {
+        Ok(d) => ProbeResult::Data(hex(&d)),
+        Err(E::Stall) => ProbeResult::Stall,
+        Err(E::Cancelled) => ProbeResult::Timeout,
+        Err(E::Disconnected) => ProbeResult::Disconnected,
+        Err(e) => ProbeResult::Error(format!("{e:?}")),
+    }
+}
+
+/// One vendor control IN request with arbitrary request/value/index (read
+/// direction only: the host sends no data). Used by `ubmdf probe`.
+pub fn probe_in(iface: &Interface, device: bool, request: u8, value: u16, index: u16, length: u16) -> ProbeResult {
+    probe_result(
+        iface
+            .control_in(
+                ControlIn {
+                    control_type: ControlType::Vendor,
+                    recipient: if device { Recipient::Device } else { Recipient::Interface },
+                    request,
+                    value,
+                    index,
+                    length,
+                },
+                CTRL_TIMEOUT,
+            )
+            .wait(),
+    )
+}
+
+/// Bulk IN EP 0x82 (never used by the official updater): one read attempt.
+pub fn probe_bulk_in(iface: &Interface, length: usize, timeout: Duration) -> Result<ProbeResult> {
+    let mut ep = iface.endpoint::<Bulk, nusb::transfer::In>(0x82)?;
+    let c = ep.transfer_blocking(Buffer::new(length), timeout);
+    let r = c.status.map(|_| c.buffer[..c.actual_len].to_vec());
+    let stalled = r == Err(nusb::transfer::TransferError::Stall);
+    let out = probe_result(r);
+    if stalled {
+        let _ = ep.clear_halt().wait();
+    }
+    Ok(out)
+}
+
+/// sha256 of a byte slice as lowercase hex.
+pub fn sha256_hex(data: &[u8]) -> String {
+    use sha2::{Digest, Sha256};
+    hex(&Sha256::digest(data))
 }
 
 /// Format a byte slice as lowercase hex.
@@ -417,6 +647,23 @@ mod tests {
         region[0..4].copy_from_slice(&region_block_addr.to_le_bytes());
         region[4..8].copy_from_slice(&block_count.to_le_bytes());
         assert_eq!(region, [0xc0, 0, 0, 0, 0x1e, 0, 0, 0]);
+    }
+
+    #[test]
+    fn planned_ops_follow_the_documented_session() {
+        let comps = [
+            ComponentSpec { region_block_addr: 0, block_count: 145, write_addr: 0, data: vec![1; 10] },
+            ComponentSpec { region_block_addr: 192, block_count: 30, write_addr: 0x00c0_0000, data: vec![2; 5] },
+        ];
+        let ops = planned_ops(&comps);
+        // 9 prologue ops, 8 per component, 3 epilogue ops.
+        assert_eq!(ops.len(), 9 + 8 * 2 + 3);
+        assert_eq!(ops[4], WireOp::CtrlOut { request: 0x31, data: vec![] });
+        assert_eq!(ops[9], WireOp::CtrlOut { request: 0x37, data: vec![0, 0, 0, 0, 0x91, 0, 0, 0] });
+        assert_eq!(ops[17], WireOp::CtrlOut { request: 0x37, data: vec![0xc0, 0, 0, 0, 0x1e, 0, 0, 0] });
+        assert_eq!(ops[19], WireOp::CtrlOut { request: 0x39, data: vec![0, 0xc0, 0, 0] });
+        assert_eq!(ops[ops.len() - 3], WireOp::CtrlOut { request: 0x32, data: vec![] });
+        assert_eq!(ops[ops.len() - 1], WireOp::CtrlOut { request: 0x12, data: vec![] });
     }
 
     #[test]

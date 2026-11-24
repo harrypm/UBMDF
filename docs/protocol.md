@@ -12,6 +12,9 @@ Source of truth: USBPcap capture of official `DesktopVideoUpdateTool.exe -a -u` 
 | bRequest | Dir | Data | Meaning (verified) |
 |---|---|---|---|
 | 0x10 | IN 0xC0 | 16 B | device nonce/ID (e.g. `0c 4e 54 15 23 25 4d 53 ba f8 ee 57 4d 1f 3b fe`); also 0xC1 variant, 1 B → `00`. No client response written — no crypto handshake over the wire |
+| 0x11 | IN 0xC1 | 8 B | **found by `ubmdf probe` 2026-11-24**, not used by the official tool: `890bb734 890bb734` (same u32 twice) on the test unit, in and out of a session. Not a CRC32/Adler-32/sum of any component image. Meaning unknown |
+| 0x20 | IN 0xC1 | 2 B | **probe-found**: `01 01`, in and out of a session. Possibly a version |
+| 0x33 | IN 0xC1 | 2 B | **probe-found**: `05 00`, answered **only inside a 0x31 session** |
 | 0x30 | IN 0xC1 | 6 B | state check → `00 00 00 00 ff ff` (semantics partly unknown) |
 | 0x35 | IN 0xC1 | 16 B | erase-context info: `00000002 00000000 00000100 00010000` (BE u32s) — 2 components/slots, block size 0x10000 = 64 K. **STALLs outside an active erase session** (hardware-verified); the official tool reads it only after the 0x34 erase command and mid/post-write |
 | 0x31 | OUT 0x41 | none | begin session |
@@ -53,6 +56,27 @@ Hardware-verified session details (2026-11-19, bmdflash on live device):
 - `component_B.bin` — 1,928,120 B, sha256 `1C8D4F7FAD154BC1406A4684112B7531B2A5A11282165C3CF2A694AE55974B05` (region 192×64K, 30×64K)
 - `list_console.txt`, `flash_console.txt` — official tool console output
 - `flash_run_USBPcap1.pcap` (181 MB) — NOT BMD: an isochronous audio device on root hub 1 (noise, kept for provenance)
+
+## DV 16.5 updater captures (`firmware/installers/flash165_USBPcap{1,2,3}.pcap`)
+Checked 2026-11-24 (LFS objects sha256-verified, parsed record by record):
+- `USBPcap1` (30.6 MB): 18 other devices on root hub 1; **no Blackmagic traffic**.
+- `USBPcap2` (708 B): two USB hubs only.
+- `USBPcap3` (3.8 KB): `1edb:be13` re-enumeration, then 25 × `0x38` polls 0.5 s apart: region 0, `expected=145`, `done` 93 → 138, flags `01 00 01`.
+  The capture starts mid-erase and ends before the write. **No 0x39, no bulk data, no 0x32 commit.**
+
+So there is no capture of an official 16.x *write*. The one hard fact from it: the 16.5 updater erases 145 blocks for component A (9,399,532 B = 144 blocks of data), the same region size as 12.8.1.
+
+## What a "complete" flash proves
+The device acknowledges every control and bulk transfer, but no read-back command is known (EP 0x82 never carries data in the captures). A completed UBMDF flash therefore means *every transfer was accepted*, not *the flash holds the image*. The flash log records each step and every device response (0x30 state, 0x35 context, each 0x38 poll, bulk byte counts with the image sha256, ZLP, commit) so a run can be compared with a capture.
+
+## Read-back probe (`ubmdf probe`, 2026-11-24, test unit on macOS)
+- **The device STALLs any request whose wLength is not exactly the expected size** (0x10 answers only at 16 B to the device or 1 B to the interface, 0x30 only at 6 B). A sweep at one length finds nothing.
+- Swept with read-only vendor IN only: bRequest 0x00–0xff × recipients 0xC0/0xC1 × wLength 1–64, 128, 256, 512, 1024, 2048, 4096, wValue = wIndex = 0, both outside and inside a 0x31 session. That is 35,840 requests per pass, about 12 s. Answers: 0x10, 0x11, 0x20, 0x30, 0x38, plus 0x33 inside a session. Nothing else.
+- 0x11, 0x20 and 0x33 STALL for any non-zero wValue or wIndex (tried 1, 2, 0x10, 0x100, 0x8000, 0xffff × index 0/1). They are fixed queries, not address-based reads.
+- Bulk IN EP 0x82 (512 B, 2 s): times out, outside and inside a session.
+- 0x30 state unchanged by the sweeps (`00000000ffff` outside, `01000000ffff` in a session). `info` afterwards is identical to before.
+- **Conclusion: no flash read-back is reachable with wValue = wIndex = 0.** A read that needs an address in wValue/wIndex would only show up in a (very large) value sweep, or in a capture of a Blackmagic tool that reads.
+- Raw results: the JSON written by each `probe` run.
 
 ## Open questions
 - Exact semantics of the 0x30 response fields
