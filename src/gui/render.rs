@@ -32,33 +32,22 @@ pub struct Fonts {
 }
 
 impl Fonts {
+    /// Arimo is embedded in the binary, so portable builds (AppImage, .app,
+    /// a lone .exe) render identically with no assets folder beside them.
     pub fn load(rl: &mut RaylibHandle, thread: &RaylibThread) -> Fonts {
-        let dir = crate::index::firmware_root()
-            .parent()
-            .map(|p| p.join("assets").join("fonts"))
-            .filter(|p| !p.as_os_str().is_empty())
-            .unwrap_or_else(|| std::path::PathBuf::from("assets/fonts"));
+        const REGULAR: &[u8] = include_bytes!("../../assets/fonts/Arimo-Regular.ttf");
+        const BOLD: &[u8] = include_bytes!("../../assets/fonts/Arimo-Bold.ttf");
         let mut glyphs: String = (32u8..127).map(|b| b as char).collect();
         glyphs.extend((0xA0u32..=0xFF).filter_map(char::from_u32));
         glyphs.push_str("…—–→←↑↓•·×±µ‘’“”");
 
         let mut owned = Vec::new();
         for &(bold, px) in STYLES.iter() {
-            let primary = dir.join(if bold { "Arimo-Bold.ttf" } else { "Arimo-Regular.ttf" });
-            let mut candidates = vec![primary.to_string_lossy().to_string()];
-            #[cfg(windows)]
-            candidates.push(if bold { "C:\\Windows\\Fonts\\segoeuib.ttf" } else { "C:\\Windows\\Fonts\\segoeui.ttf" }.into());
-            #[cfg(target_os = "macos")]
-            candidates.push("/System/Library/Fonts/Helvetica.ttc".into());
-            #[cfg(target_os = "linux")]
-            candidates.push("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf".into());
-            let font = candidates
-                .iter()
-                .find_map(|p| rl.load_font_ex(thread, p, px, Some(&glyphs)).ok());
-            match font {
-                Some(f) => owned.push(f),
-                None => panic!("no usable {px}px font (tried {candidates:?}) — bundle Arimo in assets/fonts/"),
-            }
+            let data = if bold { BOLD } else { REGULAR };
+            let font = rl
+                .load_font_from_memory(thread, ".ttf", data, px, Some(&glyphs))
+                .unwrap_or_else(|e| panic!("embedded Arimo {px}px failed to load: {e}"));
+            owned.push(font);
         }
         let raw = owned.iter().map(|f| *f.as_ref()).collect();
         Fonts { _owned: owned, raw }

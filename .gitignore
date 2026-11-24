@@ -10,3 +10,4 @@
 /dumps
 /tools/updater-extract.log
 __pycache__/
+/dist
