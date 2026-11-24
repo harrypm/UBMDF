@@ -165,3 +165,4 @@
 - Renamed in 19 tracked files + git mv assets/icon/ubmdf.{ico,png}, drivers/ubmdf-winusb.inf: crate/binary `ubmdf`, GUI title/header, CI asset names (ubmdf-windows-x64.exe, UBMDF-x86_64.AppImage, UBMDF-macos-universal.zip, UBMDF.app, bundle id io.github.ubmdf), env vars UBMDF_FIRMWARE / UBMDF_LOG, per-user data folder UBMDF, ubmdf-gui.conf, logs/ubmdf.log, ubmdf-dump-*.json.
 - Compatibility: UBDMF_FIRMWARE / UBDMF_LOG still honoured; an existing per-user UBDMF folder is renamed to UBMDF on first run; ubdmf-gui.conf carried over. Sandbox test: old folder migrated, log at …\UBMDF\logs\ubmdf.log, 43 bundles (4 written / 82 hardlinked), `ubmdf 1.0.0`.
 - Version 1.0.1 (rename + hardlinked bundled install).
+- v1.0.1 tagged on 0cc4ab2 (CI 45354220960 all green: ubmdf 1.0.1, 43 bundles, fat x86_64+arm64) → release run 45355222373.
