@@ -142,6 +142,7 @@ where
         Kind::Flashable => (th.ok, th.badge_ok_bg),
         Kind::Inventory => (th.text_dim, th.badge_dim_bg),
         Kind::Legacy => (th.warn, th.badge_warn_bg),
+        Kind::Plaintext => (th.accent, th.badge_info_bg),
     };
     badge(ui, k.label(), fg, bg);
 }
@@ -479,6 +480,10 @@ where
                     let id = ui.id("files_btn");
                     let label = if b.kind == Kind::Flashable { "Show manifest" } else { "Show inventory" };
                     button(ui, id, label, Btn::Secondary, true, cx, acts, Action::OpenPath(p.clone()));
+                }
+                if let Some(dir) = &b.images_dir {
+                    let id = ui.id("images_btn");
+                    button(ui, id, "Show images", Btn::Secondary, dir.exists(), cx, acts, Action::OpenPath(dir.clone()));
                 }
                 if let Some(z) = &b.installer_zip {
                     let id = ui.id("zip_btn");

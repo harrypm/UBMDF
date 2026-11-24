@@ -9,6 +9,8 @@ pub enum Kind {
     Flashable,
     Inventory,
     Legacy,
+    /// DV 10.9.10 - 11.4.1: plaintext images extracted from CheckVersionPCI.exe.
+    Plaintext,
 }
 
 impl Kind {
@@ -17,6 +19,7 @@ impl Kind {
             Kind::Flashable => "Flashable",
             Kind::Inventory => "Inventory",
             Kind::Legacy => "Legacy inventory",
+            Kind::Plaintext => "Plaintext images",
         }
     }
 }
@@ -38,6 +41,8 @@ pub struct Bundle {
     /// Absolute inventory CSV path (inventories only).
     pub inventory: Option<PathBuf>,
     pub installer_zip: Option<PathBuf>,
+    /// Folder of plaintext images (Plaintext kind only).
+    pub images_dir: Option<PathBuf>,
     pub notes: Option<String>,
     pub stats: String,
     pub source: String,
@@ -104,8 +109,10 @@ pub fn load_bundles() -> (Vec<Bundle>, Option<String>) {
         .iter()
         .map(|b| {
             let legacy = b.notes.as_deref().is_some_and(|n| n.contains("legacy layout"));
+            let updater = b.notes.as_deref().is_some_and(|n| n.contains("updater-embedded"));
             let kind = match b.kind {
                 BundleKind::Flashable => Kind::Flashable,
+                BundleKind::EncryptedInventory if updater => Kind::Plaintext,
                 BundleKind::EncryptedInventory if legacy => Kind::Legacy,
                 BundleKind::EncryptedInventory => Kind::Inventory,
             };
@@ -139,6 +146,9 @@ pub fn load_bundles() -> (Vec<Bundle>, Option<String>) {
                 manifest,
                 inventory,
                 installer_zip: b.installer_zip.as_deref().map(resolve),
+                images_dir: (kind == Kind::Plaintext).then(|| {
+                    resolve(&format!("installers/dv-{}-extract/Firmware/CheckVersionPCI-rcdata", b.dv_version))
+                }),
                 notes: b.notes.clone(),
                 stats,
                 source,

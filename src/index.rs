@@ -249,13 +249,25 @@ fn scan_inventories(root: &Path, bundles: &mut Vec<BundleEntry>) -> Result<()> {
         let id = format!("encrypted/dv-{}", dv_version);
         let zip_name = format!("Blackmagic_Desktop_Video_Windows_{}.zip", dv_version);
         let zip = inv_dir.join(&zip_name);
+        // Updater-embedded layout (DV 10.9.10 - 11.4.1): the device images are
+        // PE RCDATA resources inside CheckVersionPCI.exe, extracted by
+        // tools/extract-updater-firmware.ps1 (plaintext, unlike data-r*.bin).
+        let rcdata_manifest = inv_dir
+            .join(format!("dv-{dv_version}-extract"))
+            .join("Firmware")
+            .join("CheckVersionPCI-rcdata")
+            .join("resources.csv");
+        let rcdata_images = std::fs::read_to_string(&rcdata_manifest)
+            .ok()
+            .map(|t| t.lines().skip(1).filter(|l| !l.trim().is_empty()).count());
         // Legacy-layout inventories (DV <= 10.9.7): the file column carries
         // relative paths ("Blackmagic Design\...\decklink.sys") instead of bare
         // data-*.bin names. Detected via a path separator in the first data row.
-        let legacy = std::fs::read_to_string(inv_dir.join(&name))
-            .ok()
-            .and_then(|t| t.lines().nth(1).map(|l| l.contains('\\') || l.contains('/')))
-            .unwrap_or(false);
+        let legacy = rcdata_images.is_none()
+            && std::fs::read_to_string(inv_dir.join(&name))
+                .ok()
+                .and_then(|t| t.lines().nth(1).map(|l| l.contains('\\') || l.contains('/')))
+                .unwrap_or(false);
         bundles.push(BundleEntry {
             id,
             device: "(all Desktop Video devices)".to_string(),
@@ -269,7 +281,11 @@ fn scan_inventories(root: &Path, bundles: &mut Vec<BundleEntry>) -> Result<()> {
                 None
             },
             components: Vec::new(),
-            notes: if legacy {
+            notes: if let Some(n) = rcdata_images {
+                Some(format!(
+                    "updater-embedded layout (DV 10.9.10 - 11.4.1): {n} plaintext firmware images extracted from CheckVersionPCI.exe RCDATA resources (Firmware/CheckVersionPCI-rcdata, see resources.csv)"
+                ))
+            } else if legacy {
                 Some("legacy layout (DV <= 10.9.7): no separate Firmware dir - firmware ships inside drivers; full installer payload inventoried, zip = authoritative copy".to_string())
             } else {
                 None

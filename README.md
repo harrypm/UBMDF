@@ -124,6 +124,20 @@ Notes:
 - If `CC_x86_64_unknown_linux_gnu` etc. are set in your shell, cargo-zigbuild will not override them — clear stale values first.
 - Don't run the zigbuild command with the GUI feature; raylib needs a native Linux toolchain to cross-build.
 
+### Updater-embedded firmware (DV 10.9.10 – 11.4.1)
+Installer layouts by Desktop Video version:
+
+- **≤ 10.9.7**: the firmware ships inside the drivers (legacy layout).
+- **10.9.10 – 11.4.1**: every device image is a PE `RCDATA` resource inside `CheckVersionPCI.exe` (190–239 MB). The images are **not encrypted**: 46–51 Xilinx bitstreams (`AA995566` sync word), 2–4 ELF images and 14 other binaries per version. The MSI's `Firmware\` folder only holds `data-bdaa.bin`.
+- **11.5 onward**: the images are encrypted `Firmware\data-rNN.bin` files.
+
+To extract them:
+```
+pwsh -File tools/extract-updater-firmware.ps1   # 7-Zip, no admin/msiexec needed
+ubdmf index rebuild
+```
+The images are written to `firmware/installers/dv-<v>-extract/Firmware/CheckVersionPCI-rcdata/`, as `rc-<id>.bin` plus `resources.csv` (size, sha256, entropy, type, header bytes) and `source-exe.txt`. The version's inventory CSV is regenerated, and the index notes and GUI label it "Plaintext images". The resources are unnamed, so which image belongs to which device is not mapped yet.
+
 ## Driver development note
 The on-disk `Firmware/data-rNN.bin` files in Desktop Video installers are **encrypted**; the official tool decrypts them in software. UBDMF works with **plaintext** capture-derived bundles. To obtain a plaintext bundle for a new version, run the official updater under USBPcap capture and use `tools/extract-from-capture.ps1`.
 

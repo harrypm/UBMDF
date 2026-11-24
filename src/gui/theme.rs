@@ -19,6 +19,7 @@ pub struct Theme {
     pub badge_ok_bg: Color,
     pub badge_dim_bg: Color,
     pub badge_warn_bg: Color,
+    pub badge_info_bg: Color,
     pub overlay: Color,
     pub disabled: Color,
 }
@@ -40,6 +41,7 @@ pub const DARK: Theme = Theme {
     badge_ok_bg: Color::u_rgb(30, 74, 48),
     badge_dim_bg: Color::u_rgb(52, 54, 60),
     badge_warn_bg: Color::u_rgb(84, 64, 24),
+    badge_info_bg: Color::u_rgb(26, 50, 84),
     overlay: Color::u_rgba(0, 0, 0, 160),
     disabled: Color::u_rgb(70, 72, 78),
 };
@@ -61,6 +63,7 @@ pub const LIGHT: Theme = Theme {
     badge_ok_bg: Color::u_rgb(218, 242, 226),
     badge_dim_bg: Color::u_rgb(232, 234, 238),
     badge_warn_bg: Color::u_rgb(252, 238, 206),
+    badge_info_bg: Color::u_rgb(218, 232, 252),
     overlay: Color::u_rgba(0, 0, 0, 110),
     disabled: Color::u_rgb(200, 203, 208),
 };
