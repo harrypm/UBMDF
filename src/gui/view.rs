@@ -296,7 +296,7 @@ where
                 decl().layout().direction(LayoutDirection::TopToBottom).child_gap(2).end(),
                 |ui| {
                     text(ui, "UBDMF", H1, th.text);
-                    text(ui, "Universal Blackmagic Devices Flasher", SMALL, th.text_dim);
+                    text(ui, concat!("Universal Blackmagic Devices Flasher · v", env!("CARGO_PKG_VERSION")), SMALL, th.text_dim);
                 },
             );
             spacer(ui);
@@ -589,6 +589,8 @@ where
         wrapped(ui, "Check Blackmagic's public download catalog. Versions not yet indexed can be downloaded, extracted and inventoried here.", BODY, th.text_dim);
         #[cfg(windows)]
         wrapped(ui, "Extraction runs msiexec /a, which needs UBDMF started as administrator. For many versions at once use tools/harvest.ps1.", SMALL, th.text_dim);
+        #[cfg(not(windows))]
+        wrapped(ui, "Downloading new versions needs Windows (installer extraction uses msiexec). Check catalog and Rebuild index work here; copy a firmware/ folder harvested on Windows next to UBDMF.", SMALL, th.warn);
         text(
             ui,
             ar.s(format!("Index: {} flashable · {} inventories", n_flash, app.bundles.len() - n_flash)),
@@ -634,7 +636,7 @@ where
                             id,
                             "Download",
                             Btn::Secondary,
-                            !busy,
+                            !busy && cfg!(windows),
                             cx,
                             acts,
                             Action::Fetch { version: r.version.clone(), download_id: r.download_id.clone() },

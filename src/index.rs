@@ -3,8 +3,9 @@
 //! `firmware/index.json` is the on-disk index; `rebuild` scans the firmware
 //! tree and regenerates it. Two kinds of entries:
 //! - `flashable`: plaintext capture-derived bundles (manifest + components)
-//! - `encrypted-inventory`: encrypted `data-rNN.bin` sets sandbox-extracted
-//!   from official installers (informational; the rNN→device mapping is unknown)
+//! - `encrypted-inventory` (historical name): sha256 inventories of the
+//!   installers' `data-rNN.bin` zlib containers / updater RCDATA images
+//!   (not encrypted — see tools/datar.py and docs/firmware-map.md)
 
 use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
@@ -20,10 +21,14 @@ pub fn firmware_root() -> PathBuf {
     if cwd.is_dir() {
         return cwd;
     }
-    // 3. Walk up from the executable's location. Covers launching the exe
-    //    from target/release or target/debug (repo root two levels up), and
-    //    installed layouts that keep firmware/ next to the binary's parent.
-    if let Ok(exe) = std::env::current_exe() {
+    // 3. Walk up from the executable's location (target/release -> repo
+    //    root; UBDMF.app/Contents/MacOS -> folder holding the .app). For an
+    //    AppImage the exe lives in a temporary mount, so start from the
+    //    .AppImage file itself ($APPIMAGE) instead.
+    let start = std::env::var_os("APPIMAGE")
+        .map(PathBuf::from)
+        .or_else(|| std::env::current_exe().ok());
+    if let Some(exe) = start {
         let mut dir = exe.parent().map(Path::to_path_buf);
         for _ in 0..5 {
             let Some(d) = dir else { break; };
@@ -35,8 +40,23 @@ pub fn firmware_root() -> PathBuf {
             dir = d.parent().map(Path::to_path_buf);
         }
     }
-    // 4. Fallback: CWD-relative (created on demand by `index rebuild`).
-    PathBuf::from("firmware")
+    // 4. Fallback: a writable per-user data folder, so portable builds
+    //    (.app launched with CWD "/", read-only AppImage mount) can still keep
+    //    their log, settings, dumps and downloads. Created on demand.
+    user_data_dir().map(|d| d.join("firmware")).unwrap_or_else(|| PathBuf::from("firmware"))
+}
+
+/// Per-user application data folder for UBDMF, per platform conventions.
+fn user_data_dir() -> Option<PathBuf> {
+    let env = |k: &str| std::env::var_os(k).filter(|v| !v.is_empty()).map(PathBuf::from);
+    let base = if cfg!(windows) {
+        env("LOCALAPPDATA").or_else(|| env("APPDATA"))
+    } else if cfg!(target_os = "macos") {
+        env("HOME").map(|h| h.join("Library").join("Application Support"))
+    } else {
+        env("XDG_DATA_HOME").or_else(|| env("HOME").map(|h| h.join(".local").join("share")))
+    }?;
+    Some(base.join("UBDMF"))
 }
 
 pub fn index_path() -> PathBuf {

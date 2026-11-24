@@ -101,9 +101,9 @@ pub struct DeviceEntry {
     pub port_chain: Vec<u8>,
     /// Connection speed (e.g. Super, High), if known.
     pub speed: Option<String>,
-    /// Driver bound to the device (Windows only). "WinUSB" = flashable by UBDMF;
-    /// anything else (e.g. BMD DesktopVideoUpdate) needs a Zadig swap first.
-    #[cfg(windows)]
+    /// Driver bound to the device (Windows only; always None elsewhere).
+    /// "WinUSB" = flashable by UBDMF; anything else (e.g. BMD
+    /// DesktopVideoUpdate) needs a Zadig swap first.
     pub driver: Option<String>,
 }
 
@@ -125,6 +125,8 @@ pub fn list_bmd_entries() -> Result<Vec<DeviceEntry>> {
             speed: d.speed().map(|s| format!("{s:?}")),
             #[cfg(windows)]
             driver: d.driver().map(str::to_string),
+            #[cfg(not(windows))]
+            driver: None,
         });
     }
     Ok(out)

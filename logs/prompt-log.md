@@ -135,3 +135,11 @@
 - Verified: `ubdmf verify` 43/43 OK; index 145 bundles (43 flashable; caution: 11.4.1 not-yet-flashed, 12.9 known-bad); clippy clean both; tests 13/11; GUI built last; screenshot v8-many ✓.
 - Docs: README format section (the old "encrypted" claim corrected), docs/firmware-map.md all-builds table.
 - Open: other devices (60 IDs) are now unpackable, but the flash code is hard-wired to PID be13 and the protocol is only proven on the 4K Mini.
+
+## Execution log (24 Nov 2026, local binary + private repo + Actions; debug/sanity pass; v1.0.0)
+- Fonts embedded (include_bytes + LoadFontFromMemory), so a lone .exe / AppImage / .app renders. Local binary: dist/ubdmf.exe (gitignored), launched from TEMP → 145 bundles via walk-up.
+- Private repo https://github.com/harrypm/UBDMF (gh, harrypm), pushed master + gui-clay (default became gui-clay). Tracked files checked: no firmware/zips/pcaps (firmware/ gitignored).
+- .github/workflows/build.yml: windows exe, linux AppImage (ubuntu-22.04, linuxdeploy), macOS universal .app (lipo arm64+x86_64, iconutil, ad-hoc codesign), tests + CLI smoke, release job on v* tags.
+- Run 45321390987: windows ✓, **linux ✗ E0609 `driver` field is #[cfg(windows)]** but the GUI reads it unconditionally (macOS cancelled). Fixed: field always present, None off Windows.
+- Sanity pass fixes: (1) firmware_root fallback → per-user data dir (%LOCALAPPDATA% / ~/Library/Application Support / XDG) instead of a CWD-relative ./firmware (.app CWD is "/", AppImage mount is read-only) — tested with sandboxed LOCALAPPDATA: log lands in …\UBDMF\logs; (2) AppImage walk-up starts from $APPIMAGE; (3) Update › Download disabled off Windows (msiexec) with reason; (4) version 1.0.0 shown in the GUI header (CARGO_PKG_VERSION); (5) stale "encrypted" doc comment in index.rs; README Downloads/CI + data-folder sections.
+- Local: clippy clean both, tests 13/11, CLI then GUI build, `ubdmf --version` = 1.0.0. The 4K Mini is now connected (poll: UltraStudio 4K Mini, addr 26) — nothing was sent to it.

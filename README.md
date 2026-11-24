@@ -66,6 +66,27 @@ pwsh -File tools/harvest.ps1 -NoZips             # discard zips after inventory
 ```
 Self-elevates (one UAC prompt), downloads → extracts → inventories → indexes each version. Produces `harvest-report.json`. Local installer zips are imported when available.
 
+## Downloads / CI
+GitHub Actions (`.github/workflows/build.yml`) builds and tests every push:
+
+- **Windows**: `ubdmf-windows-x64.exe`
+- **Linux**: `UBDMF-x86_64.AppImage` (built on Ubuntu 22.04)
+- **macOS**: `UBDMF-macos-universal.zip` (universal `UBDMF.app`, arm64 + x86_64; ad-hoc signed, not notarized, so right-click → Open on first launch)
+
+Pushing a `v*` tag publishes the three as a GitHub release.
+
+### Where UBDMF keeps its data
+UBDMF looks for a `firmware/` folder in this order:
+
+1. the `UBDMF_FIRMWARE` environment variable;
+2. `./firmware` in the current directory;
+3. walking up from the executable (for an AppImage, from the `.AppImage` file itself);
+4. a per-user folder: `%LOCALAPPDATA%\UBDMF` on Windows, `~/Library/Application Support/UBDMF` on macOS, `$XDG_DATA_HOME/UBDMF` or `~/.local/share/UBDMF` on Linux.
+
+`logs/`, `dumps/` and `ubdmf-gui.conf` sit beside that `firmware/` folder.
+
+Firmware images are **not** shipped in releases (they are Blackmagic Design property). Harvest them with `tools/harvest.ps1` on Windows, or copy an existing `firmware/` folder.
+
 ## Platform Notes
 
 ### Windows
