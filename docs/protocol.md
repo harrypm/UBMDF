@@ -20,7 +20,7 @@ Source of truth: USBPcap capture of official `DesktopVideoUpdateTool.exe -a -u` 
 | 0x31 | OUT 0x41 | none | begin session |
 | 0x34 | OUT 0x41 | none | start erase |
 | 0x37 | OUT 0x41 | 8 B | select region: data = `{u32 LE addr in 64K blocks, u32 LE block count}` — A: `00 00 00 00 91 00 00 00` = (0, 145); B: `c0 00 00 00 1e 00 00 00` = (192, 30) → byte address 192×65536 = 0x00C00000 |
-| 0x38 | IN 0xC1 | 15 B | progress poll: `{u32 LE region, u32 LE expected_blocks, u32 LE progress, u8,u8,u8}` — trailing `01 00 01` = busy, `00 00 00` = phase done; polled ~2/s during erase only |
+| 0x38 | IN 0xC1 | 15 B | progress poll: `{u32 LE region, u32 LE expected_blocks, u32 LE progress, u8,u8,u8}`. `progress` is the absolute block reached, not a count: region 192 × 30 ends at 222 (UBMDF flash log 2026-11-24) — trailing `01 00 01` = busy, `00 00 00` = phase done; polled ~2/s during erase only |
 | 0x39 | OUT 0x41 | 4 B | set write address: data = `{u32 BE byte address}` — A: `00 00 00 00`; B: `00 c0 00 00` |
 | (bulk) | OUT EP1 | ≤32,768 B | image bytes, sequential chunks; **each component ends with its final short packet followed by an explicit zero-length transfer (ZLP terminator — frames 1359/1645); omitting the ZLP leaves the region write unfinalized and the next 0x39 stalls (hardware-verified)** |
 | 0x32 | OUT 0x41 | none | commit |
@@ -64,7 +64,24 @@ Checked 2026-11-24 (LFS objects sha256-verified, parsed record by record):
 - `USBPcap3` (3.8 KB): `1edb:be13` re-enumeration, then 25 × `0x38` polls 0.5 s apart: region 0, `expected=145`, `done` 93 → 138, flags `01 00 01`.
   The capture starts mid-erase and ends before the write. **No 0x39, no bulk data, no 0x32 commit.**
 
-So there is no capture of an official 16.x *write*. The one hard fact from it: the 16.5 updater erases 145 blocks for component A (9,399,532 B = 144 blocks of data), the same region size as 12.8.1.
+So there is no capture of an official 16.x *write* in these files. The `expected=145` it shows does **not** match what the official macOS 16.5 updater sends: `(0, 144)` (see the trace below).
+
+## Official macOS 16.5 updater, traced (2026-11-24)
+`DesktopVideoUpdateTool -u -d <id>` from Desktop Video 16.5 for macOS flashes the 4K Mini over the service port. It was traced with `tools/usbtrace`, an IOUSBLib interposer injected into an ad-hoc re-signed copy of the tool, which writes a USBPcap-format pcap plus a text log. The full sequence:
+
+1. `ClearPipeStallBothEnds` on both bulk pipes (EP 0x01 and 0x82: CLEAR_FEATURE(ENDPOINT_HALT) + host data-toggle reset)
+2. IN C1/0x10 (1 B) → `00`; IN C0/0x10 (16 B) **twice** → nonce
+3. ~2 s pause, then IN 0x30 ×2 → `00000000ffff`; OUT 0x31; IN 0x30 ×2 → `01000000ffff`
+4. OUT 0x34; IN 0x35 → `00000002 00000000 00000100 00010000`
+5. A: OUT 0x37 `(0, 144)` → 380 × 0x38 polls ~0.1 s apart (≈38.8 s; `done` counts 0 → 144) → OUT 0x39 `00000000` → IN 0x35 → 287 bulk OUT (286 × 32,768 + 22,060) = 9,399,532 B, byte-identical to `dv-16.5/component_A.bin` → ZLP
+6. IN 0x30 → `010101000000` (**write busy**); ~105 ms later IN 0x30 → `010000000000`; IN 0x30 again; IN 0x35
+7. B: OUT 0x37 `(192, 30)` → 81 polls (`done` ends at 222 = 192 + 30) → OUT 0x39 `00c00000` → IN 0x35 → 59 bulk OUT = 1,928,120 B (byte-identical) → ZLP
+8. IN 0x30 → `010101000000`; ~104 ms later IN 0x30 → `010000000000`; IN 0x30; OUT 0x32 (commit); IN 0x30 → `00000000ffff`; OUT 0x12
+9. ~5 s later IN 0x10 fails (device re-enumerating), so the tool finishes with "All updates complete"
+
+UBMDF's `planned_ops` follows this exactly since this trace: pipe clears, ID order, 144-block erase, and the `0x30` busy-wait after each ZLP. `replay-check` against the trace leaves only step 9's post-reboot read.
+
+Outcome on the test unit: same as UBMDF's flashes. Backlight on, black screen; Thunderbolt link training times out after a power-cycle (10:10:10). The flash procedure is not what keeps Thunderbolt down.
 
 ## What a "complete" flash proves
 The device acknowledges every control and bulk transfer, but no read-back command is known (EP 0x82 never carries data in the captures). A completed UBMDF flash therefore means *every transfer was accepted*, not *the flash holds the image*. The flash log records each step and every device response (0x30 state, 0x35 context, each 0x38 poll, bulk byte counts with the image sha256, ZLP, commit) so a run can be compared with a capture.

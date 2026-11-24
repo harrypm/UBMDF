@@ -29,6 +29,9 @@ const REQ_REBOOT: u8 = 0x12; // OUT 0x41, no data
 
 /// Bulk OUT endpoint carrying image data.
 const BULK_OUT_EP: u8 = 0x01;
+/// Bulk IN endpoint (never carries data in any capture; the official tool still
+/// clears its halt when opening the device).
+const BULK_IN_EP: u8 = 0x82;
 /// Transfer chunk size used by the official tool (max). The final chunk of each
 /// component is short, which terminates the component's data stream on the wire.
 const CHUNK: usize = 32768;
@@ -285,6 +288,13 @@ pub enum WireOp {
     Bulk { component: usize, bytes: usize, sha256: String },
     /// Zero-length bulk OUT terminator after a component.
     Zlp { component: usize },
+    /// Clear the halt / data toggle of a bulk endpoint on both ends (standard
+    /// CLEAR_FEATURE(ENDPOINT_HALT) + host toggle reset). The official tool does this
+    /// for both pipes when it opens the device (traced 2026-11-24).
+    ClearHalt { ep: u8 },
+    /// Poll 0x30 until the device has finished committing the written region
+    /// (bytes 1..3 go `01 01` busy -> `00 00` done, ~100 ms after the ZLP).
+    WaitWriteDone { component: usize },
 }
 
 impl WireOp {
@@ -306,6 +316,10 @@ impl WireOp {
                 format!("BULK OUT ep01 {bytes} B sha256 {} (component {component})", &sha256[..16.min(sha256.len())])
             }
             WireOp::Zlp { component } => format!("BULK OUT ep01 zero-length (component {component})"),
+            WireOp::ClearHalt { ep } => format!("CLEAR_HALT ep{ep:02x} (both ends)"),
+            WireOp::WaitWriteDone { component } => {
+                format!("IN  c1/0x30 len 6 (state) polled until write done (component {component})")
+            }
         }
     }
 }
@@ -343,8 +357,13 @@ fn op_out(request: u8, data: &[u8]) -> WireOp {
 /// context(0x35) [non-final] or state×2 [final] → commit(0x32) → state → reboot(0x12).
 pub fn planned_ops(components: &[ComponentSpec]) -> Vec<WireOp> {
     let mut ops = vec![
-        op_in(true, REQ_ID, 16),
+        // Official open sequence (macOS DesktopVideoUpdateTool 16.5, traced 2026-11-24):
+        // clear both pipes, then id 1 B, then the 16 B nonce twice.
+        WireOp::ClearHalt { ep: BULK_OUT_EP },
+        WireOp::ClearHalt { ep: BULK_IN_EP },
         op_in(false, REQ_ID, 1),
+        op_in(true, REQ_ID, 16),
+        op_in(true, REQ_ID, 16),
         // Official prologue (capture frames 35-37): two state reads BEFORE begin too.
         op_in(false, REQ_STATE, 6),
         op_in(false, REQ_STATE, 6),
@@ -370,13 +389,14 @@ pub fn planned_ops(components: &[ComponentSpec]) -> Vec<WireOp> {
         ops.push(WireOp::Bulk { component: index, bytes: c.data.len(), sha256: sha256_hex(&c.data) });
         // Explicit zero-length terminator (reference-capture frames 1359 and 1645).
         ops.push(WireOp::Zlp { component: index });
-        // Post-write checks, matching the official trace:
-        // non-final component: 0x30 + 0x35; final component: 0x30 twice.
+        // Post-write, as traced from the official tool: 0x30 (reads busy `010101..`),
+        // poll 0x30 until done (`010000..`, ~100 ms), 0x30 once more, then 0x35 before
+        // the next region (nothing extra before the final commit).
+        ops.push(op_in(false, REQ_STATE, 6));
+        ops.push(WireOp::WaitWriteDone { component: index });
         ops.push(op_in(false, REQ_STATE, 6));
         if index + 1 < components.len() {
             ops.push(op_in(false, REQ_GEOMETRY, 16));
-        } else {
-            ops.push(op_in(false, REQ_STATE, 6));
         }
     }
     ops.push(op_out(REQ_COMMIT, &[]));
@@ -446,8 +466,16 @@ fn wait_erase(
         last.done,
         last.busy
     );
-    if last.done != last.expected {
-        log::warn!("component {index}: erase ended with done={} != expected={}", last.done, last.expected);
+    // `done` is the absolute block the erase has reached, not a count: region 192 x 30
+    // blocks finishes at done=222 (hardware log 2026-11-24).
+    let end = last.region + last.expected;
+    if last.done != end {
+        log::warn!(
+            "component {index}: erase ended at block {} but region {} + {} blocks ends at {end}",
+            last.done,
+            last.region,
+            last.expected
+        );
     }
     Ok(())
 }
@@ -541,6 +569,36 @@ pub fn flash(
             WireOp::Bulk { component, .. } => {
                 log::info!("[{n}/{}] {}", ops.len(), op.describe());
                 write_component(&dev.iface, *component, &components[*component], &mut on_event)?;
+            }
+            WireOp::ClearHalt { ep } => {
+                let r = if *ep & 0x80 != 0 {
+                    dev.iface.endpoint::<Bulk, nusb::transfer::In>(*ep)?.clear_halt().wait()
+                } else {
+                    dev.iface.endpoint::<Bulk, Out>(*ep)?.clear_halt().wait()
+                };
+                r.with_context(|| format!("clear halt on ep {ep:#04x} failed"))?;
+                log::info!("[{n}/{}] {}: OK", ops.len(), op.describe());
+            }
+            WireOp::WaitWriteDone { component } => {
+                let start = Instant::now();
+                let mut polls = 0;
+                loop {
+                    std::thread::sleep(Duration::from_millis(100));
+                    let st = read_state(&dev.iface)?;
+                    polls += 1;
+                    log::info!("[{n}/{}] 0x30 state -> {} (poll {polls})", ops.len(), hex(&st));
+                    if st.len() >= 3 && st[1] == 0 && st[2] == 0 {
+                        break;
+                    }
+                    if start.elapsed() > Duration::from_secs(30) {
+                        bail!("component {component}: write not finished after 30 s (0x30 = {})", hex(&st));
+                    }
+                }
+                log::info!(
+                    "[{n}/{}] component {component}: write done after {polls} poll(s), {:.2} s",
+                    ops.len(),
+                    start.elapsed().as_secs_f32()
+                );
             }
             WireOp::Zlp { component } => {
                 let mut ep = dev.iface.endpoint::<Bulk, Out>(BULK_OUT_EP)?;
@@ -656,12 +714,15 @@ mod tests {
             ComponentSpec { region_block_addr: 192, block_count: 30, write_addr: 0x00c0_0000, data: vec![2; 5] },
         ];
         let ops = planned_ops(&comps);
-        // 9 prologue ops, 8 per component, 3 epilogue ops.
-        assert_eq!(ops.len(), 9 + 8 * 2 + 3);
-        assert_eq!(ops[4], WireOp::CtrlOut { request: 0x31, data: vec![] });
-        assert_eq!(ops[9], WireOp::CtrlOut { request: 0x37, data: vec![0, 0, 0, 0, 0x91, 0, 0, 0] });
-        assert_eq!(ops[17], WireOp::CtrlOut { request: 0x37, data: vec![0xc0, 0, 0, 0, 0x1e, 0, 0, 0] });
-        assert_eq!(ops[19], WireOp::CtrlOut { request: 0x39, data: vec![0, 0xc0, 0, 0] });
+        // 12 prologue ops, 10 for a non-final and 9 for the final component, 3 epilogue
+        // ops — the official macOS 16.5 trace (2026-11-24).
+        assert_eq!(ops.len(), 12 + 10 + 9 + 3);
+        assert_eq!(ops[0], WireOp::ClearHalt { ep: 0x01 });
+        assert_eq!(ops[2], WireOp::CtrlIn { device: false, request: 0x10, length: 1 });
+        assert_eq!(ops[7], WireOp::CtrlOut { request: 0x31, data: vec![] });
+        assert_eq!(ops[12], WireOp::CtrlOut { request: 0x37, data: vec![0, 0, 0, 0, 0x91, 0, 0, 0] });
+        assert_eq!(ops[22], WireOp::CtrlOut { request: 0x37, data: vec![0xc0, 0, 0, 0, 0x1e, 0, 0, 0] });
+        assert_eq!(ops[24], WireOp::CtrlOut { request: 0x39, data: vec![0, 0xc0, 0, 0] });
         assert_eq!(ops[ops.len() - 3], WireOp::CtrlOut { request: 0x32, data: vec![] });
         assert_eq!(ops[ops.len() - 1], WireOp::CtrlOut { request: 0x12, data: vec![] });
     }

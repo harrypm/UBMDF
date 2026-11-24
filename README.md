@@ -151,6 +151,22 @@ Every flash logs each wire step and the device's answer (`0x30` state bytes, `0x
 
 To capture a complete official flash: start USBPcap on the root hub the unit is on **before** launching the updater, and stop only after the unit has rebooted.
 
+### Tracing the official updater on macOS (`tools/usbtrace`)
+`tools/usbtrace/usbtrace.c` is a small IOUSBLib interposer. It logs every control and bulk transfer a process makes, as a USBPcap-format pcap that `replay-check` and Wireshark can read, plus a text log. No root is needed, but the target must run without the hardened runtime, so trace an ad-hoc re-signed **copy** of Blackmagic's updater:
+
+```
+tools/usbtrace/build.sh
+cp -R "/Library/Application Support/Blackmagic Design/Blackmagic DeckLink/Desktop Video Updater.app" /tmp/dvu/
+codesign --force --deep --sign - "/tmp/dvu/Desktop Video Updater.app"   # sign the whole bundle, or macOS reports it as damaged
+T="/tmp/dvu/Desktop Video Updater.app/Contents/MacOS/DesktopVideoUpdateTool"
+"$T" -l                                                     # macOS may ask once in Privacy & Security
+USBTRACE_PCAP=official.pcap USBTRACE_LOG=official.txt \
+  DYLD_INSERT_LIBRARIES=$PWD/tools/usbtrace/libusbtrace.dylib "$T" -u -d <device id>
+ubmdf replay-check official.pcap <manifest.json>
+```
+
+Since 2026-11-24, UBMDF's flash sequence is aligned to this trace of the official 16.5 updater: 32 of 32 ops match (see `docs/protocol.md`).
+
 ### `probe`
 `ubmdf probe` sends only vendor control **IN** requests (no data from the host) for bRequest `--from`..`--to` (default 0x00–0xff) to both the device (0xC0) and interface (0xC1) recipients, with `--value`, `--index` and `--length` (default 64). `--session` opens a `0x31` session first and closes it with `0x12`. `--bulk-in` adds one 512-byte read on EP 0x82. Each request is logged before it is sent, so a hang names its request. The sweep stops on disconnect or 3 timeouts in a row. The 0x30 state is compared before and after, and the results are written to `ubmdf-probe-<epoch>.json`.
 

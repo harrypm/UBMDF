@@ -1,0 +1,13 @@
+1795514653.602228 usbtrace loaded
+1795514653.637638 plug-in created (device)
+1795514653.637686 wrapped Device500 object 0x600002bbcba0
+1795514653.638437 plug-in created (interface)
+1795514653.638467 wrapped Interface550 object 0x6000032bc0d0
+1795514653.639217 if.ClearPipeStallBothEnds pipe=1 kr=0x00000000
+1795514653.639764 if.ClearPipeStallBothEnds pipe=2 kr=0x00000000
+1795514653.639789 dev.DeviceRequestTO SETUP c1 10 wValue=0000 wIndex=0000 wLength=1 
+1795514653.639931 dev.DeviceRequestTO DONE kr=0x00000000 len=1 00
+1795514653.639947 dev.DeviceRequestTO SETUP c0 10 wValue=0000 wIndex=0000 wLength=16 
+1795514653.640084 dev.DeviceRequestTO DONE kr=0x00000000 len=16 0c4e541523254d53baf8ee574d1f3bfe
+1795514653.640143 dev.DeviceRequestTO SETUP c0 10 wValue=0000 wIndex=0000 wLength=16 
+1795514653.640299 dev.DeviceRequestTO DONE kr=0x00000000 len=16 0c4e541523254d53baf8ee574d1f3bfe

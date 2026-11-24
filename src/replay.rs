@@ -396,6 +396,10 @@ fn key(op: &WireOp) -> String {
         WireOp::ErasePoll { .. } => "poll".into(),
         WireOp::Bulk { bytes, sha256, .. } => format!("bulk:{bytes}:{sha256}"),
         WireOp::Zlp { .. } => "zlp".into(),
+        // A write-done wait is one (or more) plain 0x30 reads on the wire.
+        WireOp::WaitWriteDone { .. } => "in:false:30:6".into(),
+        // Not a vendor request: invisible in the comparison.
+        WireOp::ClearHalt { .. } => "clearhalt".into(),
     }
 }
 
@@ -516,7 +520,11 @@ pub fn check(
     let captured = &per_target[&target];
     println!("comparing against bus {} addr {}", target.0, target.1);
 
-    let planned = protocol::planned_ops(components);
+    // CLEAR_HALT is a standard request and is not extracted from captures.
+    let planned: Vec<WireOp> = protocol::planned_ops(components)
+        .into_iter()
+        .filter(|o| !matches!(o, WireOp::ClearHalt { .. }))
+        .collect();
     let pk: Vec<String> = planned.iter().map(key).collect();
     let ck: Vec<String> = captured.iter().map(|o| key(&o.op)).collect();
     let mut rep = ReplayReport::default();
@@ -730,6 +738,12 @@ mod tests {
                     recs.push(rec(0, 0x01, 3, None, &[], 0));
                     recs.push(rec(1, 0x01, 3, None, &[], 0));
                 }
+                WireOp::ClearHalt { .. } => {} // standard request, not extracted
+                WireOp::WaitWriteDone { .. } => {
+                    let setup = [0xc1, 0x30, 0, 0, 0, 0, 6, 0];
+                    recs.push(rec(0, 0x80, 2, Some(0), &setup, 8));
+                    recs.push(rec(1, 0x80, 2, Some(3), &[1, 0, 0, 0, 0, 0], 6));
+                }
             }
         }
         let mut f = Vec::new();
@@ -765,7 +779,9 @@ mod tests {
         let p = write_tmp("same.pcap", &usbpcap(&plan, &comps, 3));
         let rep = check(&p, &comps, None).unwrap();
         std::fs::remove_file(&p).ok();
-        assert_eq!(rep.matched, plan.len());
+        // CLEAR_HALT steps are standard requests and are not compared.
+        let compared = plan.iter().filter(|o| !matches!(o, WireOp::ClearHalt { .. })).count();
+        assert_eq!(rep.matched, compared);
         assert_eq!(
             (rep.only_planned, rep.only_captured, rep.bulk_mismatches),
             (0, 0, 0)

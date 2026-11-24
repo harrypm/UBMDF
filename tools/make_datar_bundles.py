@@ -4,8 +4,8 @@ the official installer's Firmware/data-rNN.bin containers (see tools/datar.py).
 For each version, the container whose records target the given USB device
 (default 1edb:be13 = UltraStudio 4K Mini service port) is unpacked. Geometry
 comes from the record headers (write address -> region block, size -> block
-count) and must agree with the official-tool capture bundles' layout; the erase
-count is always the full captured region (145 blocks for component A).
+count = image size rounded up to 64 KiB blocks, as the official updater sends)
+and must agree with the official-tool capture bundles' layout.
 If the images are byte-identical to an official-tool capture bundle, the
 manifest says so; otherwise it is marked "NOT yet flashed on hardware".
 
@@ -95,10 +95,11 @@ def main():
                     or not r["size_ok"]:
                 sys.exit(f"{v}: component {r['index']} layout {r['write_addr']:#x}/{needed} blocks "
                          f"differs from the verified layout — refusing")
-            # Erase the whole captured region, not just the blocks this image fills: the
-            # official 16.5 updater erases 145 blocks for the 9,399,532 B (144-block)
-            # component A (flash165_USBPcap3.pcap, 0x38 expected=145).
-            blocks = lo["max_blocks"]
+            # Erase exactly the blocks the image fills (size rounded up to 64 KiB): the
+            # official macOS 16.5 updater sends 0x37 (0, 144) for the 9,399,532 B
+            # component A (traced 2026-11-24), and the 12.8.1 capture sends 145 for its
+            # 9,491,428 B image.
+            blocks = needed
             h = sha(r["data"])
             matches.append(verified.get(h, (None,))[0])
             comps.append((r["data"], h, {
@@ -110,7 +111,7 @@ def main():
         if all_verified:
             notes = (f"Extracted from the official DV {v} installer (Firmware/{src}, zlib container). "
                      + " ".join(f"{c[2]['file']} = official-tool capture image {m}." for c, m in zip(comps, matches))
-                     + f" Erase region = full captured region ({', '.join(str(c[2]['block_count']) for c in comps)} blocks).")
+                     + f" Erase = image size in 64 KiB blocks ({', '.join(str(c[2]['block_count']) for c in comps)}).")
         else:
             notes = (f"Extracted from the official DV {v} installer (Firmware/{src}, zlib container); "
                      f"geometry from its own record headers, matching the verified layout. "

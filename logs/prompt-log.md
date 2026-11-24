@@ -178,3 +178,18 @@
   5. `ubmdf probe` (src/probe.rs): read-only vendor IN sweep with logging. Found that the device STALLs unless wLength is exact. A full sweep (bRequest 0-255 × 0xC0/0xC1 × 70 lengths, outside and inside a session) answers only 0x10, 0x11 (8 B 890bb734890bb734), 0x20 (2 B 0101), 0x30, 0x38, and 0x33 (2 B 0500, session only). 0x11/0x20/0x33 STALL for any non-zero wValue/wIndex. EP 0x82 times out. No read-back command found. The device answers `info` identically afterwards.
 - Build/test: macOS x86_64 (cmake from the nix profile for raylib-sys), cargo test 17/17, clippy clean apart from the existing collapsible-if in gui/mod.rs:313. The bundled-firmware build was tested from a copy of the tree with the 4 LFS images, sha256-checked.
 - Not done: no new flash of the unit with the changed bundles (user's call); not committed.
+
+## Execution log (24 Nov 2026, macOS: official updater traced, UBMDF aligned)
+- User: flashes give a backlit black screen and still no TB3; "I think something is missing for the flashing part".
+- Built tools/usbtrace (IOUSBLib interposer → USBPcap pcap + text). Traced the official macOS DesktopVideoUpdateTool 16.5
+  flashing the unit (an ad-hoc re-signed copy, since the hardened runtime blocks injection; re-signing only the exe gives
+  "damaged"). Trace: logs/official-trace-2026-11-24/ (pcap gz, sha256 d0149049…).
+- replay-check against UBMDF a143c67 → differences: (1) ClearPipeStallBothEnds on both pipes at open; (2) ID order C1 1 B,
+  C0 16 B ×2; (3) 0x37 A = (0, **144**), so a143c67's 145 was wrong (the flash165_USBPcap3 `expected=145` doesn't match
+  the official sequence); (4) after each ZLP a 0x30 busy-wait (010101 → 010000 ~105 ms) + an extra 0x30.
+- Fixed: planned_ops/flash follow the trace exactly (WireOp::ClearHalt, WaitWriteDone), erase = ceil(size)
+  (generator, 42 manifests, index, docs); false "done != expected" warning fixed (0x38 done = absolute end block).
+  replay-check vs the official trace: 32/32 matched, only the post-reboot 0x10 read is extra. Tests 17/17.
+- Outcome of the OFFICIAL flash on the unit: TB link training still times out after a power-cycle (10:10:10).
+  The flash procedure is not what keeps Thunderbolt down.
+- Button/screen test: 0x12 reboot power-cycles the main board (screen off/on); TB link attempts follow 0x31 sessions; all time out.

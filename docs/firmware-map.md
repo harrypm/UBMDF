@@ -41,13 +41,13 @@ From 11.5 onward the 4K Mini images are in `Firmware/data-r90.bin`, a zlib conta
 | 10.11.4 – 11.2 | `199ec0cf…` (2.16 MB) | `aacc0c45…` (1.38 MB) | none | probable; layout unproven |
 | 11.3 – 11.4.1 | `1f9b2083…` | `1c8d4f7f…` | dv-11.4.1 | derived; not yet flashed |
 | 11.5 – 12.8.1 (20 versions) | `6d2d0500…` = 12.8.1 official-tool capture | `1c8d4f7f…` | dv-11.5 … dv-12.8.1 | **byte-identical to the official-tool capture**; erase 145 blocks |
-| 12.9 – 16.5 (22 versions) | `2cd5104b…` = 16.0 official-tool capture | `1c8d4f7f…` | dv-12.9 … dv-16.5 | **byte-identical to the official-tool capture**; erase 145 blocks (image fills 144) |
+| 12.9 – 16.5 (22 versions) | `2cd5104b…` = 16.0 official-tool capture | `1c8d4f7f…` | dv-12.9 … dv-16.5 | **byte-identical to the official-tool capture**; erase 144 blocks |
 
 `component_B` (a MicroBlaze ELF that runs inside the FPGA and drives the front-panel display) has not changed since 11.3.
 
 **What "capture" proves:** the images are byte-identical to what the official updater sent over USB, and the device accepted every transfer. It does not prove the unit boots afterwards: as of 2026-11-24 the test unit has stayed dark (blank front panel, no PCIe device) after the official 16.5 updater and after UBMDF flashes of 12.8.1 and 16.5. The service port has no known read-back command, so the flash contents have never been read back.
 
-**Erase size (12.9 – 16.5):** the official 16.5 updater erases **145** blocks for the 144-block component A (`flash165_USBPcap3.pcap`, 0x38 `expected=145`). Bundles up to v1.0.1 sent 144; they now send 145. The `dv-16.0` capture bundle also said 144. Its source capture (`flash16_pass2_USBPcap3.pcap`, Windows machine only) has not been rechecked; run `ubmdf replay-check` on it to settle which value the 16.0 updater sent.
+**Erase size:** the image size rounded up to 64 KiB blocks: 145 for the 12.8.1 image, **144** for the 12.9 – 16.5 image. The official macOS 16.5 updater sends `0x37` (0, 144), traced on 2026-11-24 (`ubmdf` repo `tools/usbtrace`). The 145 that the Windows `flash165_USBPcap3.pcap` reports in its `0x38` polls does not match that trace; the capture starts mid-erase, so whatever it was erasing is unknown. a143c67 briefly sent 145; that was reverted.
 
 DV 12.9 is flagged KNOWN-BAD from forum reports of bricked units, but its 4K Mini images are byte-identical to 14.0 – 16.5. So the failures were not caused by the image files; they could have come from the 12.9 updater tool or the update process.
 

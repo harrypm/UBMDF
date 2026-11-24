@@ -20,3 +20,5 @@ __pycache__/
 # pre-rename (UBDMF <= v1.0.0) runtime files
 /logs/ubdmf.log
 /ubdmf-gui.conf
+# usbtrace build output (tools/usbtrace/build.sh)
+/tools/usbtrace/*.dylib

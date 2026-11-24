@@ -2,7 +2,8 @@
   "image": {
     "name": "UltraStudio 4K Mini - Desktop Video 12.8.1",
     "source": "captured from official DesktopVideoUpdateTool.exe 12.8.1 service-port flash, 2026-11-19 (flash_run_USBPcap3.pcap)",
-    "protocol": "docs/protocol.md"
+    "protocol": "docs/protocol.md",
+    "notes": ""
   },
   "components": [
     {
