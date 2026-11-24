@@ -9,11 +9,14 @@
 /firmware/installers/**/sandbox/
 /firmware/installers/**/*.msi
 # Runtime state
-/logs/ubdmf.log
-/ubdmf-gui.conf
+/logs/ubmdf.log
+/ubmdf-gui.conf
 /tools/harvest-transcript.log
 /tools/inspect-msi.log
 /dumps
 /tools/updater-extract.log
 __pycache__/
 /dist
+# pre-rename (UBDMF <= v1.0.0) runtime files
+/logs/ubdmf.log
+/ubdmf-gui.conf

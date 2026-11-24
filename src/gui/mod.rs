@@ -1,4 +1,4 @@
-//! UBDMF GUI — Clay layout + raylib renderer (same pairing as MISRC GUI).
+//! UBMDF GUI — Clay layout + raylib renderer (same pairing as MISRC GUI).
 //!
 //! - Resizable portrait window, Qt6-style flat theme, dark/light toggle.
 //! - Firmware: scrollable index (flashable first, then newest → oldest),
@@ -10,7 +10,7 @@
 //!
 //! Every device/network operation runs on a worker thread and reports back
 //! over an mpsc channel; the UI thread only lays out, draws and applies actions.
-//! CLI: `ubdmf gui` or `ubdmf gui --flash <manifest> --yes` (automated testing).
+//! CLI: `ubmdf gui` or `ubmdf gui --flash <manifest> --yes` (automated testing).
 mod model;
 mod render;
 mod theme;
@@ -438,7 +438,7 @@ fn spawn_flash(manifest: PathBuf, tx: Sender<Ev>) {
 
 fn spawn_dump(tx: Sender<Ev>) {
     std::thread::spawn(move || {
-        let out = crate::ops::dumps_dir().join(format!("ubdmf-dump-{}.json", crate::ops::unix_now()));
+        let out = crate::ops::dumps_dir().join(format!("ubmdf-dump-{}.json", crate::ops::unix_now()));
         let ev = match crate::ops::dump_device(Some(out)) {
             Ok(p) => Ev::JobDone {
                 ok: true,
@@ -544,7 +544,7 @@ fn open_path(p: &Path) {
 
 // ── Main loop ──────────────────────────────────────────────────────────────
 
-/// Launch options (`ubdmf gui --flash/--yes/--tab/--select`).
+/// Launch options (`ubmdf gui --flash/--yes/--tab/--select`).
 #[derive(Default)]
 pub struct Opts {
     pub flash: Option<PathBuf>,
@@ -558,7 +558,7 @@ pub fn run_gui(opts: Opts) -> anyhow::Result<()> {
     // installed before InitWindow so raylib's init lines reach the Log tab.
     let (mut rl, thread) = raylib::init()
         .size(600, 860)
-        .title("UBDMF - Universal Blackmagic Devices Flasher")
+        .title("UBMDF - Universal Blackmagic Devices Flasher")
         .resizable()
         .msaa_4x()
         .log_to_rust()
@@ -568,7 +568,7 @@ pub fn run_gui(opts: Opts) -> anyhow::Result<()> {
     rl.set_exit_key(None); // Esc must never close the app (mid-flash safety)
     // Window/taskbar icon — embedded so it works from any launch directory and
     // on every platform (temporary art: tools/make-icon.ps1 → assets/icon/).
-    match Image::load_image_from_mem(".png", include_bytes!("../../assets/icon/ubdmf.png")) {
+    match Image::load_image_from_mem(".png", include_bytes!("../../assets/icon/ubmdf.png")) {
         Ok(mut icon) => {
             icon.set_format(PixelFormat::PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
             rl.set_window_icon(&icon);
@@ -583,9 +583,14 @@ pub fn run_gui(opts: Opts) -> anyhow::Result<()> {
 
     let conf_path = crate::index::firmware_root()
         .parent()
-        .map(|p| p.join("ubdmf-gui.conf"))
+        .map(|p| p.join("ubmdf-gui.conf"))
         .filter(|p| !p.as_os_str().is_empty())
-        .unwrap_or_else(|| PathBuf::from("ubdmf-gui.conf"));
+        .unwrap_or_else(|| PathBuf::from("ubmdf-gui.conf"));
+    // Carry the theme over from the pre-rename settings file (<= v1.0.0).
+    let old_conf = conf_path.with_file_name("ubdmf-gui.conf");
+    if !conf_path.exists() && old_conf.exists() {
+        let _ = std::fs::rename(&old_conf, &conf_path);
+    }
     let dark = std::fs::read_to_string(&conf_path).map(|s| s.trim() != "light").unwrap_or(true);
 
     let (tx, rx): (Sender<Ev>, Receiver<Ev>) = channel();

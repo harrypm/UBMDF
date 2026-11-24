@@ -1,4 +1,4 @@
-"""Build a flashable UBDMF bundle from plaintext CheckVersionPCI.exe RCDATA
+"""Build a flashable UBMDF bundle from plaintext CheckVersionPCI.exe RCDATA
 images (DV 10.9.10 - 11.4.1), using a hardware-verified bundle as the flash
 geometry reference.
 

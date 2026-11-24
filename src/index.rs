@@ -1,4 +1,4 @@
-//! Firmware index: the master registry of all firmware bundles UBDMF knows about.
+//! Firmware index: the master registry of all firmware bundles UBMDF knows about.
 //!
 //! `firmware/index.json` is the on-disk index; `rebuild` scans the firmware
 //! tree and regenerates it. Two kinds of entries:
@@ -13,7 +13,8 @@ use std::path::{Path, PathBuf};
 
 pub fn firmware_root() -> PathBuf {
     // 1. Explicit override always wins.
-    if let Ok(p) = std::env::var("UBDMF_FIRMWARE") {
+    // (UBDMF_FIRMWARE = pre-rename name, still honoured.)
+    if let Ok(p) = std::env::var("UBMDF_FIRMWARE").or_else(|_| std::env::var("UBDMF_FIRMWARE")) {
         return PathBuf::from(p);
     }
     // 2. Relative to the current directory (running from the repo root).
@@ -22,7 +23,7 @@ pub fn firmware_root() -> PathBuf {
         return cwd;
     }
     // 3. Walk up from the executable's location (target/release -> repo
-    //    root; UBDMF.app/Contents/MacOS -> folder holding the .app). For an
+    //    root; UBMDF.app/Contents/MacOS -> folder holding the .app). For an
     //    AppImage the exe lives in a temporary mount, so start from the
     //    .AppImage file itself ($APPIMAGE) instead.
     let start = std::env::var_os("APPIMAGE")
@@ -46,7 +47,7 @@ pub fn firmware_root() -> PathBuf {
     user_data_dir().map(|d| d.join("firmware")).unwrap_or_else(|| PathBuf::from("firmware"))
 }
 
-/// Per-user application data folder for UBDMF, per platform conventions.
+/// Per-user application data folder for UBMDF, per platform conventions.
 fn user_data_dir() -> Option<PathBuf> {
     let env = |k: &str| std::env::var_os(k).filter(|v| !v.is_empty()).map(PathBuf::from);
     let base = if cfg!(windows) {
@@ -56,7 +57,13 @@ fn user_data_dir() -> Option<PathBuf> {
     } else {
         env("XDG_DATA_HOME").or_else(|| env("HOME").map(|h| h.join(".local").join("share")))
     }?;
-    Some(base.join("UBDMF"))
+    let dir = base.join("UBMDF");
+    // One-time migration from the pre-rename folder name (UBDMF, <= v1.0.0).
+    let old = base.join("UBDMF");
+    if !dir.exists() && old.is_dir() {
+        let _ = std::fs::rename(&old, &dir);
+    }
+    Some(dir)
 }
 
 pub fn index_path() -> PathBuf {

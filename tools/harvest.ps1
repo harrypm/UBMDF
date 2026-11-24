@@ -1,4 +1,4 @@
-# harvest.ps1 — UBDMF auto-harvest: all Desktop Video versions, unattended
+# harvest.ps1 — UBMDF auto-harvest: all Desktop Video versions, unattended
 #
 # Self-elevates (one UAC prompt), then for every Desktop Video version in BMD's
 # catalog (non-SDK, Windows, 9.5.3 → 16.5): download → msiexec /a sandbox extract →
@@ -31,7 +31,7 @@ if (-not $isAdmin) {
     Start-Process pwsh.exe -ArgumentList $args -Verb RunAs -Wait
     exit
 }
-Write-Host "=== UBDMF Firmware Harvest (elevated) ==="
+Write-Host "=== UBMDF Firmware Harvest (elevated) ==="
 Write-Host "Started: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
 
 # Transcript: everything below is captured to a file so a stall/crash is
@@ -229,9 +229,9 @@ foreach ($dv in $dvVersions) {
 # --- Rebuild index ---
 Write-Host "`nRebuilding index..."
 Push-Location "$PSScriptRoot\.."
-$ubdmf = ".\target\release\ubdmf.exe"
-if (Test-Path $ubdmf) {
-    & $ubdmf index rebuild 2>&1 | Select-Object -Last 3
+$ubmdf = ".\target\release\ubmdf.exe"
+if (Test-Path $ubmdf) {
+    & $ubmdf index rebuild 2>&1 | Select-Object -Last 3
 }
 Pop-Location
 

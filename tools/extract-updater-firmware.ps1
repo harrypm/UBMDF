@@ -11,7 +11,7 @@
 #   firmware/installers/dv-<v>-extract/Firmware/CheckVersionPCI-rcdata/rc-<id>.bin
 #   .../CheckVersionPCI-rcdata/resources.csv  (id,bytes,sha256,entropy,type,head16)
 #   firmware/installers/dv-<v>-inventory.csv  (regenerated: whole Firmware\ tree)
-# Then run `ubdmf index rebuild`.
+# Then run `ubmdf index rebuild`.
 #
 # Usage: pwsh -File tools/extract-updater-firmware.ps1 [-From 10.9.10] [-To 99] [-Force]
 param(
@@ -73,7 +73,7 @@ foreach ($z in $zips) {
         $report += [pscustomobject]@{ version = $v; status = 'skip-done'; images = 0; bytes = 0 }
         continue
     }
-    $tmp = Join-Path ([IO.Path]::GetTempPath()) "ubdmf-upd-$v"
+    $tmp = Join-Path ([IO.Path]::GetTempPath()) "ubmdf-upd-$v"
     if (Test-Path $tmp) { Remove-Item $tmp -Recurse -Force }
     New-Item -ItemType Directory -Force $tmp | Out-Null
     try {
@@ -134,4 +134,4 @@ foreach ($z in $zips) {
 $report | ConvertTo-Json | Set-Content (Join-Path $inst 'updater-extract-report.json')
 $ok = @($report | Where-Object status -eq 'ok').Count
 Write-Host "`nDone: $ok extracted, $(@($report | Where-Object status -like 'skip*').Count) skipped, $(@($report | Where-Object status -like 'failed*').Count) failed. Report: firmware/installers/updater-extract-report.json"
-Write-Host 'Next: ubdmf index rebuild'
+Write-Host 'Next: ubmdf index rebuild'

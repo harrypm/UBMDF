@@ -1,7 +1,7 @@
-# Generates the TEMPORARY UBDMF app icon (swap out later):
+# Generates the TEMPORARY UBMDF app icon (swap out later):
 # an UltraStudio-style capture box whose front LCD shows EBU colour bars
 # (100/0/75/0: white at 100%, colours at 75%), 1:1 square render.
-# Output: assets/icon/ubdmf.png (512 px) + assets/icon/ubdmf.ico (16-256 px).
+# Output: assets/icon/ubmdf.png (512 px) + assets/icon/ubmdf.ico (16-256 px).
 # Usage: pwsh -File tools/make-icon.ps1
 Add-Type -AssemblyName System.Drawing
 $ErrorActionPreference = 'Stop'
@@ -86,7 +86,7 @@ function Scaled([int]$n) {
 function PngBytes($b) { $ms = New-Object System.IO.MemoryStream; $b.Save($ms, [System.Drawing.Imaging.ImageFormat]::Png); return , $ms.ToArray() }
 
 $png512 = Scaled 512
-$png512.Save((Join-Path $outDir 'ubdmf.png'), [System.Drawing.Imaging.ImageFormat]::Png)
+$png512.Save((Join-Path $outDir 'ubmdf.png'), [System.Drawing.Imaging.ImageFormat]::Png)
 
 # ICO container with PNG-compressed entries (supported since Windows Vista)
 $sizes = 256, 128, 64, 48, 32, 24, 16
@@ -104,5 +104,5 @@ for ($i = 0; $i -lt $sizes.Count; $i++) {
 }
 foreach ($b in $blobs) { $w.Write($b) }
 $w.Flush()
-[System.IO.File]::WriteAllBytes((Join-Path $outDir 'ubdmf.ico'), $ms.ToArray())
-"icon written: $outDir (ubdmf.png 512px, ubdmf.ico $($sizes -join '/') px)"
+[System.IO.File]::WriteAllBytes((Join-Path $outDir 'ubmdf.ico'), $ms.ToArray())
+"icon written: $outDir (ubmdf.png 512px, ubmdf.ico $($sizes -join '/') px)"

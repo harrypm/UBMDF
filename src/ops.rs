@@ -77,8 +77,8 @@ pub fn close_session(dev: &BmdDevice) -> Result<()> {
             Ok(())
         }
         Err(e) => {
-            log::warn!("session close (0x12) failed: {e:#}; run `ubdmf reset` to clear");
-            Err(e).context("session close (0x12) failed; run `ubdmf reset` to clear")
+            log::warn!("session close (0x12) failed: {e:#}; run `ubmdf reset` to clear");
+            Err(e).context("session close (0x12) failed; run `ubmdf reset` to clear")
         }
     }
 }
@@ -103,7 +103,7 @@ pub fn dump_device(out: Option<PathBuf>) -> Result<PathBuf> {
 
     let ts = unix_now();
     let doc = DumpDoc { timestamp_unix: ts, device: snap };
-    let path = out.unwrap_or_else(|| PathBuf::from(format!("ubdmf-dump-{ts}.json")));
+    let path = out.unwrap_or_else(|| PathBuf::from(format!("ubmdf-dump-{ts}.json")));
     if let Some(parent) = path.parent().filter(|p| !p.as_os_str().is_empty()) {
         std::fs::create_dir_all(parent)
             .with_context(|| format!("failed to create {}", parent.display()))?;

@@ -1,8 +1,8 @@
-//! UBDMF integrated log system.
+//! UBMDF integrated log system.
 //!
 //! One `log` facade, three sinks:
 //! - terminal readout (stderr)
-//! - file sink (`UBDMF_LOG` env override, else `logs/ubdmf.log` anchored to the
+//! - file sink (`UBMDF_LOG` env override, else `logs/ubmdf.log` anchored to the
 //!   resolved firmware root's parent — the repo root — so it is CWD-independent)
 //! - in-memory ring buffer (capped) that the GUI renders live
 //!
@@ -50,11 +50,11 @@ fn timestamp() -> String {
     format!("{}.{:03}", now.as_secs(), now.subsec_millis())
 }
 
-struct UbdmfLogger {
+struct UbmdfLogger {
     file: Mutex<Option<File>>,
 }
 
-impl log::Log for UbdmfLogger {
+impl log::Log for UbmdfLogger {
     fn enabled(&self, metadata: &log::Metadata) -> bool {
         metadata.level() <= log::Level::Debug
     }
@@ -94,7 +94,7 @@ impl log::Log for UbdmfLogger {
 }
 
 pub fn log_path() -> PathBuf {
-    if let Ok(p) = std::env::var("UBDMF_LOG") {
+    if let Ok(p) = std::env::var("UBMDF_LOG").or_else(|_| std::env::var("UBDMF_LOG")) {
         return PathBuf::from(p);
     }
     // Anchor the log beside the firmware root (repo root) so launches from any
@@ -103,9 +103,9 @@ pub fn log_path() -> PathBuf {
     // firmware root is found.
     crate::index::firmware_root()
         .parent()
-        .map(|p| p.join("logs").join("ubdmf.log"))
+        .map(|p| p.join("logs").join("ubmdf.log"))
         .filter(|p| !p.as_os_str().is_empty())
-        .unwrap_or_else(|| PathBuf::from("logs").join("ubdmf.log"))
+        .unwrap_or_else(|| PathBuf::from("logs").join("ubmdf.log"))
 }
 
 /// Initialise the logger (idempotent — a second call is a no-op).
@@ -120,7 +120,7 @@ pub fn init() {
         .open(&path)
         .ok();
 
-    let logger = UbdmfLogger {
+    let logger = UbmdfLogger {
         file: Mutex::new(file),
     };
     // Ignore the "already set" error so tests / re-init are harmless.
@@ -128,7 +128,7 @@ pub fn init() {
     // Info for the terminal/file sinks — Debug would forward nusb's per-device
     // probe spam into every sink.
     log::set_max_level(log::LevelFilter::Info);
-    log::info!("UBDMF logging initialised (file: {})", path.display());
+    log::info!("UBMDF logging initialised (file: {})", path.display());
 }
 
 #[cfg(test)]

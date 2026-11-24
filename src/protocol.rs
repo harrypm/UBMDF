@@ -102,7 +102,7 @@ pub struct DeviceEntry {
     /// Connection speed (e.g. Super, High), if known.
     pub speed: Option<String>,
     /// Driver bound to the device (Windows only; always None elsewhere).
-    /// "WinUSB" = flashable by UBDMF; anything else (e.g. BMD
+    /// "WinUSB" = flashable by UBMDF; anything else (e.g. BMD
     /// DesktopVideoUpdate) needs a Zadig swap first.
     pub driver: Option<String>,
 }

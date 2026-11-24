@@ -9,12 +9,12 @@ use std::io::Write as _;
 use std::path::{Path, PathBuf};
 
 fn main() {
-    println!("cargo:rerun-if-changed=assets/icon/ubdmf.ico");
+    println!("cargo:rerun-if-changed=assets/icon/ubmdf.ico");
     println!("cargo:rerun-if-changed=build.rs");
 
     if std::env::var("CARGO_CFG_TARGET_OS").as_deref() == Ok("windows") {
         let mut res = winresource::WindowsResource::new();
-        res.set_icon("assets/icon/ubdmf.ico");
+        res.set_icon("assets/icon/ubmdf.ico");
         if let Err(e) = res.compile() {
             // Never fail the build over an icon (e.g. no Windows SDK rc.exe).
             println!("cargo:warning=icon not embedded: {e}");

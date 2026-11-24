@@ -159,3 +159,9 @@
 ## Execution log (24 Nov 2026, "1 & 2": hardlinked first-run install + master default)
 - bundled.rs: the first copy of each image (by sha256) is written, later bundles get a hardlink (copy fallback on FAT/exFAT/cross-volume). Sandbox test: "43 bundles … (4 images written, 82 hardlinked)"; apparent 489 MB, actual on disk 30.4 MB (48 unique files by inode); verify 43/43 OK. clippy clean both configs, tests 13/13.
 - Note: my v1.0.0 release check had already installed a non-linked copy (466 MB) into the real %LOCALAPPDATA%\UBDMF — left for the user to delete (re-created compactly on next run).
+
+## Execution log (24 Nov 2026, rename UBDMF → UBMDF, v1.0.1)
+- User: "fix repo name UBMDF 'Universal Blackmagic Devices Flasher'". Asked (letters differ from the original request): user confirmed **UBMDF**, scope **repo + everything**, then v1.0.1. Entries above this point use the old name (history kept as written).
+- Renamed in 19 tracked files + git mv assets/icon/ubmdf.{ico,png}, drivers/ubmdf-winusb.inf: crate/binary `ubmdf`, GUI title/header, CI asset names (ubmdf-windows-x64.exe, UBMDF-x86_64.AppImage, UBMDF-macos-universal.zip, UBMDF.app, bundle id io.github.ubmdf), env vars UBMDF_FIRMWARE / UBMDF_LOG, per-user data folder UBMDF, ubmdf-gui.conf, logs/ubmdf.log, ubmdf-dump-*.json.
+- Compatibility: UBDMF_FIRMWARE / UBDMF_LOG still honoured; an existing per-user UBDMF folder is renamed to UBMDF on first run; ubdmf-gui.conf carried over. Sandbox test: old folder migrated, log at …\UBMDF\logs\ubmdf.log, 43 bundles (4 written / 82 hardlinked), `ubmdf 1.0.0`.
+- Version 1.0.1 (rename + hardlinked bundled install).

@@ -1,4 +1,4 @@
-"""Xilinx bitstream inspector for UBDMF firmware images (read-only).
+"""Xilinx bitstream inspector for UBMDF firmware images (read-only).
 
 Finds the sync word (AA 99 55 66) and walks type-1/type-2 configuration packets
 to report the IDCODE register write (identifies the exact FPGA part), the

@@ -1,4 +1,4 @@
-//! UBDMF — Universal Blackmagic Devices Flasher.
+//! UBMDF — Universal Blackmagic Devices Flasher.
 //! Engine: reverse-engineered Blackmagic service-port protocol (docs/protocol.md),
 //! hardware-validated and byte-verified against the official DesktopVideoUpdateTool.
 
@@ -31,9 +31,9 @@ use protocol::FlashEvent;
 
 #[derive(Parser)]
 #[command(
-    name = "ubdmf",
+    name = "ubmdf",
     version,
-    about = "UBDMF - Universal Blackmagic Devices Flasher (service-port protocol, see docs/protocol.md)"
+    about = "UBMDF - Universal Blackmagic Devices Flasher (service-port protocol, see docs/protocol.md)"
 )]
 struct Cli {
     #[command(subcommand)]
@@ -48,7 +48,7 @@ enum Cmd {
     Info,
     /// Dump device identity/state to a JSON file (read-only; session closed cleanly)
     Dump {
-        /// Output file (default: ubdmf-dump-<epoch-secs>.json in the cwd)
+        /// Output file (default: ubmdf-dump-<epoch-secs>.json in the cwd)
         #[arg(long)]
         out: Option<PathBuf>,
     },
@@ -144,15 +144,15 @@ fn main() {
     if std::env::args().len() == 1 {
         // No console exists in this mode — errors go to the file log only.
         if let Err(e) = gui::run_gui(gui::Opts::default()) {
-            log::error!("ubdmf: {e:#}");
+            log::error!("ubmdf: {e:#}");
             std::process::exit(1);
         }
         return;
     }
     if let Err(e) = run(Cli::parse()) {
-        log::error!("ubdmf: {e:#}");
+        log::error!("ubmdf: {e:#}");
         // stderr may not exist (GUI-subsystem run without console) — never panic.
-        let _ = writeln!(std::io::stderr(), "ubdmf: error: {e:#}");
+        let _ = writeln!(std::io::stderr(), "ubmdf: error: {e:#}");
         std::process::exit(1);
     }
 }
@@ -250,7 +250,7 @@ fn run(cli: Cli) -> Result<()> {
             {
                 // GUI mode may have no console — errors go to the file log only.
                 if let Err(e) = gui::run_gui(gui::Opts { flash, yes, tab, select }) {
-                    log::error!("ubdmf: {e:#}");
+                    log::error!("ubmdf: {e:#}");
                     std::process::exit(1);
                 }
                 Ok(())
@@ -365,7 +365,7 @@ fn cmd_update_import(path: &Path) -> Result<()> {
 fn cmd_index_list() -> Result<()> {
     let idx = index::Index::load()?;
     if idx.bundles.is_empty() {
-        println!("Index is empty. Run `ubdmf index rebuild` to scan firmware/.");
+        println!("Index is empty. Run `ubmdf index rebuild` to scan firmware/.");
         return Ok(());
     }
     println!("{:40} {:10} {:20} {:8} NOTES", "ID", "VERSION", "DEVICE", "KIND");
@@ -387,7 +387,7 @@ fn cmd_index_show(id: &str) -> Result<()> {
     let idx = index::Index::load()?;
     let b = idx
         .find(id)
-        .with_context(|| format!("bundle '{}' not found (run `ubdmf index list`)", id))?;
+        .with_context(|| format!("bundle '{}' not found (run `ubmdf index list`)", id))?;
     println!("ID:         {}", b.id);
     println!("Device:     {}", b.device);
     println!("Version:    {}", b.dv_version);
@@ -619,7 +619,7 @@ fn cmd_reset() -> Result<()> {
     println!("sending reboot (0x12)...");
     match protocol::reboot(&dev.iface) {
         Ok(()) => {
-            println!("reboot accepted. The device may drop off the bus briefly; after a few seconds re-run `ubdmf info`.");
+            println!("reboot accepted. The device may drop off the bus briefly; after a few seconds re-run `ubmdf info`.");
             log::info!("reset (0x12) accepted");
         }
         Err(e) => {

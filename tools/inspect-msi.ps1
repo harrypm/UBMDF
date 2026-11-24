@@ -21,7 +21,7 @@ foreach ($ver in $Versions) {
     "########## DV $ver ##########" | Add-Content $log
     if (-not (Test-Path $zipPath)) { "zip missing: $zipPath" | Add-Content $log; continue }
 
-    $work = Join-Path $env:TEMP "ubdmf-inspect-$ver"
+    $work = Join-Path $env:TEMP "ubmdf-inspect-$ver"
     if (Test-Path $work) { Remove-Item $work -Recurse -Force }
     $zipDir = Join-Path $work 'zip'
     $sandbox = Join-Path $work 'sandbox'
