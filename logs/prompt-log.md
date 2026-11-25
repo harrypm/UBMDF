@@ -212,3 +212,4 @@
   screenshots, features, download, quick start, a docs table and the licence. Details moved to new docs/cli.md, gui.md,
   building.md, platforms.md, tracing.md and firmware-data.md (protocol.md and firmware-map.md already existed). Dropped a
   stale reference to a nonexistent `ubmdf driver restore-bmd`. "See README" hints in the code now point to docs/platforms.md.
+- User: "tag a new release with all the changes" → version 1.0.2 (Cargo.toml + Cargo.lock), tag v1.0.2 on master.
