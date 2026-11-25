@@ -134,6 +134,9 @@ enum Cmd {
         /// Pre-select the firmware entry with this Desktop Video version
         #[arg(long)]
         select: Option<String>,
+        /// Check Blackmagic's catalog on launch (fills the Update tab)
+        #[arg(long)]
+        check_catalog: bool,
     },
 }
 
@@ -302,11 +305,11 @@ fn run(cli: Cli) -> Result<()> {
             UpdateCmd::Fetch { version } => cmd_update_fetch(&version),
             UpdateCmd::Import { path } => cmd_update_import(&path),
         },
-        Cmd::Gui { flash, yes, tab, select } => {
+        Cmd::Gui { flash, yes, tab, select, check_catalog } => {
             #[cfg(feature = "gui")]
             {
                 // GUI mode may have no console — errors go to the file log only.
-                if let Err(e) = gui::run_gui(gui::Opts { flash, yes, tab, select }) {
+                if let Err(e) = gui::run_gui(gui::Opts { flash, yes, tab, select, check_catalog }) {
                     log::error!("ubmdf: {e:#}");
                     std::process::exit(1);
                 }
@@ -314,7 +317,7 @@ fn run(cli: Cli) -> Result<()> {
             }
             #[cfg(not(feature = "gui"))]
             {
-                let _ = (flash, yes, tab, select); // silence unused warnings
+                let _ = (flash, yes, tab, select, check_catalog); // silence unused warnings
                 anyhow::bail!("GUI not compiled in. Build with --features gui to enable the raylib GUI. CLI-only build: cargo build --no-default-features")
             }
         }
@@ -499,7 +502,7 @@ fn cmd_list() -> Result<()> {
     if found.is_empty() {
         println!("No Blackmagic service-port devices found (VID 1edb PID be13).");
         println!(
-            "Hints: on Windows the device must be bound to WinUSB (Zadig; see README); \
+            "Hints: on Windows the device must be bound to WinUSB (Zadig; see docs/platforms.md); \
              on Linux check udev permissions."
         );
         log::info!("device list: none found");

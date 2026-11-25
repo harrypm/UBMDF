@@ -193,3 +193,22 @@
 - Outcome of the OFFICIAL flash on the unit: TB link training still times out after a power-cycle (10:10:10).
   The flash procedure is not what keeps Thunderbolt down.
 - Button/screen test: 0x12 reboot power-cycles the main board (screen off/on); TB link attempts follow 0x31 sessions; all time out.
+
+## Execution log (25 Nov 2026, macOS: GUI text tightened, README icon + screenshots)
+- User: "tighten up bottom text readout info, add image examples to the README and icon at the top".
+- Status bar: one short line per result (e.g. "Flashed DV 16.5 · not verified (no read-back) · unplug USB, then power-cycle",
+  "Dump saved: <file>", "Reset sent · …"); full error chains go to the log only (log::error! in each worker).
+- Progress: erase shows per-part blocks ("Erase B (CPU): 30/30") — was "222/30" and an instant 100% for B because 0x38 `done`
+  is absolute; write shows the per-part MB plus the total.
+- Firmware detail card: per-image line (A · FPGA · 9.4 MB · erase 144 blocks · @ 0x000000), short notes, paths shown with ~.
+  Bundle notes shortened in the generator, 41 manifests and the index. Restored the 12.9 KNOWN-BAD note in the repo index.json
+  (lost in a143c67's index patch; runtime rebuilds always had it).
+- Log tab: raylib INFO chatter hidden (file + Copy keep everything), home folder shown as ~; macOS skips set_window_icon
+  (GLFW 65548 "Regular windows do not have icons on macOS").
+- New: `ubmdf gui --check-catalog`. README: icon at the top, 2×2 screenshot grid (docs/images, window-only captures via
+  tools/screenshot/winid.c + screencapture -l). Tests 20/20, clippy clean apart from the old gui/mod.rs:313.
+- User: "readme is missing snips and has too much info that should be in sub docs", "did you push?". The snips were missing
+  on GitHub because nothing after d87a7c2 had been pushed. README cut from 241 to 54 lines: centred icon, title and tagline,
+  screenshots, features, download, quick start, a docs table and the licence. Details moved to new docs/cli.md, gui.md,
+  building.md, platforms.md, tracing.md and firmware-data.md (protocol.md and firmware-map.md already existed). Dropped a
+  stale reference to a nonexistent `ubmdf driver restore-bmd`. "See README" hints in the code now point to docs/platforms.md.

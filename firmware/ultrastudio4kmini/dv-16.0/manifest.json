@@ -3,7 +3,7 @@
     "name": "UltraStudio 4K Mini - Desktop Video 16.0",
     "source": "extracted from C:\\Users\\Harry\\bmdflash\\captures\\flash16_pass2_USBPcap3.pcap by tools/extract-from-capture.ps1",
     "protocol": "docs/protocol.md",
-    "notes": "Captured from the official DV 16.0 updater (flash16_pass2_USBPcap3.pcap, Windows machine). Erase 144 blocks for component_A, confirmed by tracing the official macOS 16.5 updater on 2026-11-24 (0x37 region (0, 144) for this same image)."
+    "notes": "Captured from the official DV 16.0 updater (Windows USB capture). Erase 144 blocks for A, as the traced official 16.5 updater sends."
   },
   "components": [
     {

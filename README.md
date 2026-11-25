@@ -1,229 +1,54 @@
-# UBMDF — Universal Blackmagic Devices Flasher
+<p align="center"><img src="assets/icon/ubmdf.png" width="128" alt="UBMDF icon"></p>
 
-Cross-platform CLI + GUI tool for flashing firmware to Blackmagic capture devices via the USB service port. The protocol was reverse-engineered from official `DesktopVideoUpdateTool` traffic captures and hardware-validated with byte-verified flashes.
+<h1 align="center">UBMDF — Universal Blackmagic Devices Flasher</h1>
 
-## What it does
-- Lists connected Blackmagic service-port devices
-- Reads device identity, state, and flash geometry
-- Flashes firmware bundles (plaintext capture-derived images)
-- Dumps device info to JSON
-- Manages a firmware index (flashable bundles + encrypted inventories)
-- Downloads and inventories official Desktop Video installers from BMD's catalog
-- Batch-harvests all firmware versions unattended
+<p align="center">Cross-platform CLI + GUI for flashing Blackmagic devices over their USB service port.<br>
+Windows · Linux · macOS — currently the UltraStudio 4K Mini (Desktop Video 11.5 – 16.5).</p>
 
-## CLI
+The flash sequence matches a USB trace of Blackmagic's official `DesktopVideoUpdateTool` 16.5 op for op (32/32), and every image is byte-identical to the official one.
 
-Running the exe with **no arguments** opens the GUI in GUI builds (so double-clicking works); CLI-only builds print help.
+## Screenshots
+| Firmware | Devices |
+|---|---|
+| <img src="docs/images/firmware.png" width="380" alt="Firmware tab: bundle list with Desktop Video 16.5 selected, per-image erase size and address"> | <img src="docs/images/devices.png" width="380" alt="Devices tab: UltraStudio 4K Mini on the USB service port"> |
+| **Update** | **Log** |
+| <img src="docs/images/update.png" width="380" alt="Update tab: Blackmagic Desktop Video catalog, indexed versions"> | <img src="docs/images/log.png" width="380" alt="Log tab: integrated log readout"> |
 
+## Features
+- Live detection of service-port devices, with identity and state readout and a JSON dump
+- 43 flashable Desktop Video versions built in, each sha256-checked, with a step-by-step flash log
+- Firmware index plus Blackmagic catalog check, download and inventory
+- `replay-check`: compare UBMDF's flash with a USB capture of the official updater
+- `probe`: logged, read-only command sweep of the service port
+
+## Download
+Builds for Windows (`.exe`), Linux (`.AppImage`) and macOS (universal `.app`) come from [GitHub Actions](https://github.com/harrypm/UBMDF/actions) on every push, and from [Releases](https://github.com/harrypm/UBMDF/releases) for `v*` tags. The macOS app is ad-hoc signed, so right-click → Open the first time.
+
+- **Windows:** bind the service port to WinUSB with Zadig.
+- **Linux:** add the udev rule.
+- See [platforms](docs/platforms.md) for both.
+
+## Quick start
 ```
-ubmdf                                # no args → GUI (GUI builds)
-ubmdf list                          # find service-port devices
-ubmdf info                          # read device identity/state (read-only)
-ubmdf dump                          # dump device info to JSON
-ubmdf flash <manifest.json> --yes   # flash a firmware bundle
-ubmdf verify <manifest.json>        # verify bundle hashes + device state
-ubmdf reset                         # send 0x12 to clear lingering sessions
-ubmdf replay-check <cap.pcap> <manifest.json>  # compare UBMDF's flash sequence with an official-updater capture
-ubmdf probe [--session] [--bulk-in]  # read-only vendor IN sweep, looking for a read-back command
-ubmdf index list                    # list all indexed firmware
-ubmdf index show <id>               # show bundle details
-ubmdf index rebuild                 # rescan firmware/ and rebuild index
-ubmdf update check                 # list BMD catalog versions
-ubmdf update fetch <version>       # download + extract + inventory a version
-ubmdf update import <path>         # import a local installer zip
-ubmdf gui                          # launch the GUI
-ubmdf gui --flash <manifest> --yes  # auto-flash (for testing)
+ubmdf                                    # GUI (no arguments)
+ubmdf list                               # find service-port devices
+ubmdf info                               # identity and state (read-only)
+ubmdf index list                         # flashable bundles
+ubmdf flash "<firmware>/ultrastudio4kmini/dv-16.5/manifest.json"
 ```
+`<firmware>` is the firmware folder; on macOS that's `~/Library/Application Support/UBMDF/firmware` ([locations](docs/firmware-data.md#where-ubmdf-keeps-its-data)). After a flash, unplug the USB cable, then power-cycle the unit. The device has no read-back, so a flash means every transfer was accepted, **not** that the contents were verified.
 
-## GUI
-```
-ubmdf gui [--tab firmware|devices|update|log] [--select <dv-version>]
-```
-- **Clay layout + raylib renderer** (same pairing as MISRC GUI) — flex layout, scroll containers, floating dialog; our own raylib-6 renderer (`src/gui/render.rs`)
-- **Resizable portrait window** (600×860 default, 460×560 minimum)
-- **Arimo** Regular/Bold bundled, rasterised per text size (crisp, includes Latin-1 + `… — →` glyphs)
-- **Dark/Light theme** toggle (Qt6-style flat), remembered in `ubmdf-gui.conf`
-- **Firmware tab**: scrollable list of every indexed bundle — flashable first, then newest → oldest (numeric version sort); filter chips (All / Flashable / Inventories); detail card with size/notes/path, **Flash to device** (with confirm dialog; disabled with a reason when no device, several devices, or a non-WinUSB driver), Show manifest/inventory/installer
-- **Devices tab**: **live** detection (USB polled every 2 s, hotplug-safe); product, serial, bus/address/port, speed, bound driver (**WinUSB = flashable**); **Dump info to JSON** (written to `dumps/`) and **Reset session (0x12)** buttons
-- **Update tab**: **Check catalog** (BMD public catalog, marks indexed versions), per-version **Download** (download → extract → inventory → index, with progress; Windows extraction needs admin), **Rebuild index**
-- **Log tab**: the **integrated console** — raylib, app, device-poll and worker lines; follows new lines, scroll up to pause; Copy and Open file
-- **Progress panel**: hash check → erase → write with % and MB readout; closing the window during a flash is deferred until it finishes (Esc never closes the app)
-- All device/network work runs on **worker threads** (mpsc events); the flash path is the CLI's (sha256-verified component load)
-- Idle throttle: 60 fps while interacting or working, 15 fps idle
-- **No console popup**: GUI builds use the Windows GUI subsystem — no CMD window appears when the exe is launched or double-clicked. CLI commands from a terminal still print normally (the parent console is re-attached when needed)
-
-### App icon (temporary)
-`assets/icon/ubmdf.png` (512 px) and `assets/icon/ubmdf.ico` (16–256 px) show an UltraStudio-style unit with EBU colour bars (100/0/75/0) on its screen. They are generated by `tools/make-icon.ps1`. To swap the art, replace both files (or edit the script), then rebuild. The PNG is embedded as the window icon on every platform. On Windows, `build.rs` also embeds the `.ico` in the exe via `winresource`; if no Windows SDK `rc.exe` is found it prints a warning and the build still succeeds.
-
-## Firmware Index
-`firmware/index.json` tracks two kinds of entries:
-- **flashable**: plaintext capture-derived bundles (manifest + components)
-- **encrypted-inventory** (historical name): SHA-256 inventories of the installers' `data-rNN.bin` containers. Despite the name these are zlib-compressed, not encrypted — see below
-
-## Harvest (batch firmware collection)
-```
-pwsh -File tools/harvest.ps1                    # all versions
-pwsh -File tools/harvest.ps1 -From 16.5 -To 12.8  # version range
-pwsh -File tools/harvest.ps1 -NoZips             # discard zips after inventory
-```
-Self-elevates (one UAC prompt), downloads → extracts → inventories → indexes each version. Produces `harvest-report.json`. Local installer zips are imported when available.
-
-## Downloads / CI
-GitHub Actions (`.github/workflows/build.yml`) builds and tests every push:
-
-- **Windows**: `ubmdf-windows-x64.exe`
-- **Linux**: `UBMDF-x86_64.AppImage` (built on Ubuntu 22.04)
-- **macOS**: `UBMDF-macos-universal.zip` (universal `UBMDF.app`, arm64 + x86_64; ad-hoc signed, not notarized, so right-click → Open on first launch)
-
-Pushing a `v*` tag publishes the three as a GitHub release.
-
-### Bundled firmware
-Release builds (`--features bundled-firmware`) carry every flashable bundle inside the binary: 43 UltraStudio 4K Mini versions over 4 distinct images, 13 MB packed. On first run any bundle missing from the firmware folder is unpacked, sha256-checked and indexed. Bundles already present are left alone.
-
-### Raw firmware data via Git LFS (Linux / macOS / Windows)
-The repo tracks the whole extracted firmware tree. Binaries are in Git LFS, which stores each unique file once: 1.65 GB for 10.3 GB of extracted data. Installer zips (27 GB) are not tracked; they can be re-downloaded from Blackmagic's catalog.
-
-```
-git clone https://github.com/harrypm/UBMDF.git && cd UBMDF   # pointers only, fast
-git lfs pull --include="firmware/*/dv-*/**" --exclude="firmware/installers/**"   # flashable bundles (~30 MB)
-git lfs pull --include="firmware/installers/**"                                  # all raw extracted data (~1.65 GB)
-ubmdf index rebuild
-```
-
-Every extracted file is already in the repo, so Linux and macOS need no msiexec or Windows step:
-
-- `tools/datar.py` unpacks the `data-rNN.bin` containers;
-- `tools/bitstream_info.py` identifies FPGA images;
-- `tools/make_datar_bundles.py` rebuilds the flashable bundles.
-
-All three are pure Python 3.
-
-### Where UBMDF keeps its data
-UBMDF looks for a `firmware/` folder in this order:
-
-1. the `UBMDF_FIRMWARE` environment variable;
-2. `./firmware` in the current directory;
-3. walking up from the executable (for an AppImage, from the `.AppImage` file itself);
-4. a per-user folder: `%LOCALAPPDATA%\UBMDF` on Windows, `~/Library/Application Support/UBMDF` on macOS, `$XDG_DATA_HOME/UBMDF` or `~/.local/share/UBMDF` on Linux.
-
-`logs/`, `dumps/` and `ubmdf-gui.conf` sit beside that `firmware/` folder.
-
-Firmware images are **not** shipped in releases (they are Blackmagic Design property). Harvest them with `tools/harvest.ps1` on Windows, or copy an existing `firmware/` folder.
-
-## Platform Notes
-
-### Windows
-The service port needs WinUSB (via Zadig) for UBMDF/bmdflash access. Official DesktopVideoUpdateTool needs BMD's DesktopVideoUpdate driver. Swap between them with `ubmdf driver restore-bmd` / re-run Zadig.
-
-### Linux
-No driver needed. udev rule for access:
-```
-SUBSYSTEM=="usb", ATTRS{idVendor}=="1edb", ATTRS{idProduct}=="be13", MODE="0660", TAG+="uaccess"
-```
-
-### macOS
-No driver install required (IOKit gives user-space access). Vendor-class devices may need `set_configuration` — handled automatically.
-
-## Paths (CWD-independent)
-The tool works from any working directory (double-click, shortcut, script):
-- `firmware/` root: `UBMDF_FIRMWARE` env override → `./firmware` if present → walk up from the exe (`target/release` → repo root)
-- Log file: `UBMDF_LOG` env override → `logs/ubmdf.log` beside the resolved firmware root
-- GUI theme conf (`ubmdf-gui.conf`) lives beside the resolved firmware root too
-
-## Protocol Summary
-The service-port protocol uses vendor control transfers on EP0 plus bulk OUT on EP 0x01. Key commands:
-- `0x31` begin session (must be terminated with `0x12` to avoid lingering sessions)
-- `0x34` start erase (followed by `0x35` erase-context read)
-- `0x37` region select: {LE u32 addr in 64K blocks, LE u32 block count}
-- `0x39` write address: {BE u32 byte address} (must be followed by `0x35` latch)
-- Bulk OUT: image data in ≤32 KiB chunks
-- **ZLP terminator**: explicit zero-length packet after each component's final short packet
-- `0x32` commit
-- `0x12` reboot
-
-Full protocol documentation: `docs/protocol.md`
-
-### Flash log
-Every flash logs each wire step and the device's answer (`0x30` state bytes, `0x35` context, every `0x38` poll, bulk byte count + image sha256, ZLP, commit). A finished flash means every transfer was accepted; the device has no known read-back, so the written contents are **not** verified.
-
-### `replay-check`
-`ubmdf replay-check <capture.pcap> <manifest.json> [--device BUS:ADDR]` builds the exact op list `flash` would send for the manifest and aligns it with the Blackmagic service-port traffic in a capture of the official updater. It reads classic pcap from USBPcap (Windows, link type 249) or Linux usbmon (link type 220). For pcapng, convert first with `editcap -F pcap`. Output marks each op `ok`, `+OFF` (only the official tool sent it) or `-UBMDF` (only UBMDF sends it). Bulk streams are compared byte-for-byte with the component images, and the device's `0x38 expected` erase size is reported. Nothing is sent to any device.
-
-To capture a complete official flash: start USBPcap on the root hub the unit is on **before** launching the updater, and stop only after the unit has rebooted.
-
-### Tracing the official updater on macOS (`tools/usbtrace`)
-`tools/usbtrace/usbtrace.c` is a small IOUSBLib interposer. It logs every control and bulk transfer a process makes, as a USBPcap-format pcap that `replay-check` and Wireshark can read, plus a text log. No root is needed, but the target must run without the hardened runtime, so trace an ad-hoc re-signed **copy** of Blackmagic's updater:
-
-```
-tools/usbtrace/build.sh
-cp -R "/Library/Application Support/Blackmagic Design/Blackmagic DeckLink/Desktop Video Updater.app" /tmp/dvu/
-codesign --force --deep --sign - "/tmp/dvu/Desktop Video Updater.app"   # sign the whole bundle, or macOS reports it as damaged
-T="/tmp/dvu/Desktop Video Updater.app/Contents/MacOS/DesktopVideoUpdateTool"
-"$T" -l                                                     # macOS may ask once in Privacy & Security
-USBTRACE_PCAP=official.pcap USBTRACE_LOG=official.txt \
-  DYLD_INSERT_LIBRARIES=$PWD/tools/usbtrace/libusbtrace.dylib "$T" -u -d <device id>
-ubmdf replay-check official.pcap <manifest.json>
-```
-
-Since 2026-11-24, UBMDF's flash sequence is aligned to this trace of the official 16.5 updater: 32 of 32 ops match (see `docs/protocol.md`).
-
-### `probe`
-`ubmdf probe` sends only vendor control **IN** requests (no data from the host) for bRequest `--from`..`--to` (default 0x00–0xff) to both the device (0xC0) and interface (0xC1) recipients, with `--value`, `--index` and `--length` (default 64). `--session` opens a `0x31` session first and closes it with `0x12`. `--bulk-in` adds one 512-byte read on EP 0x82. Each request is logged before it is sent, so a hang names its request. The sweep stops on disconnect or 3 timeouts in a row. The 0x30 state is compared before and after, and the results are written to `ubmdf-probe-<epoch>.json`.
-
-## Building
-The GUI is a default cargo feature; build without it for a headless CLI-only binary (smaller, no raylib).
-```
-cargo build --release                              # Windows GUI + CLI (raylib)
-cargo build --release --no-default-features       # CLI-only (no raylib)
-cargo test [--no-default-features]                # 13 tests (GUI build) / 11 (CLI-only)
-cargo clippy --release --all-targets [--no-default-features]
-```
-
-### Linux cross-compile from Windows (verified)
-`ring` (TLS for the downloader) needs a C cross compiler. Use zig + cargo-zigbuild:
-```
-# one-time setup (no admin needed)
-zig 0.15.2 → unzip to e.g. C:\tools\zig-x86_64-windows-0.15.2, add to PATH
-cargo install cargo-zigbuild
-
-# build (CLI-only; glibc 2.17 target for broad compatibility)
-cargo zigbuild --release --no-default-features --target x86_64-unknown-linux-gnu
-→ target/x86_64-unknown-linux-gnu/release/ubmdf  (64-bit x86-64 ELF)
-```
-Notes:
-- Plain `cargo build --target x86_64-unknown-linux-gnu` fails: no `x86_64-linux-gnu-gcc` on PATH, and `zig cc` cannot parse the `--target=x86_64-unknown-linux-gnu` flag cc-rs injects — cargo-zigbuild's wrapper scripts handle the flag translation.
-- If `CC_x86_64_unknown_linux_gnu` etc. are set in your shell, cargo-zigbuild will not override them — clear stale values first.
-- Don't run the zigbuild command with the GUI feature; raylib needs a native Linux toolchain to cross-build.
-
-### Updater-embedded firmware (DV 10.9.10 – 11.4.1)
-Installer layouts by Desktop Video version:
-
-- **≤ 10.9.7**: the firmware ships inside the drivers (legacy layout).
-- **10.9.10 – 11.4.1**: every device image is a PE `RCDATA` resource inside `CheckVersionPCI.exe` (190–239 MB). The images are **not encrypted**: 46–51 Xilinx bitstreams (`AA995566` sync word), 2–4 ELF images and 14 other binaries per version. The MSI's `Firmware\` folder only holds `data-bdaa.bin`.
-- **11.5 onward**: the images are zlib containers in `Firmware\data-rNN.bin` files (not encrypted; see below).
-
-To extract them:
-```
-pwsh -File tools/extract-updater-firmware.ps1   # 7-Zip, no admin/msiexec needed
-ubmdf index rebuild
-```
-The images are written to `firmware/installers/dv-<v>-extract/Firmware/CheckVersionPCI-rcdata/`, as `rc-<id>.bin` plus `resources.csv` (size, sha256, entropy, type, header bytes) and `source-exe.txt`. The version's inventory CSV is regenerated, and the index notes and GUI label it "Plaintext images". The resources are unnamed, so which image belongs to which device is not mapped yet.
-
-## Installer firmware format (`data-rNN.bin`, DV 11.5+) — not encrypted
-Earlier notes here said these files were encrypted. **They are not.** Each file has:
-
-- a 32-byte prefix;
-- one or more records, each a big-endian header (magic `BD BD 00 01`; 72 bytes for USB service-port devices, 48 bytes for PCIe cards) followed by a **zlib** stream.
-
-The header gives the uncompressed size, the flash write address and the target device ID (USB `1edb:be13` = UltraStudio 4K Mini service port). All 2,151 `data-*` files in DV 11.5 – 16.5 unpack cleanly (61 target devices).
-
-This was verified on 2026-11-24: `data-r90.bin` from 12.8.1 and from 16.0 unpacks to the exact sha256 of the hardware-captured 4K Mini `component_A` / `component_B`.
-
-```
-python -I tools/datar.py <data-rNN.bin>            # list records (size, write addr, device, type)
-python -I tools/make_datar_bundles.py [--dry-run]  # 4K Mini bundle for every DV 11.5+ version
-```
-`make_datar_bundles.py` takes geometry from the record headers and refuses anything that differs from the hardware-proven layout. Images identical to an official-tool capture are hardlinked, so the 43 bundles take about 33 MB. The index kind keeps its old serialized name, `encrypted-inventory`.
+## Documentation
+| | |
+|---|---|
+| [CLI reference](docs/cli.md) | all commands, flash log, `replay-check`, `probe`, paths |
+| [GUI](docs/gui.md) | tabs, readouts, options, icon, screenshots |
+| [Protocol](docs/protocol.md) | service-port commands, official updater trace, probe results |
+| [Firmware data](docs/firmware-data.md) | index, data locations, Git LFS, harvest, installer formats |
+| [Firmware map](docs/firmware-map.md) | which image is in which Desktop Video version |
+| [Tracing](docs/tracing.md) | tracing Blackmagic's updater on macOS (`tools/usbtrace`) |
+| [Building](docs/building.md) | build options, bundled firmware, CI, cross-compiling |
+| [Platforms](docs/platforms.md) | Windows driver, Linux udev, macOS |
 
 ## License
-Tool code: MIT. Firmware images are Blackmagic Design property — local archival and flashing of images obtained via official installers only.
+Tool code: MIT. Firmware images are Blackmagic Design property: archive and flash only images obtained through official installers.

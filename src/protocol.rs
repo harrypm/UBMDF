@@ -150,7 +150,7 @@ pub fn open() -> Result<BmdDevice> {
         .context("no Blackmagic service-port device found (USB VID 1edb PID be13)")?;
     let device = di.open().wait().context(
         "failed to open USB device — on Windows this usually means the interface is bound to \
-         Blackmagic's DesktopVideoUpdate driver instead of WinUSB; see README (Windows driver)",
+         Blackmagic's DesktopVideoUpdate driver instead of WinUSB; see docs/platforms.md (Windows)",
     )?;
     let iface = device
         .claim_interface(0)

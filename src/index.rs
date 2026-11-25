@@ -251,7 +251,7 @@ fn scan_flashable(root: &Path, bundles: &mut Vec<BundleEntry>) -> Result<()> {
                 notes: if is_known_bad {
                     Some(format!(
                         "KNOWN-BAD for UltraStudio 4K Mini: the official 12.9 update bricked multiple units (see forum t=199366). \
-                         The 12.9 installer's 4K Mini images are byte-identical to DV 14.0-16.5 and the verified 16.0 capture, \
+                         The 12.9 installer's 4K Mini images are byte-identical to DV 14.0-16.5 and the 16.0 official-tool capture, \
                          so the cause was not these image files; prefer a later version anyway. {}",
                         manifest.image.notes.clone().unwrap_or_default()
                     ))

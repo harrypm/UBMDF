@@ -357,7 +357,10 @@ impl App {
                             },
                             Err(e) => Ev::JobDone {
                                 ok: false,
-                                msg: format!("Index rebuild failed: {e:#}"),
+                                msg: {
+                                    log::error!("index rebuild failed: {e:#}");
+                                    format!("Index rebuild failed: {e}")
+                                },
                                 reload_index: false,
                                 dump: None,
                             },
@@ -386,28 +389,35 @@ fn spawn_flash(manifest: PathBuf, tx: Sender<Ev>) {
             let _ = tx.send(e);
         };
         let fail = |msg: String| Ev::JobDone { ok: false, msg, reload_index: false, dump: None };
-        send(Ev::Phase("Verifying image hashes (sha256)".into()));
+        send(Ev::Phase("Checking image hashes".into()));
         let (m, specs) = match crate::ops::load_specs(&manifest) {
             Ok(v) => v,
-            Err(e) => return send(fail(format!("Flash aborted — image check failed: {e:#}"))),
+            Err(e) => {
+                log::error!("flash aborted, image check: {e:#}");
+                return send(fail(format!("Flash aborted: image check failed ({e})")));
+            }
         };
         send(Ev::Phase("Opening device".into()));
         let mut dev = match crate::protocol::open() {
             Ok(d) => d,
-            Err(e) => return send(fail(format!("Flash aborted — device open failed: {e:#}"))),
+            Err(e) => {
+                log::error!("flash aborted, device open: {e:#}");
+                return send(fail(format!("Flash aborted: device open failed ({e})")));
+            }
         };
         let total: u64 = specs.iter().map(|s| s.data.len() as u64).sum();
         log::info!("flash started: {} ({total} bytes)", m.image.name);
         let mut written: u64 = 0;
         let mut phase_write = false;
+        let sizes: Vec<u64> = specs.iter().map(|s| s.data.len() as u64).collect();
+        let regions: Vec<u32> = specs.iter().map(|s| s.region_block_addr).collect();
         let res = crate::protocol::flash(&mut dev, &specs, |ev| match ev {
             crate::protocol::FlashEvent::Identity { .. } => {} // logged by protocol::flash
             crate::protocol::FlashEvent::ErasePoll { region, done, expected } => {
-                let frac = if *expected > 0 { *done as f32 / *expected as f32 } else { 0.0 };
-                send(Ev::Progress {
-                    frac,
-                    detail: format!("Erasing region {region}: {done}/{expected} blocks"),
-                });
+                // 0x38 `done` is the absolute block reached (region 192 x 30 ends at 222).
+                let n = done.saturating_sub(*region).min(*expected);
+                let frac = if *expected > 0 { n as f32 / *expected as f32 } else { 0.0 };
+                send(Ev::Progress { frac, detail: format!("Erase {}: {n}/{expected} blocks", part(*region)) });
             }
             crate::protocol::FlashEvent::WriteChunk { component, bytes } => {
                 if !phase_write {
@@ -415,10 +425,15 @@ fn spawn_flash(manifest: PathBuf, tx: Sender<Ev>) {
                     send(Ev::Phase("Writing image".into()));
                 }
                 written += *bytes as u64;
+                let before: u64 = sizes[..*component].iter().sum();
+                let region = regions.get(*component).copied().unwrap_or(0);
                 send(Ev::Progress {
                     frac: if total > 0 { written as f32 / total as f32 } else { 0.0 },
                     detail: format!(
-                        "Component {component}: {:.1} / {:.1} MB",
+                        "Write {}: {:.1} / {:.1} MB  (total {:.1} / {:.1} MB)",
+                        part(region),
+                        (written - before) as f64 / 1e6,
+                        sizes[*component] as f64 / 1e6,
                         written as f64 / 1e6,
                         total as f64 / 1e6
                     ),
@@ -429,13 +444,16 @@ fn spawn_flash(manifest: PathBuf, tx: Sender<Ev>) {
             Ok(()) => Ev::JobDone {
                 ok: true,
                 msg: format!(
-                    "Flash sent: {} — all transfers accepted (contents not verified, no read-back). Unplug the USB cable, then power-cycle",
-                    m.image.name
+                    "Flashed {} · not verified (no read-back) · unplug USB, then power-cycle",
+                    short_image(&m.image.name)
                 ),
                 reload_index: false,
                 dump: None,
             },
-            Err(e) => fail(format!("Flash failed: {e:#}")),
+            Err(e) => {
+                log::error!("flash failed: {e:#}");
+                fail(format!("Flash failed: {e}"))
+            }
         });
     });
 }
@@ -446,11 +464,17 @@ fn spawn_dump(tx: Sender<Ev>) {
         let ev = match crate::ops::dump_device(Some(out)) {
             Ok(p) => Ev::JobDone {
                 ok: true,
-                msg: format!("Device info written: {}", p.display()),
+                msg: format!(
+                    "Dump saved: {}",
+                    p.file_name().map(|f| f.to_string_lossy().into_owned()).unwrap_or_else(|| p.display().to_string())
+                ),
                 reload_index: false,
                 dump: Some(p),
             },
-            Err(e) => Ev::JobDone { ok: false, msg: format!("Dump failed: {e:#}"), reload_index: false, dump: None },
+            Err(e) => {
+                log::error!("dump failed: {e:#}");
+                Ev::JobDone { ok: false, msg: format!("Dump failed: {e}"), reload_index: false, dump: None }
+            }
         };
         let _ = tx.send(ev);
     });
@@ -467,13 +491,16 @@ fn spawn_reset(tx: Sender<Ev>) {
         let ev = match res {
             Ok(()) => Ev::JobDone {
                 ok: true,
-                msg: "Reset (0x12) accepted — the device may drop off the bus for a few seconds".into(),
+                msg: "Reset sent · the device re-enumerates in a few seconds".into(),
                 reload_index: false,
                 dump: None,
             },
             Err(e) => Ev::JobDone {
                 ok: false,
-                msg: format!("Reset failed: {e:#} — power-cycle the unit if problems persist"),
+                msg: {
+                    log::error!("reset failed: {e:#}");
+                    format!("Reset failed: {e} · power-cycle the unit")
+                },
                 reload_index: false,
                 dump: None,
             },
@@ -500,7 +527,7 @@ fn spawn_fetch(version: String, download_id: String, tx: Sender<Ev>) {
                     detail: format!("{:.1} / {:.1} MB", w as f64 / 1e6, t as f64 / 1e6),
                 });
             })?;
-            send(Ev::Phase("Extracting installer and inventorying firmware".into()));
+            send(Ev::Phase("Extracting installer, inventorying firmware".into()));
             let r = crate::extract::extract_installer(&zip, &installers, &version)?;
             send(Ev::Phase("Rebuilding index".into()));
             crate::index::Index::rebuild()?;
@@ -514,7 +541,10 @@ fn spawn_fetch(version: String, download_id: String, tx: Sender<Ev>) {
             Ok(msg) => Ev::JobDone { ok: true, msg, reload_index: true, dump: None },
             Err(e) => Ev::JobDone {
                 ok: false,
-                msg: format!("Fetch {version} failed: {e:#}"),
+                msg: {
+                    log::error!("fetch {version} failed: {e:#}");
+                    format!("Fetch {version} failed: {e}")
+                },
                 reload_index: true,
                 dump: None,
             },
@@ -555,6 +585,8 @@ pub struct Opts {
     pub yes: bool,
     pub tab: Option<String>,
     pub select: Option<String>,
+    /// Start a Blackmagic catalog check on launch (Update tab), as the button does.
+    pub check_catalog: bool,
 }
 
 pub fn run_gui(opts: Opts) -> anyhow::Result<()> {
@@ -572,6 +604,9 @@ pub fn run_gui(opts: Opts) -> anyhow::Result<()> {
     rl.set_exit_key(None); // Esc must never close the app (mid-flash safety)
     // Window/taskbar icon — embedded so it works from any launch directory and
     // on every platform (temporary art: tools/make-icon.ps1 → assets/icon/).
+    // Not on macOS: Cocoa windows have no icons (GLFW only warns, error 65548);
+    // the Dock icon comes from the .app bundle's ubmdf.icns.
+    #[cfg(not(target_os = "macos"))]
     match Image::load_image_from_mem(".png", include_bytes!("../../assets/icon/ubmdf.png")) {
         Ok(mut icon) => {
             icon.set_format(PixelFormat::PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
@@ -663,6 +698,9 @@ pub fn run_gui(opts: Opts) -> anyhow::Result<()> {
         app.selected = app.bundles.iter().position(|b| &b.version == v && b.kind == model::Kind::Flashable)
             .or_else(|| app.bundles.iter().position(|b| &b.version == v));
     }
+    if opts.check_catalog {
+        app.apply(Action::CheckCatalog, &tx, &mut rl);
+    }
     if let Some(path) = opts.flash {
         if opts.yes {
             app.start_job(&format!("Flashing {}", path.display()), true);
@@ -704,7 +742,7 @@ pub fn run_gui(opts: Opts) -> anyhow::Result<()> {
             break;
         }
         if app.tab == Tab::Log {
-            app.log_lines = crate::logger::tail(400);
+            app.log_lines = tidy_log(crate::logger::tail(400));
         }
 
         let (w, h) = (rl.get_screen_width() as f32, rl.get_screen_height() as f32);
@@ -760,4 +798,63 @@ pub fn run_gui(opts: Opts) -> anyhow::Result<()> {
         }
     }
     Ok(())
+}
+
+/// Which image a region holds, for progress text: the FPGA bitstream lives at
+/// block 0, the MicroBlaze program at block 192 (UltraStudio 4K Mini layout).
+fn part(region: u32) -> &'static str {
+    match region {
+        0 => "A (FPGA)",
+        192 => "B (CPU)",
+        _ => "region",
+    }
+}
+
+/// "UltraStudio 4K Mini - Desktop Video 16.5" -> "DV 16.5" for the status bar.
+fn short_image(name: &str) -> String {
+    let tail = name.rsplit(" - ").next().unwrap_or(name);
+    tail.replace("Desktop Video ", "DV ")
+}
+
+/// Log tab readout: drop raylib's INFO chatter (texture/font loads, frame-timer
+/// switches; its warnings and errors stay) and shorten the home folder to `~`.
+/// The log file and "Copy" keep every line unchanged.
+fn tidy_log(lines: Vec<String>) -> Vec<String> {
+    let home = std::env::var("HOME").or_else(|_| std::env::var("USERPROFILE")).ok().filter(|h| h.len() > 1);
+    lines
+        .into_iter()
+        .filter(|l| !(l.contains(" INFO ") && l.contains("[raylib]")))
+        .map(|l| match &home {
+            Some(h) => l.replace(h.as_str(), "~"),
+            None => l,
+        })
+        .collect()
+}
+
+#[cfg(test)]
+mod status_text_tests {
+    use super::*;
+
+    #[test]
+    fn short_image_names() {
+        assert_eq!(short_image("UltraStudio 4K Mini - Desktop Video 16.5"), "DV 16.5");
+        assert_eq!(short_image("custom"), "custom");
+    }
+
+    #[test]
+    fn tidy_log_drops_raylib_info() {
+        let out = tidy_log(vec![
+            "[1.0] INFO  [raylib] TIMER: Target time per frame".into(),
+            "[1.1] WARN  [raylib] GLFW: something".into(),
+            "[1.2] INFO  flash started".into(),
+        ]);
+        assert_eq!(out.len(), 2);
+        assert!(out[0].contains("WARN"));
+    }
+
+    #[test]
+    fn parts() {
+        assert_eq!(part(0), "A (FPGA)");
+        assert_eq!(part(192), "B (CPU)");
+    }
 }

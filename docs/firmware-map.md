@@ -34,7 +34,7 @@ The `000000BB 11220044` part is the standard Xilinx bus-width detection pattern.
 
 ## UltraStudio 4K Mini — every version (all builds)
 
-From 11.5 onward the 4K Mini images are in `Firmware/data-r90.bin`, a zlib container whose records target USB `1edb:be13` (see README, *Installer firmware format*). There are four distinct builds across all of Desktop Video:
+From 11.5 onward the 4K Mini images are in `Firmware/data-r90.bin`, a zlib container whose records target USB `1edb:be13` (see [firmware-data.md](firmware-data.md#installer-firmware-format-data-rnnbin-dv-115)). There are four distinct builds across all of Desktop Video:
 
 | DV versions | component_A sha256 | component_B sha256 | Bundles | Status |
 |---|---|---|---|---|

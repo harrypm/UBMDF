@@ -927,7 +927,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 11.5 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (145, 30)."
+      "notes": "Official DV 11.5 installer (data-r90.bin). Images match official-tool captures: A = dv-12.8.1, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-11.5.1",
@@ -953,7 +953,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 11.5.1 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (145, 30)."
+      "notes": "Official DV 11.5.1 installer (data-r90.bin). Images match official-tool captures: A = dv-12.8.1, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-11.6",
@@ -979,7 +979,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 11.6 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (145, 30)."
+      "notes": "Official DV 11.6 installer (data-r90.bin). Images match official-tool captures: A = dv-12.8.1, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-11.7",
@@ -1005,7 +1005,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 11.7 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (145, 30)."
+      "notes": "Official DV 11.7 installer (data-r90.bin). Images match official-tool captures: A = dv-12.8.1, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-12.0",
@@ -1031,7 +1031,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 12.0 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (145, 30)."
+      "notes": "Official DV 12.0 installer (data-r90.bin). Images match official-tool captures: A = dv-12.8.1, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-12.1",
@@ -1057,7 +1057,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 12.1 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (145, 30)."
+      "notes": "Official DV 12.1 installer (data-r90.bin). Images match official-tool captures: A = dv-12.8.1, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-12.2",
@@ -1083,7 +1083,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 12.2 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (145, 30)."
+      "notes": "Official DV 12.2 installer (data-r90.bin). Images match official-tool captures: A = dv-12.8.1, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-12.2.2",
@@ -1109,7 +1109,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 12.2.2 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (145, 30)."
+      "notes": "Official DV 12.2.2 installer (data-r90.bin). Images match official-tool captures: A = dv-12.8.1, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-12.3",
@@ -1135,7 +1135,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 12.3 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (145, 30)."
+      "notes": "Official DV 12.3 installer (data-r90.bin). Images match official-tool captures: A = dv-12.8.1, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-12.3.1",
@@ -1161,7 +1161,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 12.3.1 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (145, 30)."
+      "notes": "Official DV 12.3.1 installer (data-r90.bin). Images match official-tool captures: A = dv-12.8.1, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-12.4",
@@ -1187,7 +1187,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 12.4 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (145, 30)."
+      "notes": "Official DV 12.4 installer (data-r90.bin). Images match official-tool captures: A = dv-12.8.1, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-12.4.1",
@@ -1213,7 +1213,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 12.4.1 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (145, 30)."
+      "notes": "Official DV 12.4.1 installer (data-r90.bin). Images match official-tool captures: A = dv-12.8.1, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-12.4.2",
@@ -1239,7 +1239,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 12.4.2 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (145, 30)."
+      "notes": "Official DV 12.4.2 installer (data-r90.bin). Images match official-tool captures: A = dv-12.8.1, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-12.5",
@@ -1265,7 +1265,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 12.5 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (145, 30)."
+      "notes": "Official DV 12.5 installer (data-r90.bin). Images match official-tool captures: A = dv-12.8.1, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-12.5.1",
@@ -1291,7 +1291,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 12.5.1 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (145, 30)."
+      "notes": "Official DV 12.5.1 installer (data-r90.bin). Images match official-tool captures: A = dv-12.8.1, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-12.6",
@@ -1317,7 +1317,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 12.6 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (145, 30)."
+      "notes": "Official DV 12.6 installer (data-r90.bin). Images match official-tool captures: A = dv-12.8.1, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-12.7",
@@ -1343,7 +1343,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 12.7 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (145, 30)."
+      "notes": "Official DV 12.7 installer (data-r90.bin). Images match official-tool captures: A = dv-12.8.1, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-12.7.1",
@@ -1369,7 +1369,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 12.7.1 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (145, 30)."
+      "notes": "Official DV 12.7.1 installer (data-r90.bin). Images match official-tool captures: A = dv-12.8.1, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-12.8",
@@ -1395,7 +1395,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 12.8 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-12.8.1. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (145, 30)."
+      "notes": "Official DV 12.8 installer (data-r90.bin). Images match official-tool captures: A = dv-12.8.1, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-12.8.1",
@@ -1447,7 +1447,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 12.9 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "KNOWN-BAD for UltraStudio 4K Mini: the official 12.9 update bricked multiple units (see forum t=199366). The 12.9 installer's 4K Mini images are byte-identical to DV 14.0-16.5 and the 16.0 official-tool capture, so the cause was not these image files; prefer a later version anyway. Official DV 12.9 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-14.0",
@@ -1473,7 +1473,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 14.0 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 14.0 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-14.0.1",
@@ -1499,7 +1499,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 14.0.1 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 14.0.1 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-14.1",
@@ -1525,7 +1525,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 14.1 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 14.1 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-14.2",
@@ -1551,7 +1551,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 14.2 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 14.2 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-14.2.1",
@@ -1577,7 +1577,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 14.2.1 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 14.2.1 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-14.3",
@@ -1603,7 +1603,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 14.3 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 14.3 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-14.4",
@@ -1629,7 +1629,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 14.4 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 14.4 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-14.4.1",
@@ -1655,7 +1655,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 14.4.1 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 14.4.1 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-14.5",
@@ -1681,7 +1681,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 14.5 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 14.5 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-15.0",
@@ -1707,7 +1707,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 15.0 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 15.0 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-15.1",
@@ -1733,7 +1733,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 15.1 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 15.1 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-15.2",
@@ -1759,7 +1759,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 15.2 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 15.2 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-15.3",
@@ -1785,7 +1785,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 15.3 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 15.3 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-15.3.1",
@@ -1811,7 +1811,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 15.3.1 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 15.3.1 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-16.0",
@@ -1837,7 +1837,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Captured from the official DV 16.0 updater (flash16_pass2_USBPcap3.pcap, Windows machine). Erase 144 blocks for component_A, confirmed by tracing the official macOS 16.5 updater on 2026-11-24 (0x37 region (0, 144) for this same image)."
+      "notes": "Captured from the official DV 16.0 updater (Windows USB capture). Erase 144 blocks for A, as the traced official 16.5 updater sends."
     },
     {
       "id": "ultrastudio4kmini/dv-16.0.1",
@@ -1863,7 +1863,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 16.0.1 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 16.0.1 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-16.1",
@@ -1889,7 +1889,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 16.1 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 16.1 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-16.2",
@@ -1915,7 +1915,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 16.2 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 16.2 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-16.3",
@@ -1941,7 +1941,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 16.3 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 16.3 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-16.4",
@@ -1967,7 +1967,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 16.4 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 16.4 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     },
     {
       "id": "ultrastudio4kmini/dv-16.5",
@@ -1993,7 +1993,7 @@
           "write_addr": 12582912
         }
       ],
-      "notes": "Extracted from the official DV 16.5 installer (Firmware/data-r90.bin, zlib container). component_A.bin = official-tool capture image dv-16.0. component_B.bin = official-tool capture image dv-12.8.1. Erase = image size in 64 KiB blocks (144, 30)."
+      "notes": "Official DV 16.5 installer (data-r90.bin). Images match official-tool captures: A = dv-16.0, B = dv-12.8.1."
     }
   ]
 }

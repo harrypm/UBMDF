@@ -109,9 +109,8 @@ def main():
             }))
         all_verified = all(matches)
         if all_verified:
-            notes = (f"Extracted from the official DV {v} installer (Firmware/{src}, zlib container). "
-                     + " ".join(f"{c[2]['file']} = official-tool capture image {m}." for c, m in zip(comps, matches))
-                     + f" Erase = image size in 64 KiB blocks ({', '.join(str(c[2]['block_count']) for c in comps)}).")
+            notes = (f"Official DV {v} installer ({src}). Images match official-tool captures: "
+                     + ", ".join(f"{'AB'[i] if i < 2 else i} = {m}" for i, (c, m) in enumerate(zip(comps, matches))) + ".")
         else:
             notes = (f"Extracted from the official DV {v} installer (Firmware/{src}, zlib container); "
                      f"geometry from its own record headers, matching the verified layout. "

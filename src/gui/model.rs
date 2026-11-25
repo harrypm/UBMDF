@@ -48,7 +48,10 @@ pub struct Bundle {
     /// hardware, or a known-bad version: shown as a warning everywhere.
     pub caution: bool,
     pub stats: String,
+    /// Manifest / inventory path for display, home folder shortened to `~`.
     pub source: String,
+    /// One line per flashable component: part, size, erase blocks, write address.
+    pub layout: Vec<String>,
 }
 
 /// "16.0.1" → [16, 0, 1]; non-numeric parts sort as 0.
@@ -136,11 +139,27 @@ pub fn load_bundles() -> (Vec<Bundle>, Option<String>) {
                     None => "inventory file missing".into(),
                 },
             };
-            let source = manifest
-                .as_ref()
-                .or(inventory.as_ref())
-                .map(|p| p.display().to_string())
-                .unwrap_or_default();
+            let source = manifest.as_ref().or(inventory.as_ref()).map(|p| tilde(p)).unwrap_or_default();
+            let layout = if kind == Kind::Flashable {
+                b.components
+                    .iter()
+                    .map(|c| {
+                        let part = match c.region_block_addr {
+                            Some(0) => "A · FPGA",
+                            Some(192) => "B · CPU",
+                            _ => "image",
+                        };
+                        format!(
+                            "{part} · {} · erase {} blocks · @ {:#08x}",
+                            human_bytes(c.bytes),
+                            c.block_count.unwrap_or(0),
+                            c.write_addr.unwrap_or(0)
+                        )
+                    })
+                    .collect()
+            } else {
+                Vec::new()
+            };
             Bundle {
                 version: b.dv_version.clone(),
                 title: format!("Desktop Video {}", b.dv_version),
@@ -156,6 +175,7 @@ pub fn load_bundles() -> (Vec<Bundle>, Option<String>) {
                 notes: b.notes.clone(),
                 stats,
                 source,
+                layout,
             }
         })
         .collect();
@@ -165,6 +185,18 @@ pub fn load_bundles() -> (Vec<Bundle>, Option<String>) {
         fb.cmp(&fa).then_with(|| version_key(&b.version).cmp(&version_key(&a.version)))
     });
     (out, None)
+}
+
+/// Path for display with the home folder shortened to `~` (keeps the user name
+/// out of screenshots and saves width).
+pub fn tilde(p: &std::path::Path) -> String {
+    let home = std::env::var_os("HOME").or_else(|| std::env::var_os("USERPROFILE"));
+    if let Some(h) = home
+        && let Ok(rest) = p.strip_prefix(&h)
+    {
+        return format!("~{}{}", std::path::MAIN_SEPARATOR, rest.display());
+    }
+    p.display().to_string()
 }
 
 #[cfg(test)]

@@ -464,6 +464,9 @@ where
                 kind_badge(ui, b.kind, th);
             });
             text(ui, ar.s(format!("{} · {}", b.device, b.stats)), BODY, th.text_dim);
+            for l in &b.layout {
+                text(ui, l, SMALL, th.text);
+            }
             if let Some(n) = &b.notes {
                 wrapped(ui, n, SMALL, if b.kind == Kind::Legacy || b.caution { th.warn } else { th.text_dim });
             }
@@ -520,7 +523,7 @@ where
             #[cfg(windows)]
             wrapped(ui, "Windows: the service port must be bound to WinUSB (Zadig) to appear here. While it is bound to Blackmagic's DesktopVideoUpdate driver only the official updater can see it.", SMALL, th.text_dim);
             #[cfg(target_os = "linux")]
-            wrapped(ui, "Linux: install the udev rule from the README so your user can open the device.", SMALL, th.text_dim);
+            wrapped(ui, "Linux: install the udev rule from docs/platforms.md so your user can open the device.", SMALL, th.text_dim);
         });
     }
     for (i, e) in app.devices.iter().enumerate() {
@@ -565,7 +568,7 @@ where
     if let Some(p) = &app.last_dump {
         ui.with(&card(th, 6), |ui| {
             text(ui, "Last dump", BODY_B, th.text);
-            wrapped(ui, ar.s(p.display().to_string()), SMALL, th.text_dim);
+            wrapped(ui, ar.s(super::model::tilde(p)), SMALL, th.text_dim);
             ui.with(&row(8), |ui| {
                 let id = ui.id("dump_show");
                 button(ui, id, "Show file", Btn::Secondary, true, cx, acts, Action::OpenPath(p.clone()));
@@ -664,7 +667,7 @@ where
     ui.with(&row(8), |ui| {
         ui.with(decl().layout().width(GROW).direction(LayoutDirection::TopToBottom).child_gap(2).end(), |ui| {
             text(ui, ar.s(format!("{} recent lines", app.log_lines.len())), BODY_B, th.text);
-            text(ui, ar.s(path.display().to_string()), SMALL, th.text_dim);
+            text(ui, ar.s(super::model::tilde(&path)), SMALL, th.text_dim);
         });
         let id = ui.id("follow_btn");
         let label = if app.log_follow { "Following" } else { "Follow" };
