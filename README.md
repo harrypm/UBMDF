@@ -5,7 +5,11 @@
 <p align="center">Cross-platform CLI + GUI for flashing Blackmagic devices over their USB service port.<br>
 Windows · Linux · macOS — currently the UltraStudio 4K Mini (Desktop Video 11.5 – 16.5).</p>
 
-The flash sequence matches a USB trace of Blackmagic's official `DesktopVideoUpdateTool` 16.5 op for op (32/32), and every image is byte-identical to the official one.
+> [!CAUTION]
+> **Flashing firmware can permanently brick your device. You flash at your own risk.**
+> UBMDF is unofficial and comes with **no warranty**. Read the [disclaimer and flashing checklist](DISCLAIMER.md) first.
+
+The flash sequence matches a USB trace of Blackmagic's official `DesktopVideoUpdateTool` 16.5 op for op (32/32). Every image is byte-identical to the one in Blackmagic's installer.
 
 ## Screenshots
 
@@ -20,22 +24,33 @@ The flash sequence matches a USB trace of Blackmagic's official `DesktopVideoUpd
 - Live detection of service-port devices, with identity and state readout and a JSON dump
 - 43 flashable Desktop Video versions built in, each sha256-checked, with a step-by-step flash log
 - Firmware index plus Blackmagic catalog check, download and inventory
-- `replay-check`: compare UBMDF's flash with a USB capture of the official updater
-- `probe`: logged, read-only command sweep of the service port
+- `replay-check`: compares UBMDF's flash with a USB capture of the official updater
+- `probe`: a logged, read-only command sweep of the service port
 
 ## Download
 
-[Releases](https://github.com/harrypm/UBMDF/releases) for ready to use binary's. 
+Ready-to-use builds are on the [Releases](https://github.com/harrypm/UBMDF/releases) page:
 
-Builds for Windows (`.exe`), Linux (`.AppImage`) and macOS (universal `.app`) come from [GitHub Actions](https://github.com/harrypm/UBMDF/actions).
+| Platform | File |
+|---|---|
+| Windows | `ubmdf-windows-x64.exe` |
+| Linux | `UBMDF-x86_64.AppImage` |
+| macOS (Apple Silicon + Intel) | `UBMDF-macos-universal.zip` → `UBMDF.app` |
 
-The macOS app is ad-hoc signed, so right-click → Open the first time.
+Every push is also built by [GitHub Actions](https://github.com/harrypm/UBMDF/actions).
 
-- **Windows:** bind the service port to WinUSB with Zadig.
-- **Linux:** add the udev rule.
-- See [platforms](docs/platforms.md) for both.
+> [!IMPORTANT]
+> The service port needs one-time setup before UBMDF can open it:
+> - **Windows:** bind the service port to **WinUSB** with Zadig.
+> - **Linux:** add the **udev rule**.
+>
+> See [platforms](docs/platforms.md) for both.
+
+> [!NOTE]
+> The macOS app is ad-hoc signed, not notarized. The first time, right-click it and choose **Open**.
 
 ## Quick start
+
 ```
 ubmdf                                    # GUI (no arguments)
 ubmdf list                               # find service-port devices
@@ -43,9 +58,19 @@ ubmdf info                               # identity and state (read-only)
 ubmdf index list                         # flashable bundles
 ubmdf flash "<firmware>/ultrastudio4kmini/dv-16.5/manifest.json"
 ```
-`<firmware>` is the firmware folder; on macOS that's `~/Library/Application Support/UBMDF/firmware` ([locations](docs/firmware-data.md#where-ubmdf-keeps-its-data)). After a flash, unplug the USB cable, then power-cycle the unit. The device has no read-back, so a flash means every transfer was accepted, **not** that the contents were verified.
+
+> [!TIP]
+> `<firmware>` is the firmware folder. On macOS that's `~/Library/Application Support/UBMDF/firmware`; see [where UBMDF keeps its data](docs/firmware-data.md#where-ubmdf-keeps-its-data) for the others.
+
+> [!WARNING]
+> - **Keep the device powered and connected.** Never unplug or power off the device while a flash runs.
+> - **After the flash, power-cycle.** Unplug the USB cable, then power-cycle the unit.
+> - **"Finished" is not "verified".** The service port has no read-back, so a finished flash means every transfer was accepted, **not** that the contents were verified.
+> - **Avoid DV 12.9.** Desktop Video **12.9** is flagged known-bad: it bricked units through Blackmagic's own updater.
+> - **The `dv-11.4.1` bundle is untested.** It has never been flashed on hardware.
 
 ## Documentation
+
 | | |
 |---|---|
 | [CLI reference](docs/cli.md) | all commands, flash log, `replay-check`, `probe`, paths |
@@ -56,6 +81,10 @@ ubmdf flash "<firmware>/ultrastudio4kmini/dv-16.5/manifest.json"
 | [Tracing](docs/tracing.md) | tracing Blackmagic's updater on macOS (`tools/usbtrace`) |
 | [Building](docs/building.md) | build options, bundled firmware, CI, cross-compiling |
 | [Platforms](docs/platforms.md) | Windows driver, Linux udev, macOS |
+| [Disclaimer](DISCLAIMER.md) | warranty, affiliation, risks, pre-flash checklist |
 
-## License
-Tool code: MIT. Firmware images are Blackmagic Design property: archive and flash only images obtained through official installers.
+## License and disclaimer
+
+- **Tool code:** MIT, provided "AS IS" without warranty of any kind.
+- **Affiliation:** UBMDF is not affiliated with, endorsed by or supported by Blackmagic Design. Blackmagic Design product names are trademarks of their owner.
+- **Firmware:** the images are Blackmagic Design property. Archive and flash only images obtained through official installers, for devices you own.

@@ -10,6 +10,10 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use crate::manifest::Manifest;
 use crate::protocol::{self, BmdDevice, ComponentSpec};
 
+/// Shown before every flash (CLI prompt, CLI --yes, GUI confirm dialog).
+/// Full text: DISCLAIMER.md.
+pub const FLASH_DISCLAIMER: &str = "UBMDF is unofficial and not affiliated with or endorsed by Blackmagic Design. Flashing firmware can permanently brick the device and may void its warranty or support. The software comes with NO WARRANTY of any kind; you flash at your own risk. See DISCLAIMER.md.";
+
 #[derive(Serialize)]
 pub struct ProgressSnapshot {
     pub region: u32,

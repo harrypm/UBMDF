@@ -582,6 +582,8 @@ fn cmd_flash(manifest: &Path, yes: bool, dry_run: bool) -> Result<()> {
         return Ok(());
     }
 
+    // The disclaimer is printed for every real flash, including --yes runs.
+    println!("\nWARNING: {}", ops::FLASH_DISCLAIMER);
     if !yes {
         print!(
             "\nThis will ERASE and REWRITE the firmware on the connected device.\n\

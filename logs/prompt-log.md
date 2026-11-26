@@ -213,3 +213,10 @@
   building.md, platforms.md, tracing.md and firmware-data.md (protocol.md and firmware-map.md already existed). Dropped a
   stale reference to a nonexistent `ubmdf driver restore-bmd`. "See README" hints in the code now point to docs/platforms.md.
 - User: "tag a new release with all the changes" → version 1.0.2 (Cargo.toml + Cargo.lock), tag v1.0.2 on master.
+
+## Execution log (26 Nov 2026, disclaimers + README cleanup)
+- Pulled (fast-forward to 3d6093d: v1.0.2, traced flash sequence, usbtrace, README rework). Local folder is now C:\Users\Harry\UBMDF.
+- New DISCLAIMER.md: not affiliated with Blackmagic Design, trademarks, can brick, may void warranty, MIT "AS IS" no warranty, tested on one 4K Mini only, no read-back, 11.4.1 untested, 12.9 known-bad, pre-flash checklist (power, direct USB, no sleep, close BMD apps, recovery via official updater, never interrupt, power-cycle after), firmware ownership.
+- ops::FLASH_DISCLAIMER shared text: printed before every real CLI flash (also with --yes), shown in the GUI Flash confirm dialog. Verified: CLI prompt output; GUI dialog screenshot v12-disclaimer.
+- README rewritten with GitHub alerts: CAUTION (top), IMPORTANT (WinUSB/udev setup), NOTE (macOS ad-hoc), TIP (firmware folder), WARNING (flash rules: power, power-cycle, no read-back, 12.9, 11.4.1); Download table; "binary's" typo fixed; Disclaimer in the docs table and License section.
+- clippy clean both configs, tests 20/20.

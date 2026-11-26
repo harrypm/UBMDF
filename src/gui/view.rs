@@ -868,6 +868,9 @@ Caution: {note}"
                 text(ui, title, H2, th.text);
                 wrapped(ui, body, BODY, th.text);
                 wrapped(ui, warn, SMALL_B, th.warn);
+                if matches!(c, Confirm::Flash { .. }) {
+                    wrapped(ui, crate::ops::FLASH_DISCLAIMER, SMALL, th.text_dim);
+                }
                 ui.with(row(8).layout().padding(Padding::new(0, 0, 8, 0)).end(), |ui| {
                     spacer(ui);
                     let id = ui.id("dlg_no");
