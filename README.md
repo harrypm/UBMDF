@@ -8,6 +8,7 @@ Windows · Linux · macOS — currently the UltraStudio 4K Mini (Desktop Video 1
 The flash sequence matches a USB trace of Blackmagic's official `DesktopVideoUpdateTool` 16.5 op for op (32/32), and every image is byte-identical to the official one.
 
 ## Screenshots
+
 | Firmware | Devices |
 |---|---|
 | <img src="docs/images/firmware.png" width="380" alt="Firmware tab: bundle list with Desktop Video 16.5 selected, per-image erase size and address"> | <img src="docs/images/devices.png" width="380" alt="Devices tab: UltraStudio 4K Mini on the USB service port"> |
@@ -15,6 +16,7 @@ The flash sequence matches a USB trace of Blackmagic's official `DesktopVideoUpd
 | <img src="docs/images/update.png" width="380" alt="Update tab: Blackmagic Desktop Video catalog, indexed versions"> | <img src="docs/images/log.png" width="380" alt="Log tab: integrated log readout"> |
 
 ## Features
+
 - Live detection of service-port devices, with identity and state readout and a JSON dump
 - 43 flashable Desktop Video versions built in, each sha256-checked, with a step-by-step flash log
 - Firmware index plus Blackmagic catalog check, download and inventory
@@ -22,7 +24,12 @@ The flash sequence matches a USB trace of Blackmagic's official `DesktopVideoUpd
 - `probe`: logged, read-only command sweep of the service port
 
 ## Download
-Builds for Windows (`.exe`), Linux (`.AppImage`) and macOS (universal `.app`) come from [GitHub Actions](https://github.com/harrypm/UBMDF/actions) on every push, and from [Releases](https://github.com/harrypm/UBMDF/releases) for `v*` tags. The macOS app is ad-hoc signed, so right-click → Open the first time.
+
+[Releases](https://github.com/harrypm/UBMDF/releases) for ready to use binary's. 
+
+Builds for Windows (`.exe`), Linux (`.AppImage`) and macOS (universal `.app`) come from [GitHub Actions](https://github.com/harrypm/UBMDF/actions).
+
+The macOS app is ad-hoc signed, so right-click → Open the first time.
 
 - **Windows:** bind the service port to WinUSB with Zadig.
 - **Linux:** add the udev rule.
