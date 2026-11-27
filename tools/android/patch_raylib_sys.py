@@ -10,6 +10,10 @@ Its bindgen call also passes clang the bare target triple, which NDK r27+
 headers reject ("Unversioned target triples are not supported"); the patch
 adds the versioned triple (+ NDK sysroot) for Android targets.
 
+Its link() skips X11 with #[cfg(target_os = "android")], but a build script
+is compiled for the HOST, so Android links got -lX11; the patch makes that a
+runtime check on the target platform.
+
 Usage:  python tools/android/patch_raylib_sys.py <dest-dir>
 Then:   cargo ... --config 'patch.crates-io.raylib-sys.path="<dest-dir>"'
 """
@@ -26,6 +30,8 @@ NEW = '''let android_platform_env = env::var("ANDROID_PLATFORM").unwrap_or_else(
 
 OLD_BG = '.clang_arg(plat)'
 NEW_BG = '.clang_arg(plat)\n        .clang_args(android_bindgen_args(&target))'
+OLD_X11 = 'println!("cargo:rustc-link-lib=X11");'
+NEW_X11 = 'if platform != Platform::Android { println!("cargo:rustc-link-lib=X11"); }'
 HELPER = """
 
 /// UBMDF patch: versioned triple + NDK sysroot for bindgen on Android.
@@ -68,7 +74,9 @@ def main():
         sys.exit(f"raylib-sys {pkgs[0]['version']}: expected build.rs line not found — check the patch")
     if text.count(OLD_BG) != 1:
         sys.exit("raylib-sys: bindgen anchor '.clang_arg(plat)' not found exactly once — check the patch")
-    text = text.replace(OLD, NEW).replace(OLD_BG, NEW_BG) + HELPER
+    if text.count(OLD_X11) != 1:
+        sys.exit("raylib-sys: X11 link line not found exactly once — check the patch")
+    text = text.replace(OLD, NEW).replace(OLD_BG, NEW_BG).replace(OLD_X11, NEW_X11) + HELPER
     open(build, "w", encoding="utf-8").write(text)
     print(f"patched raylib-sys {pkgs[0]['version']} -> {dest}")
 
