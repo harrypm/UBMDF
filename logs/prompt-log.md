@@ -220,3 +220,19 @@
 - ops::FLASH_DISCLAIMER shared text: printed before every real CLI flash (also with --yes), shown in the GUI Flash confirm dialog. Verified: CLI prompt output; GUI dialog screenshot v12-disclaimer.
 - README rewritten with GitHub alerts: CAUTION (top), IMPORTANT (WinUSB/udev setup), NOTE (macOS ad-hoc), TIP (firmware folder), WARNING (flash rules: power, power-cycle, no read-back, 12.9, 11.4.1); Download table; "binary's" typo fixed; Disclaimer in the docs table and License section.
 - clippy clean both configs, tests 20/20.
+
+## Execution log (26 Nov 2026, CH341A hardware dump — PAUSED by user)
+- User: CH341A Pro clipped to the 4K Mini board. U3/U4 turned out to be the wrong chips; the target is a **Winbond W25X20CL ("25X20CLNIG", date code 2410)**: 2 Mbit / 256 KB, 2.3–3.6 V (CH341A 3.3 V OK). Too small for the FPGA/ARM images → likely a USB-bridge / Thunderbolt / MCU boot flash.
+- CH341A on this PC: 1A86:5512 with WCH driver CH341_A64; C:\Windows\System32\CH341DLLA64.DLL present → no driver swap needed.
+- New tools/ch341_spi_dump.py (uncommitted): READ-ONLY (0x9F ID, 0x5A SFDP, 0x03/0x13 read only), ctypes → CH341DLLA64, --speed 0..3, multi-pass sha256 compare.
+- Board confirmed fully unplugged. In-circuit JEDEC ID = ffffff at speeds 3/1/0 (no answer: the board loads the bus in-circuit). Nothing was written.
+- User: the chip needs de-soldering. Guidance given (photo + pin 1, hot air with shielding, the package may be USON/WSON → 8-pad adapter, read 3 passes, back up before re-soldering).
+- NEXT: once removed: `python -I tools/ch341_spi_dump.py id` (expect ef30xx) → `dump dumps/w25x20cl.bin --passes 3` → analyse + compare with installer data; commit the script with the analysis.
+
+## Execution log (27 Nov 2026, "build and push an android app version")
+- No local Android SDK/NDK (JDK 11 only) → built in GitHub Actions (runner NDK 30, JDK 17, Gradle 8.10.2, AGP 8.7.3).
+- Design: the same Rust Clay/raylib GUI as an Android NativeActivity (no Java UI). nusb::Device::from_fd + UsbManager via JNI (jni 0.21) keeps the protocol code shared; raylib android_main → exported `main`; manifest android.app.func_name=ubmdf_on_create (a Rust cdylib doesn't export the C glue's ANativeActivity_onCreate).
+- Code: src/lib.rs (all modules) + src/main.rs (desktop bin); src/android.rs (data dir → UBMDF_FIRMWARE, density UI scale, USB list/permission/open); protocol list/open Android branches; GUI scale (fonts at px*scale, Camera2D zoom, scissor in screen px, drag scroll on Android; desktop scale 1.0 — screenshot unchanged). android/ = workspace member (not default) cdylib + Gradle project (hasCode=false, portrait, USB device filter 1edb:be13, INTERNET, debug-key signed release).
+- raylib-sys 6.0.0 Android bugs, patched at CI build time (tools/android/patch_raylib_sys.py, applied via --config patch.crates-io): (1) API level parsed from the triple ("android") → ANDROID_PLATFORM env; (2) bindgen gets the unversioned triple → NDK headers error → versioned --target + NDK sysroot; (3) X11 skipped via host-side #[cfg(target_os="android")] in a build script → -lX11 on Android → runtime platform check. (A BINDGEN_EXTRA_CLANG_ARGS env attempt had no effect.)
+- CI runs on the android branch (workflow_dispatch): 46038694369 ✗ bindgen, 46040671905 ✗ (env ignored), 46041272936 ✗ -lX11, **46041882763 ✓ all 4 jobs**: .so exports main + ubmdf_on_create; aapt2 badging io.github.ubmdf 1.0.2 (10002) target 35; APK 19.4 MB (lib/arm64-v8a 19.3 MB incl. bundled firmware), downloaded + inspected.
+- Not run on a real Android device yet. README + docs/platforms.md Android section.

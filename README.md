@@ -3,7 +3,7 @@
 <h1 align="center">UBMDF — Universal Blackmagic Devices Flasher</h1>
 
 <p align="center">Cross-platform CLI + GUI for flashing Blackmagic devices over their USB service port.<br>
-Windows · Linux · macOS — currently the UltraStudio 4K Mini (Desktop Video 11.5 – 16.5).</p>
+Windows · Linux · macOS · Android — currently the UltraStudio 4K Mini (Desktop Video 11.5 – 16.5).</p>
 
 > [!CAUTION]
 > **Flashing firmware can permanently brick your device. You flash at your own risk.**
@@ -36,6 +36,7 @@ Ready-to-use builds are on the [Releases](https://github.com/harrypm/UBMDF/relea
 | Windows | `ubmdf-windows-x64.exe` |
 | Linux | `UBMDF-x86_64.AppImage` |
 | macOS (Apple Silicon + Intel) | `UBMDF-macos-universal.zip` → `UBMDF.app` |
+| Android (arm64, USB OTG) | `UBMDF-android-arm64.apk` (sideload) |
 
 Every push is also built by [GitHub Actions](https://github.com/harrypm/UBMDF/actions).
 
@@ -47,7 +48,8 @@ Every push is also built by [GitHub Actions](https://github.com/harrypm/UBMDF/ac
 > See [platforms](docs/platforms.md) for both.
 
 > [!NOTE]
-> The macOS app is ad-hoc signed, not notarized. The first time, right-click it and choose **Open**.
+> - **macOS:** the app is ad-hoc signed, not notarized. The first time, right-click it and choose **Open**.
+> - **Android:** the APK is debug-key signed, for sideloading. The phone must support USB host (OTG); see [Android](docs/platforms.md#android).
 
 ## Quick start
 
