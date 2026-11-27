@@ -34,7 +34,10 @@ pub struct Fonts {
 impl Fonts {
     /// Arimo is embedded in the binary, so portable builds (AppImage, .app,
     /// a lone .exe) render identically with no assets folder beside them.
-    pub fn load(rl: &mut RaylibHandle, thread: &RaylibThread) -> Fonts {
+    /// `scale` > 1 (Android high-density screens) rasterises each style at
+    /// px × scale; text is still laid out and drawn at its logical px size and
+    /// the whole frame is zoomed by `scale`, so glyphs land 1:1 on screen.
+    pub fn load(rl: &mut RaylibHandle, thread: &RaylibThread, scale: f32) -> Fonts {
         const REGULAR: &[u8] = include_bytes!("../../assets/fonts/Arimo-Regular.ttf");
         const BOLD: &[u8] = include_bytes!("../../assets/fonts/Arimo-Bold.ttf");
         let mut glyphs: String = (32u8..127).map(|b| b as char).collect();
@@ -44,8 +47,9 @@ impl Fonts {
         let mut owned = Vec::new();
         for &(bold, px) in STYLES.iter() {
             let data = if bold { BOLD } else { REGULAR };
+            let atlas_px = ((px as f32) * scale).round().max(1.0) as i32;
             let font = rl
-                .load_font_from_memory(thread, ".ttf", data, px, Some(&glyphs))
+                .load_font_from_memory(thread, ".ttf", data, atlas_px, Some(&glyphs))
                 .unwrap_or_else(|e| panic!("embedded Arimo {px}px failed to load: {e}"));
             owned.push(font);
         }
@@ -89,7 +93,20 @@ pub fn render<'a>(
     d: &mut RaylibDrawHandle,
     fonts: &Fonts,
     commands: impl Iterator<Item = RenderCommand<'a, (), ()>>,
+    scale: f32,
 ) {
+    // Logical units -> screen pixels. Desktop (scale 1.0) skips the camera so
+    // its output is unchanged.
+    let zoom = (scale - 1.0).abs() > f32::EPSILON;
+    if zoom {
+        let cam = ffi::Camera2D {
+            offset: ffi::Vector2 { x: 0.0, y: 0.0 },
+            target: ffi::Vector2 { x: 0.0, y: 0.0 },
+            rotation: 0.0,
+            zoom: scale,
+        };
+        unsafe { ffi::BeginMode2D(cam) };
+    }
     for cmd in commands {
         let b = cmd.bounding_box;
         match cmd.config {
@@ -124,13 +141,22 @@ pub fn render<'a>(
                     ffi::DrawTextEx(fonts.raw[id], c.as_ptr(), pos, t.font_size as f32, 0.0, rl_color(t.color));
                 }
             }
+            // Scissor rectangles are in screen pixels, not camera space.
             RenderCommandConfig::ScissorStart() => unsafe {
-                ffi::BeginScissorMode(b.x.round() as i32, b.y.round() as i32, b.width.round() as i32, b.height.round() as i32);
+                ffi::BeginScissorMode(
+                    (b.x * scale).round() as i32,
+                    (b.y * scale).round() as i32,
+                    (b.width * scale).round() as i32,
+                    (b.height * scale).round() as i32,
+                );
             },
             RenderCommandConfig::ScissorEnd() => unsafe {
                 ffi::EndScissorMode();
             },
             RenderCommandConfig::Image(_) | RenderCommandConfig::Custom(_) | RenderCommandConfig::None() => {}
         }
+    }
+    if zoom {
+        unsafe { ffi::EndMode2D() };
     }
 }

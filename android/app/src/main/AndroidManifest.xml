@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- The service port is a USB device: the phone/tablet must be a USB host (OTG). -->
+    <uses-feature android:name="android.hardware.usb.host" android:required="true" />
+    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
+    <!-- Blackmagic catalog check / downloads (Update tab). -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:label="UBMDF"
+        android:icon="@mipmap/ic_launcher"
+        android:hasCode="false"
+        android:allowBackup="false">
+
+        <activity
+            android:name="android.app.NativeActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|keyboard|uiMode|density">
+
+            <meta-data android:name="android.app.lib_name" android:value="ubmdf_android" />
+            <!-- Rust-exported entry that forwards to android_native_app_glue. -->
+            <meta-data android:name="android.app.func_name" android:value="ubmdf_on_create" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Plugging in the UltraStudio service port offers to open UBMDF
+                 (and grants USB permission when the user accepts). -->
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
+        </activity>
+    </application>
+</manifest>

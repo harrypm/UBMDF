@@ -4,6 +4,7 @@ name: build
 #   Windows  -> ubmdf-windows-x64.exe  (GUI subsystem, icon embedded via build.rs)
 #   Linux    -> UBMDF-x86_64.AppImage  (built on Ubuntu 22.04 for an older glibc baseline)
 #   macOS    -> UBMDF-macos-universal.zip (UBMDF.app, arm64 + x86_64 lipo'd)
+#   Android  -> UBMDF-android-arm64.apk (NativeActivity, USB host via UsbManager)
 # Every job runs the tests and a CLI smoke test of the built binary.
 # Release builds embed every flashable bundle (feature bundled-firmware); only
 # those images (~30 MB) are fetched from Git LFS, cached between runs.
@@ -190,9 +191,61 @@ jobs:
           name: ubmdf-macos-universal
           path: out/UBMDF-macos-universal.zip
 
+  android:
+    runs-on: ubuntu-latest
+    env:
+      ANDROID_PLATFORM: android-26
+    steps:
+      - uses: actions/checkout@v7
+      - name: List bundled-firmware LFS objects
+        shell: bash
+        run: git lfs ls-files -l -I "firmware/*/dv-*/**" -X "firmware/installers/**" | cut -d' ' -f1 | sort > .lfs-bundle-oids
+      - uses: actions/cache@v5
+        with:
+          path: .git/lfs
+          key: lfs-bundles-${{ hashFiles('.lfs-bundle-oids') }}
+      - name: Fetch bundled-firmware images (Git LFS, ~30 MB)
+        shell: bash
+        run: git lfs pull --include="firmware/*/dv-*/**" --exclude="firmware/installers/**"
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@v5
+        with:
+          gradle-version: "8.10.2"
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: android
+      - name: cargo-ndk
+        run: cargo install cargo-ndk --locked
+      - name: Patch raylib-sys for Android (API level from ANDROID_PLATFORM)
+        run: python3 tools/android/patch_raylib_sys.py "$RUNNER_TEMP/raylib-sys"
+      - name: Build libubmdf_android.so (arm64-v8a)
+        run: |
+          export ANDROID_NDK_HOME="$ANDROID_NDK_LATEST_HOME"
+          echo "NDK: $ANDROID_NDK_HOME"
+          cargo ndk -t arm64-v8a -P 26 -o android/app/src/main/jniLibs             build --release -p ubmdf-android             --config "patch.crates-io.raylib-sys.path=\"$RUNNER_TEMP/raylib-sys\""
+          ls -la android/app/src/main/jniLibs/arm64-v8a
+          "$ANDROID_NDK_HOME"/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-nm -D --defined-only             android/app/src/main/jniLibs/arm64-v8a/libubmdf_android.so | grep -E " (ubmdf_on_create|main)$"
+      - name: Build APK
+        working-directory: android
+        run: |
+          gradle --no-daemon assembleRelease
+          mkdir -p ../out
+          cp app/build/outputs/apk/release/app-release.apk ../out/UBMDF-android-arm64.apk
+          "$ANDROID_HOME"/build-tools/$(ls "$ANDROID_HOME"/build-tools | sort -V | tail -1)/aapt2 dump badging ../out/UBMDF-android-arm64.apk | head -5
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ubmdf-android-arm64
+          path: out/UBMDF-android-arm64.apk
+
   release:
     if: startsWith(github.ref, 'refs/tags/v')
-    needs: [windows, linux, macos]
+    needs: [windows, linux, macos, android]
     runs-on: ubuntu-latest
     permissions:
       contents: write

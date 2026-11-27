@@ -7,19 +7,13 @@
 // from a terminal re-attach the parent console in main() so output still works.
 #![cfg_attr(all(windows, feature = "gui"), windows_subsystem = "windows")]
 
+// All modules live in the library (src/lib.rs) so the Android app
+// (android/, a cdylib) runs exactly the same code as the desktop binary.
 #[cfg(feature = "bundled-firmware")]
-mod bundled;
-mod downloader;
-mod extract;
+use ubmdf::bundled;
 #[cfg(feature = "gui")]
-mod gui;
-mod index;
-mod logger;
-mod manifest;
-mod ops;
-mod probe;
-mod protocol;
-mod replay;
+use ubmdf::gui;
+use ubmdf::{downloader, extract, index, logger, manifest, ops, probe, protocol, replay};
 
 use anyhow::{bail, Context, Result};
 use clap::{Parser, Subcommand};

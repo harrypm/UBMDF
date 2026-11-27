@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Blackmagic service port: VID 0x1edb (7899), PID 0xbe13 (48659) -->
+    <usb-device vendor-id="7899" product-id="48659" />
+</resources>

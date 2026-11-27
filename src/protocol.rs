@@ -73,18 +73,28 @@ fn ctrl_out(iface: &Interface, request: u8, data: &[u8]) -> Result<()> {
 
 /// List connected Blackmagic service-port devices (human-readable strings).
 pub fn list_bmd() -> Result<Vec<String>> {
-    let mut out = Vec::new();
-    for d in nusb::list_devices().wait()? {
-        if d.vendor_id() == VID && d.product_id() == PID {
-            out.push(format!(
-                "product={:?} manufacturer={:?} serial={:?}",
-                d.product_string(),
-                d.manufacturer_string(),
-                d.serial_number()
-            ));
-        }
+    #[cfg(target_os = "android")]
+    {
+        Ok(list_bmd_entries()?
+            .into_iter()
+            .map(|e| format!("product={:?} serial={:?} ({})", e.product, e.serial, e.bus_id))
+            .collect())
     }
-    Ok(out)
+    #[cfg(not(target_os = "android"))]
+    {
+        let mut out = Vec::new();
+        for d in nusb::list_devices().wait()? {
+            if d.vendor_id() == VID && d.product_id() == PID {
+                out.push(format!(
+                    "product={:?} manufacturer={:?} serial={:?}",
+                    d.product_string(),
+                    d.manufacturer_string(),
+                    d.serial_number()
+                ));
+            }
+        }
+        Ok(out)
+    }
 }
 
 /// A service-port device found on the bus (enumeration only — nothing is
@@ -114,25 +124,33 @@ pub struct DeviceEntry {
 /// No handles are opened and no interfaces claimed — safe to call repeatedly.
 #[cfg_attr(not(feature = "gui"), allow(dead_code))] // GUI device poller
 pub fn list_bmd_entries() -> Result<Vec<DeviceEntry>> {
-    let mut out = Vec::new();
-    for d in nusb::list_devices().wait()? {
-        if d.vendor_id() != VID || d.product_id() != PID {
-            continue;
-        }
-        out.push(DeviceEntry {
-            product: d.product_string().map(str::to_string),
-            serial: d.serial_number().map(str::to_string),
-            bus_id: d.bus_id().to_string(),
-            address: d.device_address(),
-            port_chain: d.port_chain().to_vec(),
-            speed: d.speed().map(|s| format!("{s:?}")),
-            #[cfg(windows)]
-            driver: d.driver().map(str::to_string),
-            #[cfg(not(windows))]
-            driver: None,
-        });
+    // Android apps cannot read /dev/bus/usb: enumerate through UsbManager.
+    #[cfg(target_os = "android")]
+    {
+        crate::android::list_devices()
     }
-    Ok(out)
+    #[cfg(not(target_os = "android"))]
+    {
+        let mut out = Vec::new();
+        for d in nusb::list_devices().wait()? {
+            if d.vendor_id() != VID || d.product_id() != PID {
+                continue;
+            }
+            out.push(DeviceEntry {
+                product: d.product_string().map(str::to_string),
+                serial: d.serial_number().map(str::to_string),
+                bus_id: d.bus_id().to_string(),
+                address: d.device_address(),
+                port_chain: d.port_chain().to_vec(),
+                speed: d.speed().map(|s| format!("{s:?}")),
+                #[cfg(windows)]
+                driver: d.driver().map(str::to_string),
+                #[cfg(not(windows))]
+                driver: None,
+            });
+        }
+        Ok(out)
+    }
 }
 
 /// An opened service-port device: USB device handle plus the claimed interface.
@@ -144,10 +162,17 @@ pub struct BmdDevice {
 
 /// Open and claim the first service-port device.
 pub fn open() -> Result<BmdDevice> {
+    // Android: UsbManager grants access and hands over a file descriptor.
+    #[cfg(target_os = "android")]
+    let device = nusb::Device::from_fd(crate::android::open_service_port()?)
+        .wait()
+        .context("failed to open the USB device from its Android file descriptor")?;
+    #[cfg(not(target_os = "android"))]
     let di = nusb::list_devices()
         .wait()?
         .find(|d| d.vendor_id() == VID && d.product_id() == PID)
         .context("no Blackmagic service-port device found (USB VID 1edb PID be13)")?;
+    #[cfg(not(target_os = "android"))]
     let device = di.open().wait().context(
         "failed to open USB device — on Windows this usually means the interface is bound to \
          Blackmagic's DesktopVideoUpdate driver instead of WinUSB; see docs/platforms.md (Windows)",

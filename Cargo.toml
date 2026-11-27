@@ -23,7 +23,16 @@ ureq = { version = "2", features = ["json"] }
 zip = { version = "9.8.0", default-features = false, features = ["deflate"] }
 indicatif = "0.18.6"
 
+[target.'cfg(target_os = "android")'.dependencies]
+jni = "0.21"
+
 [build-dependencies]
 winresource = "0.1"
 sha2 = "0.11.1"
 zip = { version = "9.8.0", default-features = false, features = ["deflate"] }
+
+# android/ = the Android app (cdylib). Plain `cargo build` at the root still
+# builds only the desktop package.
+[workspace]
+members = [".", "android"]
+default-members = ["."]

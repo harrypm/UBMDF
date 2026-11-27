@@ -1,0 +1,15 @@
+[package]
+name = "ubmdf-android"
+version = "1.0.2"
+edition = "2024"
+publish = false
+description = "UBMDF Android app: NativeActivity wrapper around the ubmdf library and GUI"
+
+[lib]
+name = "ubmdf_android"
+crate-type = ["cdylib"]
+path = "src/lib.rs"
+
+[dependencies]
+ubmdf = { path = "..", features = ["gui", "bundled-firmware"] }
+log = "0.4"

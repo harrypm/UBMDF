@@ -22,3 +22,8 @@ __pycache__/
 /ubdmf-gui.conf
 # usbtrace build output (tools/usbtrace/build.sh)
 /tools/usbtrace/*.dylib
+/android/app/src/main/jniLibs/
+/android/app/build/
+/android/.gradle/
+/android/build/
+/android/local.properties

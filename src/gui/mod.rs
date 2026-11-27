@@ -615,7 +615,15 @@ pub fn run_gui(opts: Opts) -> anyhow::Result<()> {
         Err(e) => log::warn!("window icon not loaded: {e}"),
     }
 
-    let fonts = render::Fonts::load(&mut rl, &thread);
+    // UI scale: 1.0 on desktop; screen density / 160 on Android so the same
+    // layout is legible on phones. Layout and input run in logical units;
+    // rendering is zoomed by `scale` and fonts are rasterised at px × scale.
+    #[cfg(target_os = "android")]
+    let scale = crate::android::ui_scale();
+    #[cfg(not(target_os = "android"))]
+    let scale = 1.0f32;
+    log::info!("GUI scale {scale:.2}");
+    let fonts = render::Fonts::load(&mut rl, &thread, scale);
     let mut clay = Clay::new((600.0, 860.0).into());
     let raw = fonts.raw();
     clay.set_measure_text_function(move |text, cfg| render::measure(&raw, text, cfg));
@@ -745,10 +753,10 @@ pub fn run_gui(opts: Opts) -> anyhow::Result<()> {
             app.log_lines = tidy_log(crate::logger::tail(400));
         }
 
-        let (w, h) = (rl.get_screen_width() as f32, rl.get_screen_height() as f32);
+        let (w, h) = (rl.get_screen_width() as f32 / scale, rl.get_screen_height() as f32 / scale);
         clay.set_layout_dimensions((w, h).into());
         let m = rl.get_mouse_position();
-        clay.pointer_state((m.x, m.y).into(), rl.is_mouse_button_down(MouseButton::MOUSE_BUTTON_LEFT));
+        clay.pointer_state((m.x / scale, m.y / scale).into(), rl.is_mouse_button_down(MouseButton::MOUSE_BUTTON_LEFT));
         let wheel = rl.get_mouse_wheel_move_v();
         let delta = rl.get_mouse_delta();
         if delta.x != 0.0
@@ -765,7 +773,8 @@ pub fn run_gui(opts: Opts) -> anyhow::Result<()> {
             fast = want_fast;
             rl.set_target_fps(if fast { 60 } else { 15 });
         }
-        clay.update_scroll_containers(false, (wheel.x * 4.0, wheel.y * 4.0).into(), rl.get_frame_time());
+        // Touch screens scroll by dragging (no wheel); desktop keeps wheel-only.
+        clay.update_scroll_containers(cfg!(target_os = "android"), (wheel.x * 4.0, wheel.y * 4.0).into(), rl.get_frame_time());
 
         let input = Input {
             pressed: rl.is_mouse_button_pressed(MouseButton::MOUSE_BUTTON_LEFT),
@@ -781,7 +790,7 @@ pub fn run_gui(opts: Opts) -> anyhow::Result<()> {
             d.clear_background(Color::new(th.bg.r as u8, th.bg.g as u8, th.bg.b as u8, 255));
             let mut ui = clay.begin::<(), ()>();
             view::build(&mut ui, &app, &arena, &th, &input, &mut acts);
-            render::render(&mut d, &fonts, ui.end());
+            render::render(&mut d, &fonts, ui.end(), scale);
         }
         arena.clear();
 
