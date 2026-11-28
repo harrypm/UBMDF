@@ -245,8 +245,9 @@ jobs:
           # Android rejects an APK without classes.dex ("package appears to be invalid").
           unzip -l "$APK" | grep -E " classes\.dex$"
           unzip -l "$APK" | grep -E "lib/arm64-v8a/libubmdf_android\.so$"
-          "$BT/apksigner" verify --print-certs "$APK" | grep -E "Signer #1 certificate (DN|SHA-256)"
-          "$BT/apksigner" verify --print-certs "$APK" | grep -qi "7be28281a2d5a3d457d1b8bba8fc88bebd3efc2e11b9b1b074e55e077c9bf792"             || { echo "APK not signed with android/debug.keystore"; exit 1; }
+          "$BT/apksigner" verify --verbose --print-certs "$APK" 2>&1 | tee /tmp/apksig.txt || true
+          grep -q "^Verifies$" /tmp/apksig.txt || { echo "apksigner: APK does not verify"; exit 1; }
+          tr -d ':' < /tmp/apksig.txt | grep -qi "7be28281a2d5a3d457d1b8bba8fc88bebd3efc2e11b9b1b074e55e077c9bf792"             || { echo "APK not signed with android/debug.keystore"; exit 1; }
           "$BT/zipalign" -c -P 16 -v 4 "$APK" | tail -2
           # ELF LOAD segments must be 16 KB aligned for 16 KB-page devices.
           "$ANDROID_NDK_LATEST_HOME"/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf -lW             android/app/src/main/jniLibs/arm64-v8a/libubmdf_android.so | awk '$1=="LOAD"{print; if ($NF != "0x4000" && $NF != "0x10000") bad=1} END{exit bad}'
