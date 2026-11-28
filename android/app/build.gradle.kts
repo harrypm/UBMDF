@@ -19,11 +19,30 @@ android {
     // libubmdf_android.so is built by cargo-ndk into src/main/jniLibs/<abi>/
     sourceSets["main"].jniLibs.srcDirs("src/main/jniLibs")
 
+    // Committed debug key (android/debug.keystore, PKCS#12): every build has
+    // the same signature, so a new APK installs as an update over the old one
+    // (a fresh CI-generated key each run would force uninstall first).
+    // Sideload key only, not a Play Store identity.
+    signingConfigs {
+        create("ubmdfDebug") {
+            storeFile = rootProject.file("debug.keystore")
+            storeType = "pkcs12"
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
-            // Debug-key signed so the APK installs directly (sideload).
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("ubmdfDebug")
         }
+    }
+
+    // Store .so uncompressed and page-aligned (16 KB) so Android 15+ devices
+    // with 16 KB pages can map the library directly.
+    packaging {
+        jniLibs { useLegacyPackaging = false }
     }
 }

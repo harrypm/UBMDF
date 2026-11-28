@@ -728,6 +728,11 @@ pub fn run_gui(opts: Opts) -> anyhow::Result<()> {
 
     let mut arena = Arena::default();
     let mut hand_cursor = false;
+    // Touch (Android): a tap is a press + release that moved less than
+    // TAP_SLOP logical px, so a drag-scroll never selects a row or presses a
+    // button (MISRC GUI Android lesson). Desktop clicks on press as before.
+    #[cfg(target_os = "android")]
+    let mut touch_down_at: Option<(f32, f32)> = None;
     // Idle throttle: full 60 fps while the user interacts or a job runs,
     // 15 fps otherwise (live device/log updates still appear within ~70 ms).
     let mut last_active = std::time::Instant::now();
@@ -777,7 +782,27 @@ pub fn run_gui(opts: Opts) -> anyhow::Result<()> {
         clay.update_scroll_containers(cfg!(target_os = "android"), (wheel.x * 4.0, wheel.y * 4.0).into(), rl.get_frame_time());
 
         let input = Input {
-            pressed: rl.is_mouse_button_pressed(MouseButton::MOUSE_BUTTON_LEFT),
+            pressed: {
+                #[cfg(target_os = "android")]
+                {
+                    const TAP_SLOP: f32 = 10.0;
+                    let (px, py) = (m.x / scale, m.y / scale);
+                    if rl.is_mouse_button_pressed(MouseButton::MOUSE_BUTTON_LEFT) {
+                        touch_down_at = Some((px, py));
+                    }
+                    if rl.is_mouse_button_released(MouseButton::MOUSE_BUTTON_LEFT) {
+                        touch_down_at
+                            .take()
+                            .is_some_and(|(x0, y0)| ((px - x0).powi(2) + (py - y0).powi(2)).sqrt() < TAP_SLOP)
+                    } else {
+                        false
+                    }
+                }
+                #[cfg(not(target_os = "android"))]
+                {
+                    rl.is_mouse_button_pressed(MouseButton::MOUSE_BUTTON_LEFT)
+                }
+            },
             wheel_y: wheel.y,
             w,
             h,
