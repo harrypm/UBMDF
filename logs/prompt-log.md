@@ -236,3 +236,13 @@
 - raylib-sys 6.0.0 Android bugs, patched at CI build time (tools/android/patch_raylib_sys.py, applied via --config patch.crates-io): (1) API level parsed from the triple ("android") → ANDROID_PLATFORM env; (2) bindgen gets the unversioned triple → NDK headers error → versioned --target + NDK sysroot; (3) X11 skipped via host-side #[cfg(target_os="android")] in a build script → -lX11 on Android → runtime platform check. (A BINDGEN_EXTRA_CLANG_ARGS env attempt had no effect.)
 - CI runs on the android branch (workflow_dispatch): 46038694369 ✗ bindgen, 46040671905 ✗ (env ignored), 46041272936 ✗ -lX11, **46041882763 ✓ all 4 jobs**: .so exports main + ubmdf_on_create; aapt2 badging io.github.ubmdf 1.0.2 (10002) target 35; APK 19.4 MB (lib/arm64-v8a 19.3 MB incl. bundled firmware), downloaded + inspected.
 - Not run on a real Android device yet. README + docs/platforms.md Android section.
+
+## Execution log (28 Nov 2026, "fix android build, use MISRC GUI learnt lessons")
+- CI was green, but the APK was not installable per MISRC lessons (C:\Users\Harry\MISRC-GUI\android\build-apk.sh, ANDROID_SUPPORT_PLAN.md, MainActivity.java, gui_android_viewport.h, dev notes 2026-08-13):
+  1. No classes.dex (hasCode=false) → Android rejects "package appears to be invalid" → Java MainActivity extends NativeActivity (keeps func_name/lib_name entry), FLAG_KEEP_SCREEN_ON (no sleep mid-flash), immersive fullscreen (API 30+ WindowInsetsController, legacy flags below), NoActionBar.Fullscreen theme.
+  2. A random CI debug key per run → no in-place updates → committed android/debug.keystore (PKCS#12 via OpenSSL — the local JDK keytool.exe is corrupted on disk), cert SHA-256 7be28281…f792.
+  3. Taps fired on press → drag-scroll selected rows → Android: tap = release within 10 logical px of touch-down (desktop unchanged).
+  4. 16 KB pages: useLegacyPackaging=false (uncompressed, aligned).
+- CI verify step: aapt2 badging, classes.dex, apksigner (v2 Verifies + committed cert), zipalign -c -P 16, ELF LOAD align 0x4000. First verify run failed on MY grep (apksigner prints "V2 Signer: certificate…", not "Signer #1") → fixed.
+- Run 46089250788: all 4 jobs ✓; verify output: Verifies (v2), DN CN=UBMDF Debug, SHA-256 7be28281…, 3 LOAD segments 0x4000. Merged android → master.
+- Still not run on a physical device.
